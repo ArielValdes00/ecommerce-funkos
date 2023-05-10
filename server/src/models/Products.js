@@ -21,6 +21,9 @@ export const Product = sequelize.define("products", {
     },
     stock: {
         type: DataTypes.INTEGER
+    },
+    image: {
+        type: DataTypes.STRING
     }
 
 })
