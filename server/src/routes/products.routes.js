@@ -3,10 +3,10 @@ import { createProducts, deleteProducts, getProduct, getProducts, updateProducts
 
 const router = Router();
 
-router.get("/dashboard/products", getProducts);
-router.post("/dashboard/products", createProducts);
-router.delete("/dashboard/products/:id", deleteProducts)
-router.get("/dashboard/products/:id", getProduct);
-router.put("/dashboard/products/:id", updateProducts);
+router.get("/api/products", getProducts);
+router.post("/api/products", createProducts);
+router.delete("/api/products/:id", deleteProducts)
+router.get("/api/products/:id", getProduct);
+router.put("/api/products/:id", updateProducts);
 
 export default router;
