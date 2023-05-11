@@ -22,7 +22,7 @@ export const getProduct = async (id) => {
 
 export const createProducts = async (productData) => {
     try {
-        const response = axios.post(`${API_URL}`, productData);
+        const response = await axios.post(`${API_URL}`, productData);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -31,7 +31,7 @@ export const createProducts = async (productData) => {
 
 export const deleteProducts = async (id) => {
     try {
-        const response = axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -40,7 +40,16 @@ export const deleteProducts = async (id) => {
 
 export const updateProducts = async (id, productData) => {
     try {
-        const response = axios.put(`${API_URL}/${id}`, productData);
+        const response = await axios.put(`${API_URL}/${id}`, productData);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const uploadImage = async (formData) => {
+    try {
+        const response = await axios.post(`${API_URL}/upload`, formData);
         return response.data;
     } catch (error) {
         console.log(error);
