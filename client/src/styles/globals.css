@@ -3,3 +3,21 @@
 @tailwind utilities;
 
 
+/* Estilos para las flechas */
+.swiper-button-next,
+.swiper-button-prev {
+    --swiper-navigation-size: 27px;
+    --swiper-navigation-color: black;
+    border-radius: 50%;
+    background-color: gray;
+    padding: 25px;
+--swiper-navigation-sides-offset: 25px;
+
+
+
+}
+
+
+
+
+
