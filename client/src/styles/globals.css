@@ -9,12 +9,11 @@
     --swiper-navigation-size: 27px;
     --swiper-navigation-color: black;
     border-radius: 50%;
-    background-color: gray;
+    background-color: white;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+
     padding: 25px;
---swiper-navigation-sides-offset: 25px;
-
-
-
+    --swiper-navigation-sides-offset: 25px;
 }
 
 

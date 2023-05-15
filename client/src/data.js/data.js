@@ -1,8 +1,17 @@
 export const products = [
-    { id: 1, name: 'Product 1', description: 'description product 1', image: '/newArrival/DarthVader.png' },
-    { id: 2, name: 'Product 2', description: 'description product 2', image: '/newArrival/Rocket.png' },
-    { id: 3, name: 'Product 3', description: 'description product 3', image: '/newArrival/SatoruGojo.png' },
-    { id: 4, name: 'Product 4', description: 'description product 4', image: '/newArrival/TheFlash.png' },
-    { id: 5, name: 'Product 5', description: 'description product 5', image: '/newArrival/DarthVader.png' },
-    { id: 6, name: 'Product 6', description: 'description product 6', image: '/newArrival/Rocket.png' },
+    { id: 1, name: 'POP! DARTH VADER', category: 'DISNEY', price: '15.00', image: '/newArrival/DarthVader.png' },
+    { id: 2, name: 'POP! ROCKET', category: 'MARVEL', price: '15.00', image: '/newArrival/Rocket.png' },
+    { id: 3, name: 'POP! SATORU GOJO', category: 'ANIME', price: '15.00', image: '/newArrival/SatoruGojo.png' },
+    { id: 4, name: 'POP! FLASH', category: 'DC COMICS', price: '15.00', image: '/newArrival/TheFlash.png' },
+    { id: 5, name: 'POP! ADAM WARLOCK', category: 'MARVEL', price: '15.00', image: '/newArrival/AdamWarlock.png' },
+    { id: 6, name: 'POP! ELSA', category: 'DISNEY', price: '15.00', image: '/newArrival/Elsa.png' },
+]
+
+export const productsSlider = [
+    { id: 1, name: 'POP! DARTH VADER', category: 'disney', price: '10.00', image: '/newArrival/DarthVader.png' },
+    { id: 2, name: 'POP! ROCKET', category: 'marvel', price: '11.00', image: '/newArrival/Rocket.png' },
+    { id: 3, name: 'POP! SATORU GOJO', category: 'anime', price: '12.00', image: '/newArrival/SatoruGojo.png' },
+    { id: 4, name: 'POP! FLASH', category: 'dc comics', price: '13.00', image: '/newArrival/TheFlash.png' },
+    { id: 5, name: 'POP! ADAM WARLOCK', category: 'marvel', price: '14.00', image: '/newArrival/AdamWarlock.png' },
+    { id: 6, name: 'POP! ELSA', category: 'disney', price: '15.00', image: '/newArrival/Elsa.png' },
 ]

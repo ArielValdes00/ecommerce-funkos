@@ -1,15 +1,17 @@
+import BannerSocialMedia from "@/components/BannerSocialMedia";
 import FondoFunko from "../../public/Nightwing.png";
 import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
   return (
     <div>
         <Navbar />
-        <section className=" bg-red-700">
+        <section className="bg-red-700 py-5">
             <div className="grid grid-cols-2 px-28">
                 <div className="py-20 pr-32 text-white flex flex-col justify-evenly items-start">
                     <h3 className="text-xl font-normal">GOTHAM KNIGHTS</h3>
@@ -23,7 +25,14 @@ export default function Home() {
             </div>
         </section>
         <section>
-            <SliderCards/>
+            <SliderCards title={"NEW ARRIVAL"}/>
+            <SliderCards title={"BEST SELLING"}/>
+        </section>
+        <section>
+            <BannerSocialMedia/>
+        </section>
+        <section>
+            <Footer/>
         </section>
     </div>
   )
