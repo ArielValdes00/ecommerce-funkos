@@ -1,7 +1,8 @@
+import React from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia"
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
-import Like from "../../public/icons/heart.png";
+import Like from "../../../public/icons/heart.png"
 import { productsSlider } from "@/data.js/data"
 import Image from "next/image"
 import Link from "next/link"
@@ -45,7 +46,6 @@ const products = () => {
         setFilteredProducts(filtered);
         setTotalProducts(filtered.length);
     };
-
 
     return (
         <>
@@ -91,12 +91,14 @@ const products = () => {
                     <div className="grid grid-cols-4 gap-4 mx-6 py-5">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="rounded-lg bg-white text-center p-5 border relative">
-                                <Image src={Like} height={30} width={30} className="right-3 top-3 absolute cursor-pointer"></Image>
-                                <Image src={product.image} height={220} width={220} alt={product.name} className="mx-auto p-1"></Image>
-                                <p className="uppercase">{product.category}</p>
-                                <h3 className="font-extrabold">{product.name}</h3>
-                                <p className="font-semibold">${product.price}</p>
-                                <button className='border-2 border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'>ADD TO CART</button>
+                                <Link href={`/products/${product.id}`}>
+                                    <Image src={Like} height={30} width={30} className="right-3 top-3 absolute cursor-pointer"></Image>
+                                    <Image src={product.image} height={220} width={220} alt={product.name} className="mx-auto p-1"></Image>
+                                    <p className="uppercase">{product.category}</p>
+                                    <h3 className="font-extrabold">{product.name}</h3>
+                                    <p className="font-semibold">${product.price}</p>
+                                    <button className='border-2 border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'>ADD TO CART</button>
+                                </Link>
                             </div>
                         ))}
                     </div>

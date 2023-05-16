@@ -1,6 +1,8 @@
+import React from 'react'
 import { deleteProducts, updateProducts } from "../../../utils/api";
 import { createProducts, getProducts } from "../../../utils/api"
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 const products = () => {
     const [products, setProducts] = useState([]);
@@ -14,7 +16,19 @@ const products = () => {
     })
     const [currentProduct, setCurrentProduct] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [selectedFile ,setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const uploadImage = async (selectedFile) => {
+        try {
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            const response = await axios.post('/api/upload', formData);
+            const { imageUrl } = response.data;
+            return imageUrl;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const fetchProducts = async () => {
         const data = await getProducts();
@@ -30,26 +44,34 @@ const products = () => {
 
     const handleImageChange = (e) => {
         setSelectedFile(e.target.files[0]);
-      };      
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
             if (currentProduct) {
                 const response = await updateProducts(currentProduct.id, form);
                 setProducts(products.map(product => product.id === currentProduct.id ? { ...product, ...response } : product));
                 setCurrentProduct(null);
-                fetchProducts()
+                fetchProducts();
             } else {
-                const response = await createProducts(form);
-                setForm("");
+                const imageUrl = await uploadImage(selectedFile);
+                const response = await createProducts({ ...form, image: imageUrl });
+                setForm({
+                    name: "",
+                    price: "",
+                    description: "",
+                    category: "",
+                    stock: "",
+                    image: null,
+                });
                 setProducts([...products, response]);
-                console.log(products)
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
 
     const handleDelete = async (id) => {
         try {
@@ -118,7 +140,7 @@ const products = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="image" className="block mb-1">Image:</label>
-                                            <input type="file" onChange={handleImageChange}/>
+                                            <input type="file" onChange={handleImageChange} />
                                         </div>
                                         <div className="col-span-2 mt-4">
                                             <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mr-2">Create product</button>
@@ -132,18 +154,20 @@ const products = () => {
                 )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {products.map((product) => (
+                {products ? (products.map((product) => (
                     <div key={product.id} className="col-span-1 rounded p-3 m-3 border ">
                         <h3>Name: {product.name}</h3>
                         <p>Price: {product.price}</p>
                         <p>Description: {product.description}</p>
                         <p>Category: {product.category}</p>
                         <p>Stock: {product.stock}</p>
-                        
+
                         <button onClick={() => handleDelete(product.id)} className="border rounded bg-red-600 text-white p-2">Eliminar</button>
                         <button onClick={() => handleEdit(product)} className="border rounded bg-blue-600 text-white p-2">Editar</button>
                     </div>
-                ))}
+                ))) : (<div>ayuda</div>)}
+
+
             </div>
 
         </div>

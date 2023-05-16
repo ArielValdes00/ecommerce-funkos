@@ -1,3 +1,4 @@
+import React from 'react';
 import User from '../../public/icons/user.png';
 import Cart from '../../public/icons/shopping-cart.png';
 import Image from 'next/image';

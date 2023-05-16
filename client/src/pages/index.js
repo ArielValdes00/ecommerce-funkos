@@ -1,3 +1,4 @@
+import React from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia";
 import FondoFunko from "../../public/Nightwing.png";
 import Navbar from "@/components/Navbar";

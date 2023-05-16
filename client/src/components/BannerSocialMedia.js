@@ -1,3 +1,4 @@
+import React from 'react';
 import Tiktok from '../../public/icons/tik-tok.png';
 import Facebook from '../../public/icons/facebook.png';
 import Youtube from '../../public/icons/youtube.png';

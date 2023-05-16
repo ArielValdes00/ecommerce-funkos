@@ -1,14 +1,17 @@
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Scrollbar, A11y } from 'swiper';
 import { products } from '@/data.js/data';
-
+import PropTypes from 'prop-types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image';
 
 
-const SliderCards = ({title}) => {
-
+const SliderCards = ({ title }) => {
+    SliderCards.propTypes = {
+        title: PropTypes.string.isRequired,
+    };
     return (
         <div className='px-28 relative bg-gray-100 pb-7'>
             <h2 className='text-3xl font-extrabold pt-6 pb-2'>{title}</h2>

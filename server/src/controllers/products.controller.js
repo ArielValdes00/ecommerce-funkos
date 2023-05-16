@@ -1,14 +1,24 @@
 import { Product } from "../models/Products.js";
+import { uploadImage } from './googleDrive.js';
 
 export const createProducts = async (req, res) => {
     try {
-        const { name, price, description, category, stock, image } = req.body;
-        const newProduct = await Product.create({ name, price, description, category, stock, image });
-        res.status(201).json(newProduct);
+        const { name, price, description, category, stock } = req.body;
+        const imageUrl = await uploadImage(req.file); // Obtener la URL pública de la imagen subida a Google Drive
+        const product = await Product.create({
+            name,
+            price,
+            description,
+            category,
+            stock,
+            image: imageUrl, // Guardar la URL pública de la imagen en la base de datos
+        });
+        res.status(201).json(product);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
 
 export const getProducts = async (req, res) => {
     try {
@@ -67,3 +77,5 @@ export const getProduct = async (req, res) => {
 
     }
 }
+
+
