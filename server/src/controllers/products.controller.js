@@ -1,18 +1,21 @@
 import { Product } from "../models/Products.js";
-import { uploadImage } from './googleDrive.js';
+import { uploadImage, oauth2Client } from "../utils/drive.js";
+import fs from 'fs'
 
 export const createProducts = async (req, res) => {
+
     try {
         const { name, price, description, category, stock } = req.body;
-        const imageUrl = await uploadImage(req.file); // Obtener la URL pública de la imagen subida a Google Drive
+        const imageUrl = await uploadImage(req.file);
         const product = await Product.create({
             name,
             price,
             description,
             category,
             stock,
-            image: imageUrl, // Guardar la URL pública de la imagen en la base de datos
+            image: imageUrl,
         });
+        console.log('product:', product);
         res.status(201).json(product);
     } catch (error) {
         console.error(error);
@@ -63,19 +66,25 @@ export const updateProducts = async (req, res) => {
     }
 }
 
-export const getProduct = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findOne({
-            where: {
-                id,
-            }
-        })
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+export const generateUrl = async (req, res) => {
+    const url = oauth2Client.generateAuthUrl({
+        access_type: "offline",
+        scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/drive",
+        
+        ],
+    });
+    res.redirect(url);
+};
 
-    }
-}
+export const redirect = async (req, res) => {
+    const {code} = req.query;
+    const {tokens} = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
+    fs.writeFileSync("creds.json", JSON.stringify(tokens));
+    res.send("succes")
+ }
+
 
 

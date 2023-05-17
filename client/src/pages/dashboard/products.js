@@ -1,10 +1,10 @@
 import React from 'react'
 import { deleteProducts, updateProducts } from "../../../utils/api";
-import { createProducts, getProducts } from "../../../utils/api"
+import { createProducts, getProducts, uploadImage } from "../../../utils/api"
+import { getSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from "react";
-import axios from 'axios';
 
-const products = () => {
+const products = ({ session }) => {
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({
         name: "",
@@ -17,18 +17,6 @@ const products = () => {
     const [currentProduct, setCurrentProduct] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
-
-    const uploadImage = async (selectedFile) => {
-        try {
-            const formData = new FormData();
-            formData.append('image', selectedFile);
-            const response = await axios.post('/api/upload', formData);
-            const { imageUrl } = response.data;
-            return imageUrl;
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const fetchProducts = async () => {
         const data = await getProducts();
@@ -44,6 +32,7 @@ const products = () => {
 
     const handleImageChange = (e) => {
         setSelectedFile(e.target.files[0]);
+        console.log(selectedFile)
     };
 
     const handleSubmit = async (e) => {
@@ -55,8 +44,16 @@ const products = () => {
                 setCurrentProduct(null);
                 fetchProducts();
             } else {
-                const imageUrl = await uploadImage(selectedFile);
-                const response = await createProducts({ ...form, image: imageUrl });
+                const formData = new FormData();
+                formData.append('name', form.name);
+                formData.append('price', form.price);
+                formData.append('description', form.description);
+                formData.append('category', form.category);
+                formData.append('stock', form.stock);
+                formData.append('image', selectedFile); // e.target es el formulario
+                
+                const response = await createProducts(formData);
+                console.log(response)
                 setForm({
                     name: "",
                     price: "",
@@ -68,9 +65,12 @@ const products = () => {
                 setProducts([...products, response]);
             }
         } catch (error) {
-            console.log(error);
+            console.error("Error en la función handleSubmit:", error);
+            console.error("Error en la función handleSubmit:", error.stack);
+
         }
     };
+
 
 
     const handleDelete = async (id) => {
@@ -104,9 +104,19 @@ const products = () => {
                 PRODUCTS
             </h1>
             <div className="w-full max-w-md mx-auto text-center p-3">
+                <div>
+                    {session ? (<div>
+                        <h3>{session.user.name}</h3>
+                        <p>{session.user.email}</p>
+                        <img src={session.user.image} alt='ayuda'></img>
+                    </div>) : (
+                        <p>Loading...</p>
+                    )}
+                </div>
                 <button onClick={handleOpenModal} className="bg-blue-500 text-white py-2 px-4 rounded">
                     Create Product
                 </button>
+                <button onClick={() => signOut()}>Logout</button>
                 {showModal && (
                     <div className="fixed z-50 inset-0 overflow-y-auto">
                         <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -117,7 +127,7 @@ const products = () => {
                             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Formulario</h2>
-                                    <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
+                                    <form className="grid grid-cols-2 gap-4" encType="multipart/form-data" onSubmit={handleSubmit}>
                                         <div>
                                             <label htmlFor="name" className="block mb-1">Name:</label>
                                             <input type="text" name="name" className="border rounded-md p-1" onChange={handleChange} />
@@ -140,8 +150,7 @@ const products = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="image" className="block mb-1">Image:</label>
-                                            <input type="file" onChange={handleImageChange} />
-                                        </div>
+                                            <input type="file" name="image" onChange={handleImageChange} />                                        </div>
                                         <div className="col-span-2 mt-4">
                                             <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mr-2">Create product</button>
                                             <button type="button" onClick={handleCloseModal} className="border rounded-md px-4 py-2">Close</button>
@@ -156,6 +165,7 @@ const products = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {products ? (products.map((product) => (
                     <div key={product.id} className="col-span-1 rounded p-3 m-3 border ">
+                        <img src={product.image} alt={product.name}></img>
                         <h3>Name: {product.name}</h3>
                         <p>Price: {product.price}</p>
                         <p>Description: {product.description}</p>
@@ -166,12 +176,25 @@ const products = () => {
                         <button onClick={() => handleEdit(product)} className="border rounded bg-blue-600 text-white p-2">Editar</button>
                     </div>
                 ))) : (<div>ayuda</div>)}
-
-
             </div>
-
         </div>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    const session = await getSession(context);
+    if (!session) return {
+        redirect: {
+            destination: '/dashboard',
+            permanent: false
+        }
+    }
+
+    return {
+        props: {
+            session
+        }
+    }
 }
 
 export default products

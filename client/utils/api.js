@@ -28,7 +28,8 @@ export const createProducts = async (productData) => {
         const response = await axios.post(`${API_URL}`, productData);
         return response.data;
     } catch (error) {
-        console.log(error);
+        console.error("Error en la función createProducts:", error);
+
     }
 }
 
@@ -52,9 +53,11 @@ export const updateProducts = async (id, productData) => {
 
 export const uploadImage = async (formData) => {
     try {
-        const response = await axios.post(`${API_URL}/upload`, formData);
+        const response = await axios.post('http://localhost:4000/api/products', formData);
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
+
     }
 }
