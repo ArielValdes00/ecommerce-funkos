@@ -11,7 +11,7 @@ export const Product = sequelize.define("products", {
         type: DataTypes.STRING
     },
     price: {
-        type: DataTypes.DECIMAL
+        type: DataTypes.DECIMAL(5, 2)
     },
     description: {
         type: DataTypes.TEXT

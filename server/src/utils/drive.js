@@ -1,6 +1,8 @@
 import { google } from 'googleapis'
 import { Readable } from 'stream'
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const oauth2Client = new google.auth.OAuth2(process.env.CLIENT_DRIVE_ID, process.env.CLIENT_DRIVE_SECRET, process.env.REDIRECT_DRIVE_URI);
 
@@ -17,11 +19,11 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
 export const uploadImage = async (file) => {
     console.log('file:', file)
     const fileMetadata = {
-        name: file.originalname, // Acceder al nombre original del archivo
+        name: file.originalname, 
         parents: ['1U5asdsH2rYcqcbHMQwI5G-VKUKX759Br'],
     };
     const media = {
-        mimeType: file.mimetype, // Acceder al tipo MIME del archivo
+        mimeType: file.mimetype, 
         body: Readable.from(file.buffer),
 
     };
@@ -34,5 +36,12 @@ export const uploadImage = async (file) => {
 
     return `https://drive.google.com/uc?id=${response.data.id}`;
 };
+
+export const deleteImage = async (fileId) => {
+    await drive.files.delete({
+        fileId: fileId,
+    });
+};
+
 
 

@@ -3,49 +3,17 @@ import BannerSocialMedia from "@/components/BannerSocialMedia"
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
 import Like from "../../../public/icons/heart.png"
-import { productsSlider } from "@/data.js/data"
+import { getProducts } from '../../../utils/api';
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useContext, useEffect } from "react"
+import { ProductContext } from '../../context/ProductContext';
 
-const products = () => {
-    const [filteredProducts, setFilteredProducts] = useState(productsSlider);
-    const [totalProducts, setTotalProducts] = useState(productsSlider.length);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleCategoryChange = (e) => {
-        const category = e.target.value;
-        if (category === "all") {
-            setFilteredProducts(productsSlider);
-            setTotalProducts(productsSlider.length);
-        } else {
-            const filtered = productsSlider.filter(product => product.category === category);
-            setFilteredProducts(filtered);
-            setTotalProducts(filtered.length);
-        }
-    };
-
-    const handleSortChange = (e) => {
-        const sort = e.target.value;
-        const sorted = [...filteredProducts].sort((a, b) => {
-            if (sort === "asc") {
-                return a.price - b.price;
-            } else {
-                return b.price - a.price;
-            }
-        });
-        setFilteredProducts(sorted);
-    };
-    const handleSearchChange = (event) => {
-        const searchTerm = event.target.value.toLowerCase();
-        const filtered = productsSlider.filter((product) =>
-            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.category.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setSearchTerm(searchTerm);
-        setFilteredProducts(filtered);
-        setTotalProducts(filtered.length);
-    };
+const Products = ({ initialProducts }) => {
+    const { updateProducts, filteredProducts, handleCategoryChange, handleSortChange, handleSearchChange, totalProducts } = useContext(ProductContext);
+    useEffect(() => {
+        updateProducts(initialProducts);
+    }, []);
 
     return (
         <>
@@ -69,9 +37,10 @@ const products = () => {
                         </div>
                         <div>
                             <label htmlFor="sort" className="mr-3 font-extrabold text-lg">SORT BY:</label>
-                            <select id="sort" name="sort" onChange={handleSortChange} value={searchTerm} className="rounded-lg p-2 border border-gray-300">
+                            <select id="sort" name="sort" onChange={handleSortChange} className="rounded-lg p-2 border border-gray-300">
                                 <option value="asc">Low To High</option>
                                 <option value="desc">High To Low</option>
+                                <option value="recent">Latest</option>
                             </select>
                         </div>
                         <div className="flex items-center rounded-lg px-2 ">
@@ -92,10 +61,10 @@ const products = () => {
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="rounded-lg bg-white text-center p-5 border relative">
                                 <Link href={`/products/${product.id}`}>
-                                    <Image src={Like} height={30} width={30} className="right-3 top-3 absolute cursor-pointer"></Image>
-                                    <Image src={product.image} height={220} width={220} alt={product.name} className="mx-auto p-1"></Image>
+                                    <Image src={Like} height={30} width={30} alt="like" className="right-3 top-3 absolute cursor-pointer"></Image>
+                                    <img src={product.image} alt={product.name}></img>
                                     <p className="uppercase">{product.category}</p>
-                                    <h3 className="font-extrabold">{product.name}</h3>
+                                    <h3 className="font-extrabold uppercase">{product.name}</h3>
                                     <p className="font-semibold">${product.price}</p>
                                     <button className='border-2 border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'>ADD TO CART</button>
                                 </Link>
@@ -109,5 +78,13 @@ const products = () => {
         </>
     )
 }
+export async function getStaticProps() {
+    const products = await getProducts();
+    return {
+        props: {
+            initialProducts: products,
+        },
+    };
+}
 
-export default products
+export default Products

@@ -1,10 +1,13 @@
 import React from 'react'
 import { deleteProducts, updateProducts } from "../../../utils/api";
-import { createProducts, getProducts, uploadImage } from "../../../utils/api"
+import { createProducts, getProducts } from "../../../utils/api"
 import { getSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from "react";
+import { useRef } from "react";
+
 
 const products = ({ session }) => {
+    const imageInputRef = useRef(null);
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({
         name: "",
@@ -40,34 +43,40 @@ const products = ({ session }) => {
         try {
             if (currentProduct) {
                 const response = await updateProducts(currentProduct.id, form);
-                setProducts(products.map(product => product.id === currentProduct.id ? { ...product, ...response } : product));
+                console.log(form)
+                setProducts(
+                    products.map((product) =>
+                        product.id === currentProduct.id ? { ...product, ...response } : product
+                    )
+                );
                 setCurrentProduct(null);
                 fetchProducts();
             } else {
-                const formData = new FormData();
-                formData.append('name', form.name);
-                formData.append('price', form.price);
-                formData.append('description', form.description);
-                formData.append('category', form.category);
-                formData.append('stock', form.stock);
-                formData.append('image', selectedFile); // e.target es el formulario
-                
-                const response = await createProducts(formData);
-                console.log(response)
-                setForm({
-                    name: "",
-                    price: "",
-                    description: "",
-                    category: "",
-                    stock: "",
-                    image: null,
-                });
-                setProducts([...products, response]);
-            }
+            const formData = new FormData();
+            formData.append("name", form.name);
+            formData.append("price", form.price);
+            formData.append("description", form.description);
+            formData.append("category", form.category);
+            formData.append("stock", form.stock);
+            formData.append("image", selectedFile);
+
+            const response = await createProducts(formData);
+            imageInputRef.current.value = "";
+
+            setSelectedFile(null);
+            setForm({
+              name: "",
+              price: "",
+              description: "",
+              category: "",
+              stock: "",
+              image: null,
+            });
+            setProducts([...products, response]);
+        }
         } catch (error) {
             console.error("Error en la función handleSubmit:", error);
             console.error("Error en la función handleSubmit:", error.stack);
-
         }
     };
 
@@ -130,27 +139,27 @@ const products = ({ session }) => {
                                     <form className="grid grid-cols-2 gap-4" encType="multipart/form-data" onSubmit={handleSubmit}>
                                         <div>
                                             <label htmlFor="name" className="block mb-1">Name:</label>
-                                            <input type="text" name="name" className="border rounded-md p-1" onChange={handleChange} />
+                                            <input type="text" name="name" className="border rounded-md p-1" value={form.name} onChange={handleChange} />
                                         </div>
                                         <div>
                                             <label htmlFor="price" className="block mb-1">Price:</label>
-                                            <input type="text" name="price" className="border rounded-md p-1" onChange={handleChange} />
+                                            <input type="number" step="0.01" name="price" className="border rounded-md p-1" value={form.price} onChange={handleChange} />
                                         </div>
                                         <div>
                                             <label htmlFor="description" className="block mb-1">Description:</label>
-                                            <input type="text" name="description" className="border rounded-md p-1" onChange={handleChange} />
+                                            <input type="text" name="description" className="border rounded-md p-1" value={form.description} onChange={handleChange} />
                                         </div>
                                         <div>
                                             <label htmlFor="category" className="block mb-1">Category:</label>
-                                            <input type="text" name="category" className="border rounded-md p-1" onChange={handleChange} />
+                                            <input type="text" name="category" className="border rounded-md p-1" value={form.category} onChange={handleChange} />
                                         </div>
                                         <div>
                                             <label htmlFor="stock" className="block mb-1">Stock:</label>
-                                            <input type="text" name="stock" className="border rounded-md p-1" onChange={handleChange} />
+                                            <input type="text" name="stock" className="border rounded-md p-1" value={form.stock} onChange={handleChange} />
                                         </div>
                                         <div>
                                             <label htmlFor="image" className="block mb-1">Image:</label>
-                                            <input type="file" name="image" onChange={handleImageChange} />                                        </div>
+                                            <input type="file" ref={imageInputRef} name="image" onChange={handleImageChange} />                                        </div>
                                         <div className="col-span-2 mt-4">
                                             <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mr-2">Create product</button>
                                             <button type="button" onClick={handleCloseModal} className="border rounded-md px-4 py-2">Close</button>
