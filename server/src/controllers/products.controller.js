@@ -3,7 +3,6 @@ import { uploadImage, oauth2Client, deleteImage } from "../utils/drive.js";
 import fs from 'fs'
 
 export const createProducts = async (req, res) => {
-
     try {
         const { name, price, description, category, stock } = req.body;
         const imageUrl = await uploadImage(req.file);

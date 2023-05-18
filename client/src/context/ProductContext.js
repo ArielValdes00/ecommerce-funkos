@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { getProducts } from '../../utils/api';
+import { getProducts } from '../../utils/apiProducts';
 
 export const ProductContext = createContext();
 

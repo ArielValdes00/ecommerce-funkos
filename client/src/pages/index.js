@@ -5,13 +5,15 @@ import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from 'next-auth/react';
 import Footer from "@/components/Footer";
 
 export default function Home() {
-    
+    const { data: session } = useSession();
+
     return (
         <div>
-            <Navbar />
+            <Navbar session={session}/>
             <section className="bg-red-700 py-5">
                 <div className="grid grid-cols-2 px-28">
                     <div className="py-20 pr-32 text-white flex flex-col justify-evenly items-start">

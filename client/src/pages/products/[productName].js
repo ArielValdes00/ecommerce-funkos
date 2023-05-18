@@ -1,17 +1,19 @@
 import React from 'react'
-import { getProduct, getProducts } from '../../../utils/api'
+import { getProduct, getProducts } from '../../../utils/apiProducts'
 import Navbar from '@/components/Navbar'
 import BannerSocialMedia from '@/components/BannerSocialMedia'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 import Heart from '../../../public/icons/heart.png'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
 
 const productName = ({ product }) => {
-    console.log(product)
+    const { data: session} = useSession();
+
     return (
         <div>
-            <Navbar />
+            <Navbar session={session}/>
             <section className='px-28 py-5'>
                 <div className='text-xs text-gray-500 mb-5'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>

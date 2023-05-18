@@ -1,6 +1,6 @@
 import React from 'react'
-import { deleteProducts, updateProducts } from "../../../utils/api";
-import { createProducts, getProducts } from "../../../utils/api"
+import { deleteProducts, updateProducts } from "../../../utils/apiProducts";
+import { createProducts, getProducts } from "../../../utils/apiProducts"
 import { getSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from "react";
 import { useRef } from "react";

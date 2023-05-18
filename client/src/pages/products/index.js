@@ -3,13 +3,15 @@ import BannerSocialMedia from "@/components/BannerSocialMedia"
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
 import Like from "../../../public/icons/heart.png"
-import { getProducts } from '../../../utils/api';
+import { getProducts } from '../../../utils/apiProducts';
 import Image from "next/image"
 import Link from "next/link"
 import { useContext, useEffect } from "react"
 import { ProductContext } from '../../context/ProductContext';
+import { useSession } from 'next-auth/react';
 
 const Products = ({ initialProducts }) => {
+    const { data: session } = useSession();
     const { updateProducts, filteredProducts, handleCategoryChange, handleSortChange, handleSearchChange, totalProducts } = useContext(ProductContext);
     useEffect(() => {
         updateProducts(initialProducts);
@@ -17,7 +19,7 @@ const Products = ({ initialProducts }) => {
 
     return (
         <>
-            <Navbar />
+            <Navbar session={session}/>
             <section className="px-28 py-5">
                 <div className="text-xs text-gray-500 mb-5">
                     <Link href={"/"}>Funko</Link> / <span>Products</span>
