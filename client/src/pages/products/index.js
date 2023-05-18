@@ -60,14 +60,14 @@ const Products = ({ initialProducts }) => {
                     <div className="grid grid-cols-4 gap-4 mx-6 py-5">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="rounded-lg bg-white text-center p-5 border relative">
-                                <Link href={`/products/${product.id}`}>
+                                
                                     <Image src={Like} height={30} width={30} alt="like" className="right-3 top-3 absolute cursor-pointer"></Image>
-                                    <img src={product.image} alt={product.name}></img>
+                                    <Link href={`/products/${product.name}`}><img src={product.image} alt={product.name} className='hover:scale-110 transition-transform duration-300'></img></Link>
                                     <p className="uppercase">{product.category}</p>
-                                    <h3 className="font-extrabold uppercase">{product.name}</h3>
+                                    <Link href={`/products/${product.name}`}><h3 className="font-extrabold uppercase hover:underline">{product.name}</h3></Link>
                                     <p className="font-semibold">${product.price}</p>
                                     <button className='border-2 border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'>ADD TO CART</button>
-                                </Link>
+                               
                             </div>
                         ))}
                     </div>

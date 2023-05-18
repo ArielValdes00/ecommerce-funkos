@@ -15,7 +15,6 @@ export const createProducts = async (req, res) => {
             stock,
             image: imageUrl,
         });
-        console.log('product:', product);
         res.status(201).json(product);
     } catch (error) {
         console.error(error);
@@ -23,12 +22,34 @@ export const createProducts = async (req, res) => {
     }
 };
 
+export const getProduct = async (req, res) => {
+    try {
+        const productName = req.params.name;
+        const product = await Product.findOne({
+            where: { name: productName },
+        });
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 export const getProducts = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 0; 
-        const products = await Product.findAll({
-            limit: limit
-        });
+        const limit = parseInt(req.query.limit); // No se especifica valor predeterminado
+        let products;
+        if (limit && limit > 0) {
+            products = await Product.findAll({
+                limit: limit,
+            });
+        } else {
+            products = await Product.findAll();
+        }
+
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });

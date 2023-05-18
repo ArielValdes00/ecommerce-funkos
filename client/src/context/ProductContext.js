@@ -8,7 +8,7 @@ export const ProductProvider = ({ children }) => {
     const [totalProducts, setTotalProducts] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
-
+    
     const updateProducts = (newProducts) => {
         setProducts(newProducts);
         setFilteredProducts(newProducts);
@@ -55,13 +55,13 @@ export const ProductProvider = ({ children }) => {
     };
 
     const handleRecentProducts = () => {
-        const sorted = [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sorted = [...filteredProducts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setFilteredProducts(sorted);
     };
 
     const getRecentProducts = async () => {
         try {
-            const limit = 6;
+            const limit = 12;
             const recentProducts = await getProducts(limit);
             return recentProducts;
         } catch (error) {

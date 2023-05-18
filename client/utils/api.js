@@ -10,6 +10,7 @@ export const getProducts = async (limit) => {
         return [];
       }
       return response.data;
+     
     } catch (error) {
       console.log(error);
       return [];
@@ -40,7 +41,6 @@ export const updateProducts = async (id, productData) => {
     try {
       const { image, ...data } = productData;
       const updatedProductData = { ...data };
-        console.log(updatedProductData)
       const response = await axios.put(`${API_URL}/${id}`, updatedProductData);
       return response.data;
     } catch (error) {
@@ -61,7 +61,6 @@ export const uploadImage = async (formData) => {
 export const deleteImage = async (id) => {
     try {
       const response = await axios.delete(`${API_URL}/${id}`);
-      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -69,9 +68,9 @@ export const deleteImage = async (id) => {
     }
   };
   
-  export const getProduct = async (id) => {
+  export const getProduct = async (name) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`);
+        const response = await axios.get(`${API_URL}/${name}`);
         return response.data;
     } catch (error) {
         console.log(error);
