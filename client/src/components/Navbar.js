@@ -1,15 +1,19 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import User from '../../public/icons/user.png';
 import Logout from '../../public/icons/logout.png';
 import Cart from '../../public/icons/shopping-cart.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, signOut } from 'next-auth/react';
+import { ProductContext } from '@/context/ProductContext';
 
 const navbar = ({ session }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const { cartState } = useContext(ProductContext);
+    const cart = cartState;
+    const counterProduct = cart.cart.length;
+     
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -55,10 +59,10 @@ const navbar = ({ session }) => {
                             <Image src={User} height={20} width={20}></Image>
                         </Link>
                     )}
-                    <span className='relative cursor-pointer'>
+                    <Link href={"/cart"} className='relative cursor-pointer'>
                         <Image src={Cart} height={38} width={38} className=''></Image>
-                        <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-6'>0</span>
-                    </span>
+                        <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-6'>{counterProduct}</span>
+                    </Link>
                 </div>
             </nav>
         </header>

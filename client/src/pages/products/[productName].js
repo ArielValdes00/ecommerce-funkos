@@ -7,14 +7,17 @@ import Link from 'next/link'
 import Heart from '../../../public/icons/heart.png'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
+import { useContext } from 'react'
+import { ProductContext } from '@/context/ProductContext'
 
 const productName = ({ product }) => {
-    const { data: session} = useSession();
+    const { data: session } = useSession();
+    const { addItemToCart } = useContext(ProductContext)
 
     return (
         <div>
-            <Navbar session={session}/>
-            <section className='px-28 py-5'>
+            <Navbar session={session} />
+            <section className='px-28 py-5 mb-5'>
                 <div className='text-xs text-gray-500 mb-5'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
                 </div>
@@ -27,7 +30,7 @@ const productName = ({ product }) => {
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
-                        <button className='uppercase w-3/4 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
+                        <button onClick={() => addItemToCart(product.id)} className='uppercase w-3/4 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
                         <p className='font-semibold'>{product.description}</p>
                         <p className='text-xl font-semibold uppercase'>Stock: {product.stock}</p>
                     </div>
