@@ -128,6 +128,16 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+        async function fetchProducts() {
+          const products = await getProducts();
+          setProducts(products);
+          cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+        }
+    
+        fetchProducts();
+      }, []);
+
     return (
         <ProductContext.Provider
             value={{

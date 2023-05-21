@@ -13,7 +13,6 @@ const navbar = ({ session }) => {
     const { cartState } = useContext(ProductContext);
     const cart = cartState;
     const counterProduct = cart.cart.length;
-     
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -47,7 +46,7 @@ const navbar = ({ session }) => {
                                         <Image src={User} height={17} width={17} alt='User'></Image>
                                         <span>Profile</span>
                                     </Link>
-                                    <div className='px-5 py-2 flex items-center justify-between gap-3' onClick={signOut}>
+                                    <div className='px-5 py-2 flex items-center justify-between gap-3 cursor-pointer' onClick={signOut}>
                                         <Image src={Logout} height={17} width={17} alt="Logout"></Image>
                                         <span className='uppercase'>Logout</span>
                                     </div>
@@ -55,7 +54,7 @@ const navbar = ({ session }) => {
                             )}
                         </div>
                     ) : (
-                        <Link href={"/login"} className='bg-white p-2 rounded-full cursor-pointer'>
+                        <Link href={"/register"} className='bg-white p-2 rounded-full cursor-pointer'>
                             <Image src={User} height={20} width={20}></Image>
                         </Link>
                     )}
@@ -71,7 +70,6 @@ const navbar = ({ session }) => {
 
 export const getServerSideProps = async (context) => {
     const session = await getSession(context);
-    console.log(session);
     return {
         props: {
             session,
