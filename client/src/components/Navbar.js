@@ -1,8 +1,9 @@
 import React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import User from '../../public/icons/user.png';
 import Logout from '../../public/icons/logout.png';
 import BlackHeart from '../../public/icons/blackHeart.png';
+import RedHeart from '../../public/icons/redHeart.png';
 import MenuHamburguer from '../../public/icons/menuHamburger.png';
 import Cart from '../../public/icons/shopping-cart.png';
 import Image from 'next/image';
@@ -12,6 +13,8 @@ import { ProductContext } from '@/context/ProductContext';
 
 const navbar = ({ session }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuHamburguerOpen, setIsMenuHamburguerOpen] = useState(false);
+    const imagen = isMenuHamburguerOpen ? RedHeart : BlackHeart;
     const { cartState } = useContext(ProductContext);
     const cart = cartState.cart;
     let counterProduct = cart.length;
@@ -20,64 +23,96 @@ const navbar = ({ session }) => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleMenuHamburguer = () => {
+        setIsMenuHamburguerOpen(!isMenuHamburguerOpen);
+    };
+    const closeMenuOnResize = () => {
+        if (window.innerWidth > 1024) {
+            setIsMenuHamburguerOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', closeMenuOnResize);
+
+        return () => {
+            window.removeEventListener('resize', closeMenuOnResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isMenuHamburguerOpen) {
+          document.body.style.overflowY = 'hidden';
+        } else {
+          document.body.style.overflowY = 'auto';
+        }
+      }, [isMenuHamburguerOpen]);
+
+
     return (
         <header>
-            <nav className='grid grid-cols-3 lg:grid-cols-7 xl:grid-cols-3 items-center p-5 bg-black text-white font-semibold text-md md:px-28'>
-                <div className='lg:hidden'>
-                    <Image src={MenuHamburguer} height={30} width={30} alt='Menu'></Image>
-                </div>
-                <div className='text-center lg:text-start'>
-                    <span className='text-3xl font-extrabold'>FUNKO</span>
-                </div>
-                <div className='hidden lg:block lg:col-span-3'>
-                    <ul className='flex gap-8 xl:justify-center lg:justify-end md:justify-start font-extrabold text-lg items-center'>
-                        <li><Link href={"/"}>HOME</Link></li>
-                        <li><Link href={"/products"}>PRODUCTS</Link></li>
-                        <li>CONTACT</li>
-                    </ul>
-                </div>
-                <div className='lg:col-start-5 lg:col-span-3 flex justify-end items-center gap-8 lg:gap-6'>
-                    <div className='hidden lg:block'>
-                        {session ? (
-                            <div className=''>
-                                <div className='flex items-center gap-2'>
-                                    <img src={session.user.image} height={26} width={26} alt='User' className='rounded-full'></img>
-                                    <h3 className='text-xl font-extrabold uppercase cursor-pointer' onClick={handleMenuToggle}>
-                                        {session.user.name}
-                                    </h3>
+            <nav className='md:px-28 py-4 bg-black relative'>
+                <ul className='text-white flex px-3 items-center'>
+                    <li className='lg:hidden flex-grow '>
+                        <Image src={MenuHamburguer} height={40} width={40} alt='Menu' onClick={handleMenuHamburguer} className='cursor-pointer ' />
+                    </li>
+                    <li className='flex-grow lg:grow-0'>
+                        <span className='text-4xl font-extrabold'>FUNKO</span>
+                    </li>
+                    <div className={`${isMenuHamburguerOpen ? "block absolute text-black bg-gray-100 left-0 top-[76px] h-screen w-full py-20" : "hidden"} lg:flex lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
+                        <div className='flex flex-col gap-14 lg:gap-0 items-center lg:flex-row lg:w-full lg:justify-evenly px-3 py-2 lg:p-0'>
+                            <Link href={"/"}>HOME</Link>
+                            <Link href={"/products"}>PRODUCTS</Link>
+                            <Link href={"/contact"}>CONTACT</Link>
+                        </div>
+                        <li className='lg:flex w-80 justify-center xl:justify-center mx-auto  py-7 mt-5 lg:p-0 lg:m-0 '>
+                            {session ? (
+                                <div className='relative '>
+                                    <div className='flex items-center justify-center gap-1'>
+                                        <img src={session.user.image} height={26} width={26} alt='User' className='rounded-full'></img>
+                                        <h3 className='text-xl font-extrabold uppercase cursor-pointer' onClick={handleMenuToggle}>
+                                            {session.user.name}
+                                        </h3>
+                                    </div>
+                                    {isMenuOpen && (
+                                        <ul className={'absolute right-0 mt-2 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold'}>
+                                            <Link href='#' className='flex items-center justify-between gap-3 px-5 py-2'>
+                                                <Image src={User} height={17} width={17} alt='User'></Image>
+                                                <span>Profile</span>
+                                            </Link>
+                                            <div className='px-5 py-2 flex items-center justify-between gap-3 cursor-pointer' onClick={signOut}>
+                                                <Image src={Logout} height={17} width={17} alt="Logout"></Image>
+                                                <span className='uppercase'>Logout</span>
+                                            </div>
+                                        </ul>
+                                    )}
                                 </div>
-                                {isMenuOpen && (
-                                    <ul className={'absolute right-0 mt-2 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold'}>
-                                        <Link href='#' className='flex items-center justify-between gap-3 px-5 py-2'>
-                                            <Image src={User} height={17} width={17} alt='User'></Image>
-                                            <span>Profile</span>
-                                        </Link>
-                                        <div className='px-5 py-2 flex items-center justify-between gap-3 cursor-pointer' onClick={signOut}>
-                                            <Image src={Logout} height={17} width={17} alt="Logout"></Image>
-                                            <span className='uppercase'>Logout</span>
-                                        </div>
-                                    </ul>
-                                )}
-                            </div>
-                        ) : (
-                            <Link href={"/register"} className='bg-white block p-2 rounded-full cursor-pointer'>
-                                <Image src={User} height={20} width={20} alt='User'></Image>
-                            </Link>
-                        )}
+                            ) : (
+                                <Link href={"/register"} className='lg:bg-white lg:p-2 lg:me-6 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
+                                    <Image src={User} alt='User' className='user'></Image>
+                                    <p className='lg:hidden'>PROFILE</p>
+                                </Link>
+                            )}
+                        </li>
+                        <li className='flex gap-3 mx-3 items-center lg:me-6 justify-center py-8 lg:p-0'>
+                            <Image src={imagen} alt='Wishlist' className='heart'></Image>
+                            <p className='lg:hidden'>WISHLIST</p>
+                        </li>
                     </div>
-                    <Image src={BlackHeart} height={37} width={37} alt='Wishlist' className='hidden md:block'></Image>
-                    <Link href={"/cart"} className='relative cursor-pointer '>
-                        <Image src={Cart} height={38} width={38} alt='Cart'></Image>
-                        {counterProduct < 1 ? (
-                            ""
-                        ) : (
-                            <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-6'>{counterProduct}</span>
-                        )
-                        }
-                    </Link>
-                </div>
+                    <li className='flex justify-end items-center'>
+                        <Link href={"/cart"} className='relative cursor-pointer block'>
+                            <Image src={Cart} height={44} width={44} alt='Cart' className='block'></Image>
+                            {counterProduct < 1 ? (
+                                ""
+                            ) : (
+                                <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-6'>{counterProduct}</span>
+                            )
+                            }
+                        </Link>
+                    </li>
+                </ul>
             </nav>
-        </header>
+        </header >
     )
 }
 

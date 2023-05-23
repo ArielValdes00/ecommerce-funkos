@@ -28,8 +28,8 @@ const SliderCards = ({ title }) => {
     }, []);
 
     return (
-        <div className='px-12 lg:px-28 relative bg-gray-100 pb-7'>
-            <h2 className='text-5xl font-extrabold pt-6 pb-2'>{title}</h2>
+        <div className='px-12 md:px-28 relative bg-gray-100 py-10'>
+            <h2 className='text-5xl font-extrabold py-8'>{title}</h2>
             <div className="swiper-button-next hidden"></div>
             <div className="swiper-button-prev hidden"></div>
             <Swiper
@@ -54,7 +54,7 @@ const SliderCards = ({ title }) => {
                 scrollbar={{ draggable: true }}
             >
                 {recentProducts.map((product) => (
-                    <SwiperSlide key={product.id} className='border my-4 rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
+                    <SwiperSlide key={product.id} className='border rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
                         <Image
                             onClick={() => toggleSelectedProductId(product.id)}
                             src={selectedProductIds.includes(product.id) ? RedHeart : Heart}

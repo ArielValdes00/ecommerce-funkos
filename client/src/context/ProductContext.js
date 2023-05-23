@@ -51,6 +51,7 @@ export const ProductProvider = ({ children }) => {
         console.log(updatedCart)
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         cartDispatch({ type: 'REMOVE_ITEM', payload: updatedCart });
+        cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
     };
 
     const removeAllItemsFromCart = () => {

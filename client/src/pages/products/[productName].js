@@ -18,25 +18,25 @@ const productName = ({ product }) => {
     return (
         <div>
             <Navbar session={session} />
-            <section className='px-28 py-5 mb-5'>
-                <div className='text-xs text-gray-500 mb-5'>
+            <section className='px-4 md:px-28 py-5 mb-5'>
+                <div className='text-xs text-gray-500'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
                 </div>
-                <div className='grid grid-cols-2 mt-8 gap-16'>
-                    <div className='border me-auto bg-gray-200 relative'>
+                <div className='grid lg:grid-cols-2 mt-5 gap-6'>
+                    <div className='border bg-gray-200 relative'>
                         <Image
                             onClick={() => toggleSelectedProductId(product.id)}
                             src={selectedProductIds.includes(product.id) ? RedHeart : Heart}
                             height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer'>
                         </Image>
-                        <img src={product.image} alt={product.name} height={520} width={520}></img>
+                        <img src={product.image} alt={product.name} height={520} width={520} className=' mx-auto'></img>
                     </div>
-                    <div className='flex flex-col gap-4 '>
+                    <div className='flex flex-col gap-4'>
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
-                        <button onClick={() => addItemToCart(product.id)} className='uppercase w-3/4 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
-                        <p className='font-semibold w-3/4'>{product.description}</p>
+                        <button onClick={() => addItemToCart(product.id)} className='uppercase sm:w-3/4 md:w-1/2 lg:w-80 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
+                        <p className='font-semibold lg:w-3/4 2xl:w-2/4'>{product.description}</p>
                         <p className='text-xl font-semibold uppercase'>Stock: {product.stock}</p>
                     </div>
                 </div>

@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+:root {
+    --navbar-height: 70px; 
+}
 
 .swiper-button-next,
 .swiper-button-prev {
@@ -15,12 +17,33 @@
     --swiper-navigation-sides-offset: 25px;
 }
 
+.heart{
+    height: 35px;
+    width: 54px;
+}
+.user{
+    height: 20px;
+    width: 20px;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+  
 @media (max-width: 1024px) {
     .swiper-button-next,
     .swiper-button-prev {
       display: none !important;
     }
-  }
+    .heart{
+        height: 22px;
+        width: 22px;
+    }
+    .user{
+        height: 20px;
+        width: 20px;
+    }
+}
   
 
 
