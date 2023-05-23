@@ -8,13 +8,14 @@ import { useContext, useState, useEffect } from 'react';
 import { ProductContext } from "../context/ProductContext.js"
 import Link from 'next/link.js';
 import Heart from '../../public/icons/heart.png'
+import RedHeart from '../../public/icons/redHeart.png'
 import Image from 'next/image.js';
 
 const SliderCards = ({ title }) => {
     SliderCards.propTypes = {
         title: PropTypes.string.isRequired,
     };
-    const { getRecentProducts, addItemToCart } = useContext(ProductContext);
+    const { getRecentProducts, addItemToCart, toggleSelectedProductId, selectedProductIds } = useContext(ProductContext);
     const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
@@ -25,11 +26,12 @@ const SliderCards = ({ title }) => {
 
         fetchRecentProducts();
     }, []);
+
     return (
-        <div className='px-28 relative bg-gray-100 pb-7'>
+        <div className='px-12 lg:px-28 relative bg-gray-100 pb-7'>
             <h2 className='text-5xl font-extrabold pt-6 pb-2'>{title}</h2>
-            <div className="swiper-button-next"></div>
-            <div className="swiper-button-prev"></div>
+            <div className="swiper-button-next hidden"></div>
+            <div className="swiper-button-prev hidden"></div>
             <Swiper
                 modules={[Navigation, Scrollbar, A11y]}
                 spaceBetween={50}
@@ -37,7 +39,7 @@ const SliderCards = ({ title }) => {
                     992: {
                         slidesPerView: 3
                     },
-                    700: {
+                    580: {
                         slidesPerView: 2
                     },
                     0: {
@@ -53,7 +55,11 @@ const SliderCards = ({ title }) => {
             >
                 {recentProducts.map((product) => (
                     <SwiperSlide key={product.id} className='border my-4 rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
-                        <Image src={Heart} height={35} width={35} alt='heart' className='absolute right-6 z-50 cursor-pointer'></Image>
+                        <Image
+                            onClick={() => toggleSelectedProductId(product.id)}
+                            src={selectedProductIds.includes(product.id) ? RedHeart : Heart}
+                            height={35} width={35} alt='Wishlist' className='absolute right-6 z-50 cursor-pointer'>
+                        </Image>
                         <Link href={`/products/${product.name}`}><img src={product.image} height={270} width={270} alt={product.name} className='mx-auto hover:scale-115 transition-transform duration-300 p-3'></img></Link>
                         <p className='uppercase'>{product.category}</p>
                         <Link href={`/products/${product.name}`}><h2 className='text-xl font-extrabold my-2 uppercase hover:underline'>{product.name}</h2></Link>
@@ -65,6 +71,6 @@ const SliderCards = ({ title }) => {
             </Swiper>
         </div>
     )
-}
 
+}
 export default SliderCards

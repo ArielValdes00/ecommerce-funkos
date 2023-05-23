@@ -14,6 +14,15 @@ export const ProductProvider = ({ children }) => {
     const [totalProducts, setTotalProducts] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
+    const [selectedProductIds, setSelectedProductIds] = useState([]);
+
+    function toggleSelectedProductId(productId) {
+        if (selectedProductIds.includes(productId)) {
+            setSelectedProductIds(selectedProductIds.filter((id) => id !== productId));
+        } else {
+            setSelectedProductIds([...selectedProductIds, productId]);
+        }
+    }
 
     const addItemToCart = (id) => {
         const { cart } = cartState;
@@ -154,7 +163,9 @@ export const ProductProvider = ({ children }) => {
                 removeItemFromCart,
                 incrementQuantity,
                 decrementQuantity,
-                removeAllItemsFromCart
+                removeAllItemsFromCart,
+                toggleSelectedProductId,
+                selectedProductIds
             }}
         >
             {children}

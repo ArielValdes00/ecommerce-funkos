@@ -5,6 +5,7 @@ import BannerSocialMedia from '@/components/BannerSocialMedia'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 import Heart from '../../../public/icons/heart.png'
+import RedHeart from '../../../public/icons/redHeart.png'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react'
@@ -12,7 +13,7 @@ import { ProductContext } from '@/context/ProductContext'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { addItemToCart } = useContext(ProductContext)
+    const { addItemToCart, selectedProductIds, toggleSelectedProductId } = useContext(ProductContext)
 
     return (
         <div>
@@ -23,15 +24,19 @@ const productName = ({ product }) => {
                 </div>
                 <div className='grid grid-cols-2 mt-8 gap-16'>
                     <div className='border me-auto bg-gray-200 relative'>
-                        <Image src={Heart} height={35} width={35} alt="Like" className='right-6 top-6 absolute cursor-pointer'></Image>
+                        <Image
+                            onClick={() => toggleSelectedProductId(product.id)}
+                            src={selectedProductIds.includes(product.id) ? RedHeart : Heart}
+                            height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer'>
+                        </Image>
                         <img src={product.image} alt={product.name} height={520} width={520}></img>
                     </div>
-                    <div className='flex flex-col gap-4 w-3/4'>
+                    <div className='flex flex-col gap-4 '>
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
                         <button onClick={() => addItemToCart(product.id)} className='uppercase w-3/4 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
-                        <p className='font-semibold'>{product.description}</p>
+                        <p className='font-semibold w-3/4'>{product.description}</p>
                         <p className='text-xl font-semibold uppercase'>Stock: {product.stock}</p>
                     </div>
                 </div>
