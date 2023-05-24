@@ -59,18 +59,18 @@ const navbar = ({ session }) => {
                     <li className='flex-grow lg:grow-0'>
                         <span className='text-4xl font-extrabold'>FUNKO</span>
                     </li>
-                    <div className={`${isMenuHamburguerOpen ? "block absolute text-black bg-gray-100 left-0 top-[76px] h-screen w-full py-20" : "hidden"} lg:flex lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
+                    <div className={`${isMenuHamburguerOpen ? "block absolute text-black bg-gray-100 left-0 top-[76px] h-screen w-full py-20 z-50" : "hidden"} lg:flex lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
                         <div className='flex flex-col gap-14 lg:gap-0 items-center lg:flex-row lg:w-full lg:justify-evenly px-3 py-2 lg:p-0'>
                             <Link href={"/"}>HOME</Link>
                             <Link href={"/products"}>PRODUCTS</Link>
                             <Link href={"/contact"}>CONTACT</Link>
                         </div>
-                        <li className='lg:flex w-80 justify-center xl:justify-center mx-auto  py-7 mt-5 lg:p-0 lg:m-0 '>
+                        <li className='lg:flex w-80 justify-center xl:justify-center mx-auto py-7 mt-5 lg:p-0 lg:m-0 '>
                             {session ? (
-                                <div className='relative '>
+                                <div className='relative'>
                                     <div className='flex items-center justify-center gap-1'>
                                         <img src={session.user.image} height={26} width={26} alt='User' className='rounded-full'></img>
-                                        <h3 className='text-xl font-extrabold uppercase cursor-pointer' onClick={handleMenuToggle}>
+                                        <h3 className='lg:text-xl font-extrabold uppercase cursor-pointer' onClick={handleMenuToggle}>
                                             {session.user.name}
                                         </h3>
                                     </div>
@@ -94,10 +94,10 @@ const navbar = ({ session }) => {
                                 </Link>
                             )}
                         </li>
-                        <li className='flex gap-3 mx-3 items-center lg:me-6 justify-center py-8 lg:p-0'>
+                        <Link href={"/wishlist"} className='flex gap-3 mx-3 items-center lg:me-6 justify-center py-8 lg:p-0'>
                             <Image src={imagen} alt='Wishlist' className='heart'></Image>
                             <p className='lg:hidden'>WISHLIST</p>
-                        </li>
+                        </Link>
                     </div>
                     <li className='flex justify-end items-center'>
                         <Link href={"/cart"} className='relative cursor-pointer block'>

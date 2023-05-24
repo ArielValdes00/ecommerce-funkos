@@ -29,6 +29,10 @@
 .no-scroll {
     overflow: hidden;
 }
+
+.filter{
+    min-height: calc(100vh - var(--navbar-height));
+}
   
 @media (max-width: 1024px) {
     .swiper-button-next,

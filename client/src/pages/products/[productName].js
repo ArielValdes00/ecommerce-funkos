@@ -10,10 +10,11 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
+import AddToCartButton from '@/components/AddToCartButton'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { addItemToCart, selectedProductIds, toggleSelectedProductId } = useContext(ProductContext)
+    const { toggleWishlist, isInWishlist } = useContext(ProductContext)
 
     return (
         <div>
@@ -25,8 +26,8 @@ const productName = ({ product }) => {
                 <div className='grid lg:grid-cols-2 mt-5 gap-6'>
                     <div className='border bg-gray-200 relative'>
                         <Image
-                            onClick={() => toggleSelectedProductId(product.id)}
-                            src={selectedProductIds.includes(product.id) ? RedHeart : Heart}
+                            onClick={() => toggleWishlist(product.id)}
+                            src={isInWishlist(product.id) ? RedHeart : Heart}
                             height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer'>
                         </Image>
                         <img src={product.image} alt={product.name} height={520} width={520} className=' mx-auto'></img>
@@ -35,7 +36,10 @@ const productName = ({ product }) => {
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
-                        <button onClick={() => addItemToCart(product.id)} className='uppercase sm:w-3/4 md:w-1/2 lg:w-80 bg-black text-white text-xl font-bold rounded-full p-3'>add to cart</button>
+                        <AddToCartButton
+                            product={product}
+                            textButton={"add to cart"}
+                            className={'uppercase sm:w-3/4 md:w-1/2 lg:w-80 bg-black text-white text-xl font-bold rounded-full p-3'} />
                         <p className='font-semibold lg:w-3/4 2xl:w-2/4'>{product.description}</p>
                         <p className='text-xl font-semibold uppercase'>Stock: {product.stock}</p>
                     </div>

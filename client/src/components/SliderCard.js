@@ -10,12 +10,13 @@ import Link from 'next/link.js';
 import Heart from '../../public/icons/heart.png'
 import RedHeart from '../../public/icons/redHeart.png'
 import Image from 'next/image.js';
+import AddToCartButton from './AddToCartButton.js';
 
 const SliderCards = ({ title }) => {
     SliderCards.propTypes = {
         title: PropTypes.string.isRequired,
     };
-    const { getRecentProducts, addItemToCart, toggleSelectedProductId, selectedProductIds } = useContext(ProductContext);
+    const { getRecentProducts, toggleWishlist, isInWishlist } = useContext(ProductContext);
     const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
@@ -56,16 +57,15 @@ const SliderCards = ({ title }) => {
                 {recentProducts.map((product) => (
                     <SwiperSlide key={product.id} className='border rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
                         <Image
-                            onClick={() => toggleSelectedProductId(product.id)}
-                            src={selectedProductIds.includes(product.id) ? RedHeart : Heart}
+                            onClick={() => toggleWishlist(product.id)}
+                            src={isInWishlist(product.id) ? RedHeart : Heart}
                             height={35} width={35} alt='Wishlist' className='absolute right-6 z-50 cursor-pointer'>
                         </Image>
                         <Link href={`/products/${product.name}`}><img src={product.image} height={270} width={270} alt={product.name} className='mx-auto hover:scale-115 transition-transform duration-300 p-3'></img></Link>
                         <p className='uppercase'>{product.category}</p>
                         <Link href={`/products/${product.name}`}><h2 className='text-xl font-extrabold my-2 uppercase hover:underline'>{product.name}</h2></Link>
                         <p className='font-bold'>${product.price}</p>
-                        <button onClick={() => addItemToCart(product.id)} className='border-2 border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'>ADD TO CART</button>
-
+                        <AddToCartButton textButton={"add to cart"} className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'} />
                     </SwiperSlide>
                 ))}
             </Swiper>

@@ -10,23 +10,41 @@ export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
     const [cartState, cartDispatch] = useReducer(cartReducer, initialState);
+    const [wishlist, setWishlist] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [totalProducts, setTotalProducts] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [selectedProductIds, setSelectedProductIds] = useState([]);
 
-    function toggleSelectedProductId(productId) {
-        if (selectedProductIds.includes(productId)) {
-            setSelectedProductIds(selectedProductIds.filter((id) => id !== productId));
+    const addToWishlist = (productId) => {
+        const productToAdd = products.find((product) => product.id === productId);
+        setWishlist((prevWishlist) => [...prevWishlist, productToAdd]);
+        localStorage.setItem('wishlist', JSON.stringify([...wishlist, productToAdd]));
+    };
+
+    const removeFromWishlist = (productId) => {
+        const updatedWishlist = wishlist.filter((product) => product.id !== productId);
+        setWishlist(updatedWishlist);
+        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    };
+
+    const isInWishlist = (productId) => {
+        return wishlist.some((product) => product.id === productId);
+    };
+    
+    const toggleWishlist = (productId) => {
+        if (isInWishlist(productId)) {
+            removeFromWishlist(productId);
         } else {
-            setSelectedProductIds([...selectedProductIds, productId]);
+            addToWishlist(productId);
         }
-    }
+    };
 
     const addItemToCart = (id) => {
         const { cart } = cartState;
         const productToAdd = products.find((product) => product.id === id);
+        console.log(productToAdd)
 
         if (productToAdd) {
             const itemInCart = cart.find((item) => item.id === id);
@@ -68,12 +86,15 @@ export const ProductProvider = ({ children }) => {
         cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
     };
 
-
-
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
             cartDispatch({ type: 'LOAD_CART', payload: JSON.parse(savedCart) });
+        }
+        const savedWishlist = localStorage.getItem('wishlist');
+        if (savedWishlist) {
+            const parsedWishlist = JSON.parse(savedWishlist);
+            setWishlist(parsedWishlist);
         }
     }, []);
 
@@ -140,13 +161,13 @@ export const ProductProvider = ({ children }) => {
 
     useEffect(() => {
         async function fetchProducts() {
-          const products = await getProducts();
-          setProducts(products);
-          cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+            const products = await getProducts();
+            setProducts(products);
+            cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         }
-    
+
         fetchProducts();
-      }, []);
+    }, []);
 
     return (
         <ProductContext.Provider
@@ -165,8 +186,10 @@ export const ProductProvider = ({ children }) => {
                 incrementQuantity,
                 decrementQuantity,
                 removeAllItemsFromCart,
-                toggleSelectedProductId,
-                selectedProductIds
+                selectedProductIds,
+                wishlist,
+                isInWishlist,
+                toggleWishlist
             }}
         >
             {children}

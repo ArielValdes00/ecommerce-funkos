@@ -14,9 +14,9 @@ export default function Home() {
     return (
         <div>
             <Navbar session={session} />
-            <section className="bg-red-700 py-3 min-h-screen lg:h-full" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
-                <div className="grid lg:grid-cols-2 gap-7 md:px-28">
-                    <div className="text-white flex flex-col gap-3 justify-center items-start px-5 mt-5 ">
+            <section className="bg-red-700 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
+                <div className="grid lg:grid-cols-2 gap-7 items-center md:px-28">
+                    <div className="text-white flex flex-col gap-3 justify-center items-start px-5 mt-5">
                         <h3 className="font-semibold text-sm md:text-xl w-full">GOTHAM KNIGHTS</h3>
                         <h1 className="text-lg md:text-4xl font-extrabold w-full">WINGS OF VENGEANCE</h1>
                         <p className="font-semibold text-sm md:text-xl">Pass the Baton to a New Hero! Collect Pop! Nightwing and Other Crusaders for Your DC Comics Set.</p>
