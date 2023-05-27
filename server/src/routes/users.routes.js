@@ -3,11 +3,11 @@ import { createUser, getUsers, getUser, updateUser, deleteUser, getToken } from 
 
 const router = Router();
 
-router.post("/api/users", createUser);
+router.post("/api/register", createUser);
 router.get("/api/users", getUsers);
 router.get("/api/users/:id", getUser);
 router.put("/api/users/:id", updateUser);
 router.delete("/api/users/:id", deleteUser);
-router.post('/api/getuser', getToken) 
+router.post('/api/getuser', getToken)
 
 export default router;

@@ -16,6 +16,8 @@ export const ProductProvider = ({ children }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [selectedProductIds, setSelectedProductIds] = useState([]);
+    const [recentProducts, setRecentProducts] = useState([]);
+
 
     const addToWishlist = (productId) => {
         const productToAdd = products.find((product) => product.id === productId);
@@ -150,7 +152,7 @@ export const ProductProvider = ({ children }) => {
 
     const getRecentProducts = async () => {
         try {
-            const limit = 12;
+            const limit = 6;
             const recentProducts = await getProducts(limit);
             return recentProducts;
         } catch (error) {
@@ -158,6 +160,14 @@ export const ProductProvider = ({ children }) => {
             return [];
         }
     };
+    useEffect(() => {
+        const fetchRecentProducts = async () => {
+            const products = await getRecentProducts();
+            setRecentProducts(products);
+        };
+
+        fetchRecentProducts();
+    }, []);
 
     useEffect(() => {
         async function fetchProducts() {
@@ -189,7 +199,8 @@ export const ProductProvider = ({ children }) => {
                 selectedProductIds,
                 wishlist,
                 isInWishlist,
-                toggleWishlist
+                toggleWishlist,
+                recentProducts
             }}
         >
             {children}

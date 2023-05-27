@@ -4,12 +4,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const claveSecreta = process.env.JWT_SECRET; // Obtén la clave secreta de las variables de entorno
-
-
 export const createUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { name, email, areaCode, phoneNumber, password } = req.body;
         const existingUser = await User.findOne({
             where: {
                 email: email,
@@ -23,8 +20,10 @@ export const createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await User.create({
-            username: username,
+            name: name,
             email: email,
+            areaCode: areaCode,
+            phoneNumber: phoneNumber,
             password: hashedPassword,
         });
 

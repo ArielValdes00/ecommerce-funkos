@@ -16,17 +16,7 @@ const SliderCards = ({ title }) => {
     SliderCards.propTypes = {
         title: PropTypes.string.isRequired,
     };
-    const { getRecentProducts, toggleWishlist, isInWishlist } = useContext(ProductContext);
-    const [recentProducts, setRecentProducts] = useState([]);
-
-    useEffect(() => {
-        const fetchRecentProducts = async () => {
-            const products = await getRecentProducts();
-            setRecentProducts(products);
-        };
-
-        fetchRecentProducts();
-    }, []);
+    const { recentProducts, toggleWishlist, isInWishlist } = useContext(ProductContext);
 
     return (
         <div className='px-12 md:px-28 relative bg-gray-100 py-10'>
@@ -54,6 +44,7 @@ const SliderCards = ({ title }) => {
                 loop={true}
                 scrollbar={{ draggable: true }}
             >
+                
                 {recentProducts.map((product) => (
                     <SwiperSlide key={product.id} className='border rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
                         <Image

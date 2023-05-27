@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Input from '@/components/Inputs'
 import Link from 'next/link'
 import GoogleButton from '@/components/GoogleButton'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 
 const login = () => {
     const { data: session, status } = useSession()
@@ -11,16 +12,41 @@ const login = () => {
     if (status !== 'loading' && status === "authenticated") {
         router.push("/")
     }
+    const [form, setForm] = useState({
+        email: "",
+        password: ""
+    })
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await signIn('credentials', {
+                email: form.email,
+                password: form.password,
+                callbackUrl: "/"
+            })
+            console.log(res)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
+    console.log(form)
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full sm:max-w-md lg:max-w-lg">
-                <form className="bg-white shadow-md rounded px-8 pb-5 pt-3">
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pb-5 pt-3">
                     <h2 className='font-extrabold text-4xl text-center mb-5 pb-5'>FUNKO</h2>
                     <div className="mb-4">
                         <Input
                             type={"email"}
                             placeholder={"Email Address"}
                             labelName={"Email Address"}
+                            onChange={handleChange}
+                            name={"email"}
                         />
                     </div>
                     <div className="mb-4">
@@ -28,12 +54,14 @@ const login = () => {
                             type={"password"}
                             placeholder={"Password"}
                             labelName={"Password"}
+                            onChange={handleChange}
+                            name={"password"}
                         />
                     </div>
                     <div className="flex flex-col items-center justify-between mt-6">
                         <button
                             className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded "
-                            type="button"
+                            type="submit"
                         >
                             LOG IN
                         </button>

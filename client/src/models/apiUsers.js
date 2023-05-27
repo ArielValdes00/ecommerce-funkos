@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../database/database.js";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../database.js';
 import { v4 as uuidv4 } from 'uuid';
 
-export const User = sequelize.define("users", {
+const User = sequelize.define('users', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -20,23 +20,19 @@ export const User = sequelize.define("users", {
     },
     areaCode: {
         type: DataTypes.INTEGER,
-        defaultValue: false,
         allowNull: false
     },
     phoneNumber: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: false
+        allowNull: false
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: false,
+        allowNull: false
     },
     image: {
         type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: false,
+        allowNull: true
     },
     email_verified: {
         type: DataTypes.BOOLEAN,
@@ -54,12 +50,4 @@ export const User = sequelize.define("users", {
     }
 });
 
-
-
-
-
-
-
-
-
-
+export default User;
