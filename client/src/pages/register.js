@@ -1,35 +1,33 @@
-import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import GoogleButton from '@/components/GoogleButton';
 import Input from '@/components/Inputs';
 import Link from 'next/link';
 import axios from 'axios';
-
 const register = () => {
-    const { data: session, status } = useSession()
     const [form, setForm] = useState({
         name: "",
         email: "",
         areaCode: "",
         phoneNumber: "",
-        password: ""
+        password: "",
     })
 
     const router = useRouter()
-    if (status !== 'loading' && status === "authenticated") {
-        router.push("/")
-    }
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:4000/api/register", form)
-            console.log(res.data)
+            const res = await axios.post("http://localhost:4000/api/users", form)
+            if (res.status === 201) {
+                router.push("/login")
+            }
+            console.log(res)
         } catch (error) {
             console.error(error)
         }
     }
+
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });

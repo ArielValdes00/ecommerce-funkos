@@ -22,9 +22,8 @@ const login = () => {
             const res = await signIn('credentials', {
                 email: form.email,
                 password: form.password,
-                callbackUrl: "/"
+                callbackUrl: "/", 
             })
-            console.log(res)
         } catch (error) {
             console.error(error)
         }
@@ -38,7 +37,7 @@ const login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full sm:max-w-md lg:max-w-lg">
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pb-5 pt-3">
+                <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center shadow-md rounded px-8 max-h-2xl py-10">
                     <h2 className='font-extrabold text-4xl text-center mb-5 pb-5'>FUNKO</h2>
                     <div className="mb-4">
                         <Input
@@ -76,7 +75,7 @@ const login = () => {
                         <a className="inline-block align-baseline font-bold text-sm text-black hover:text-gray-800 mb-1" href="#">
                             Forgot Password?
                         </a>
-                        <p className="text-sm text-gray-600 ">
+                        <p className="text-sm text-gray-600 mt-3">
                             New to Funko?
                             <Link href={"/register"} className="text-black hover:text-gray-800 font-bold ms-2">
                                 Register Now

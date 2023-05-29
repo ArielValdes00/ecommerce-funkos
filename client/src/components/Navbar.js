@@ -18,6 +18,7 @@ const navbar = ({ session }) => {
     const { cartState } = useContext(ProductContext);
     const cart = cartState.cart;
     let counterProduct = cart.length;
+    console.log(session)
 
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -42,11 +43,11 @@ const navbar = ({ session }) => {
 
     useEffect(() => {
         if (isMenuHamburguerOpen) {
-          document.body.style.overflowY = 'hidden';
+            document.body.style.overflowY = 'hidden';
         } else {
-          document.body.style.overflowY = 'auto';
+            document.body.style.overflowY = 'auto';
         }
-      }, [isMenuHamburguerOpen]);
+    }, [isMenuHamburguerOpen]);
 
 
     return (
@@ -65,17 +66,25 @@ const navbar = ({ session }) => {
                             <Link href={"/products"}>PRODUCTS</Link>
                             <Link href={"/contact"}>CONTACT</Link>
                         </div>
-                        <li className='lg:flex w-80 justify-center xl:justify-center mx-auto py-7 mt-5 lg:p-0 lg:m-0 '>
+                        <li className='lg:flex w-80 justify-center lg:justify-end mx-auto py-7 mt-5 lg:p-0 lg:m-0'>
                             {session ? (
                                 <div className='relative'>
                                     <div className='flex items-center justify-center gap-1'>
-                                        <img src={session.user.image} height={26} width={26} alt='User' className='rounded-full'></img>
-                                        <h3 className='lg:text-xl font-extrabold uppercase cursor-pointer' onClick={handleMenuToggle}>
+                                        {session.user.image !== '0' && (
+                                            <img
+                                                src={session.user.image}
+                                                height={26}
+                                                width={26}
+                                                alt='User'
+                                                className='rounded-full'
+                                            />
+                                        )}
+                                        <h3 className='lg:text-xl font-extrabold uppercase cursor-pointer me-3' onClick={handleMenuToggle}>
                                             {session.user.name}
                                         </h3>
                                     </div>
                                     {isMenuOpen && (
-                                        <ul className={'absolute right-0 mt-2 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold'}>
+                                        <ul className={'absolute right-0 pe-3 mt-2 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold'}>
                                             <Link href='#' className='flex items-center justify-between gap-3 px-5 py-2'>
                                                 <Image src={User} height={17} width={17} alt='User'></Image>
                                                 <span>Profile</span>
@@ -88,7 +97,7 @@ const navbar = ({ session }) => {
                                     )}
                                 </div>
                             ) : (
-                                <Link href={"/register"} className='lg:bg-white lg:p-2 lg:me-6 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
+                                <Link href={"/login"} className='lg:bg-white lg:p-2 lg:me-6 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
                                     <Image src={User} alt='User' className='user'></Image>
                                     <p className='lg:hidden'>PROFILE</p>
                                 </Link>

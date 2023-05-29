@@ -23,7 +23,7 @@ const productName = ({ product }) => {
                 <div className='text-xs text-gray-500'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
                 </div>
-                <div className='grid lg:grid-cols-2 mt-5 gap-6'>
+                <div className='grid lg:grid-cols-2 mt-5 gap-6 lg:gap-12'>
                     <div className='border bg-gray-200 relative'>
                         <Image
                             onClick={() => toggleWishlist(product.id)}

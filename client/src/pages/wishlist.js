@@ -34,9 +34,9 @@ const Wishlist = () => {
                                 <img src={product.image} width={150} height={150} alt={product.name} className='ms-2 sm:mx-auto' />
                             </div>
                             <div className='flex flex-col gap-1 items-center'>
-                                <p className='uppercase font-semibold'>{product.category}</p>
-                                <h3 className='font-extrabold uppercase text-xl'>{product.name}</h3>
-                                <p className='font-semibold'>${product.price}</p>
+                                <p className='uppercase font-semibold lg:text-xl'>{product.category}</p>
+                                <h3 className='font-extrabold uppercase text-xl lg:text-2xl'>{product.name}</h3>
+                                <p className='font-semibold lg:text-xl'>${product.price}</p>
                                 <div className='pe-3 mt-4 md:hidden'>
                                     <AddToCartButton
                                         product={product}

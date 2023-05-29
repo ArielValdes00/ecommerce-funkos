@@ -44,7 +44,7 @@ const SliderCards = ({ title }) => {
                 loop={true}
                 scrollbar={{ draggable: true }}
             >
-                
+
                 {recentProducts.map((product) => (
                     <SwiperSlide key={product.id} className='border rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
                         <Image
@@ -56,7 +56,10 @@ const SliderCards = ({ title }) => {
                         <p className='uppercase'>{product.category}</p>
                         <Link href={`/products/${product.name}`}><h2 className='text-xl font-extrabold my-2 uppercase hover:underline'>{product.name}</h2></Link>
                         <p className='font-bold'>${product.price}</p>
-                        <AddToCartButton textButton={"add to cart"} className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'} />
+                        <AddToCartButton
+                            product={product}
+                            textButton={"add to cart"}
+                            className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'} />
                     </SwiperSlide>
                 ))}
             </Swiper>

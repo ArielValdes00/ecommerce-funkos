@@ -6,7 +6,7 @@ export const getProducts = async (limit) => {
     try {
       const response = await axios.get(`${API_URL}?limit=${limit}`);
       if (!response) {
-        console.log("No hay productos disponibles");
+        console.log("No products available");
         return [];
       }
       return response.data;
@@ -22,7 +22,7 @@ export const createProducts = async (productData) => {
         const response = await axios.post(`${API_URL}`, productData);
         return response.data;
     } catch (error) {
-        console.error("Error en la función createProducts:", error);
+        console.error(error);
 
     }
 }
