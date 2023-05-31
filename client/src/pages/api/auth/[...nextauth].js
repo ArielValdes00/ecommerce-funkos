@@ -24,29 +24,41 @@ export const authOptions = {
 
                 const { email, password } = credentials;
 
-                    const user = await User.findOne({
-                        where: {
-                            email: email
-                        }
-                    });
-                    console.log(user)
-
-                    if (!user) {
-                        throw new Error("invalid email")
+                const user = await User.findOne({
+                    where: {
+                        email: email
                     }
+                });
+                console.log(user)
 
-                    const isPasswordMatched = await bcrypt.compare(password, user.password)
-
-                    if (!isPasswordMatched) {
-                        throw new Error("invalid password")
-                    }
-                    return user;
+                if (!user) {
+                    throw new Error("invalid email")
                 }
-            })
+
+                const isPasswordMatched = await bcrypt.compare(password, user.password)
+
+                if (!isPasswordMatched) {
+                    throw new Error("invalid password")
+                }
+                return user;
+            }
+        })
     ],
     session: {
         strategy: "jwt",
     },
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id
+            }
+            return token
+        },
+        async session({ session, token }) {
+            session.user.id = token.id
+            return session
+        }
+    }
 };
 
 export default NextAuth({

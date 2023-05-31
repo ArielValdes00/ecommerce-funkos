@@ -1,8 +1,10 @@
 import express from "express";
 import productsRoutes from "./routes/products.routes.js";
 import usersRoutes from "./routes/users.routes.js"
+import purchaseRoutes from "./routes/purchase.routes.js"
 import cors from "cors";
 import cookieParser from 'cookie-parser'
+import { associateModels } from "./models/Associate.js";
 
 const app = express();
 
@@ -14,7 +16,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+associateModels(); 
 
+app.use(purchaseRoutes)
 app.use(productsRoutes);
 app.use(usersRoutes)
 

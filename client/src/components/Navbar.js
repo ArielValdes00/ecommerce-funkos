@@ -18,7 +18,6 @@ const navbar = ({ session }) => {
     const { cartState } = useContext(ProductContext);
     const cart = cartState.cart;
     let counterProduct = cart.length;
-    console.log(session)
 
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);

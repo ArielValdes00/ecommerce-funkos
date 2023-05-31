@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
@@ -8,12 +8,41 @@ import Image from 'next/image';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
+import { purchase } from '../../utils/apiPurchase';
 
 const Cart = () => {
     const { cartState, removeItemFromCart, incrementQuantity, decrementQuantity, removeAllItemsFromCart } = useContext(ProductContext);
     const cart = cartState.cart;
-    const { data: session } = useSession();
-    console.log(cart.length)
+    const [userId, setUserId] = useState(null)
+    const [productIds, setProductIds] = useState([])
+    const { data: session, status } = useSession();
+    console.log(productIds)
+    console.log(userId)
+        
+    useEffect(() => {
+        if (status === 'authenticated' && session?.user?.id) {
+            setUserId(session.user.id);
+          }
+        const newProductIds = []
+        for (const product of cart) {
+          const productId = product.id;
+    
+          newProductIds.push(productId)
+        }
+    
+        setProductIds(newProductIds)
+      }, [])
+
+      const handlePurchase = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await purchase(userId, productIds)
+            console.log(res)
+        } catch (error) {
+            console.error(error)
+        }
+      }
+
     return (
         <>
             <Navbar session={session} />
@@ -57,7 +86,7 @@ const Cart = () => {
                         ))}
                         <p className='text-xl font-bold uppercase text-center mt-5 py-3'>Total price: ${cartState.totalPrice}.00</p>
                         <div className='flex items-center justify-center gap-5 py-5'>
-                            <button className='px-8 py-2 rounded-full bg-blue-700 text-white shadow-lg uppercase font-semibold shadow-lg'>Checkout</button>
+                            <button onClick={handlePurchase} type='submit' className='px-8 py-2 rounded-full bg-blue-700 text-white shadow-lg uppercase font-semibold shadow-lg'>Checkout</button>
                             <button onClick={removeAllItemsFromCart} className='px-7 py-2 rounded-full bg-red-700 text-white shadow-lg uppercase font-semibold'>Empty Cart</button>
                         </div>
                     </div>
