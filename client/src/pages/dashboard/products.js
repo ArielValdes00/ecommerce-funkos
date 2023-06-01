@@ -191,7 +191,7 @@ const products = ({ session }) => {
                         <div key={product.id} className="grid grid-cols-8 text-center items-center rounded border-black border-b">
                             <img src={product.image} width={115} alt={product.name} className='mx-auto'></img>
                             <h3>{product.name}</h3>
-                            <p>{product.price}</p>
+                            <p>${product.price}</p>
                             <p className="max-h-20 overflow-y-auto w-full">{product.description}</p>
                             <p>{product.category}</p>
                             <p>{product.stock}</p>

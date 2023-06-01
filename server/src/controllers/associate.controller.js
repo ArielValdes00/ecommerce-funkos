@@ -1,5 +1,7 @@
+import { Cart } from "../models/Associate.js";
 import { Product } from "../models/Products.js"
 import { User } from "../models/Users.js";
+import { Op } from 'sequelize';
 
 export const handlePurchase = async (req, res) => {
     const { userId, productId } = req.body;
@@ -25,5 +27,22 @@ export const handlePurchase = async (req, res) => {
     }
 }
 
+export const getCart = async (req, res) => {
+    try {
+        const userWithCart = await User.findAll({
+            include: [
+                {
+                    model: Product,
+                    through: { attributes: [] },
+                    as: 'products',
+                    where: { id: { [Op.ne]: null } }
+                }
+            ]
+        })
+        res.status(200).json(userWithCart)
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 
