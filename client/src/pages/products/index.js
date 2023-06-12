@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react"
 import { ProductContext } from '../../context/ProductContext';
 import { useSession } from 'next-auth/react';
 import AddToCartButton from '@/components/AddToCartButton';
+import ModalPurchase from '@/components/ModalPurchase';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
@@ -23,7 +24,8 @@ const Products = ({ initialProducts }) => {
         handleSearchChange,
         totalProducts,
         toggleWishlist,
-        isInWishlist
+        isInWishlist,
+        showModal
     } = useContext(ProductContext);
 
 
@@ -52,6 +54,9 @@ const Products = ({ initialProducts }) => {
     return (
         <>
             <Navbar session={session} />
+            {showModal && (
+                <ModalPurchase />
+            )}
             <section className="md:px-28 py-5">
                 <div className='mx-6'>
                     <div className="text-xs text-gray-500 mb-5">
@@ -120,7 +125,7 @@ const Products = ({ initialProducts }) => {
                                 <Image
                                     onClick={() => toggleWishlist(product.id)}
                                     src={isInWishlist(product.id) ? RedHeart : Heart}
-                                    height={27} width={27} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-40'>
+                                    height={27} width={27} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
                                 </Image>
                                 <Link href={`/products/${product.name}`}><img src={product.image} alt={product.name} className='hover:scale-110 transition-transform duration-300 p-2'></img></Link>
                                 <p className="uppercase">{product.category}</p>

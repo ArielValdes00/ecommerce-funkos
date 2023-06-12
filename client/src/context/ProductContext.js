@@ -15,8 +15,9 @@ export const ProductProvider = ({ children }) => {
     const [totalProducts, setTotalProducts] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
-    const [selectedProductIds, setSelectedProductIds] = useState([]);
+    const [selectedProductModal, setSelectedProductModal] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
 
     const addToWishlist = (productId) => {
@@ -46,8 +47,8 @@ export const ProductProvider = ({ children }) => {
     const addItemToCart = (id) => {
         const { cart } = cartState;
         const productToAdd = products.find((product) => product.id === id);
-        console.log(productToAdd)
-
+        setShowModal(true)
+        setSelectedProductModal(productToAdd)
         if (productToAdd) {
             const itemInCart = cart.find((item) => item.id === id);
 
@@ -68,7 +69,6 @@ export const ProductProvider = ({ children }) => {
 
     const removeItemFromCart = (id) => {
         const updatedCart = cartState.cart.filter((item) => item.id !== id);
-        console.log(updatedCart)
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         cartDispatch({ type: 'REMOVE_ITEM', payload: updatedCart });
         cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
@@ -196,11 +196,13 @@ export const ProductProvider = ({ children }) => {
                 incrementQuantity,
                 decrementQuantity,
                 removeAllItemsFromCart,
-                selectedProductIds,
+                selectedProductModal,
                 wishlist,
                 isInWishlist,
                 toggleWishlist,
-                recentProducts
+                recentProducts,
+                showModal,
+                setShowModal
             }}
         >
             {children}

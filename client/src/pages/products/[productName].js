@@ -11,14 +11,18 @@ import { useSession } from 'next-auth/react';
 import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
 import AddToCartButton from '@/components/AddToCartButton'
+import ModalPurchase from '@/components/ModalPurchase'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { toggleWishlist, isInWishlist } = useContext(ProductContext)
+    const { toggleWishlist, isInWishlist, showModal } = useContext(ProductContext)
 
     return (
         <div>
             <Navbar session={session} />
+            {showModal && (
+                <ModalPurchase />
+            )}
             <section className='px-4 md:px-28 py-5 mb-5'>
                 <div className='text-xs text-gray-500'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>

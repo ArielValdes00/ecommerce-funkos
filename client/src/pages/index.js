@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia";
 import FondoFunko from "../../public/Nightwing.png";
 import Navbar from "@/components/Navbar";
@@ -7,14 +7,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
 import Footer from "@/components/Footer";
+import { ProductContext } from '@/context/ProductContext';
+import ModalPurchase from '@/components/ModalPurchase';
 
 export default function Home() {
     const { data: session } = useSession();
-
+    const { showModal } = useContext(ProductContext);
     return (
         <div>
             <Navbar session={session} />
-            <section className="bg-red-700 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
+            {showModal && (
+                <ModalPurchase />
+            )}
+            <section className="bg-sky-800 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
                 <div className="grid lg:grid-cols-2 gap-7 items-center md:px-28">
                     <div className="text-white flex flex-col gap-3 justify-center items-start px-5 mt-5">
                         <h3 className="font-semibold text-sm md:text-xl w-full">GOTHAM KNIGHTS</h3>

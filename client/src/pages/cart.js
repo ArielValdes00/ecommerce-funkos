@@ -16,8 +16,6 @@ const Cart = () => {
     const [userId, setUserId] = useState(null)
     const [productIds, setProductIds] = useState([])
     const { data: session, status } = useSession();
-    console.log(productIds)
-    console.log(userId)
         
     useEffect(() => {
         if (status === 'authenticated' && session?.user?.id) {
@@ -55,10 +53,10 @@ const Cart = () => {
                 </div>
                 {cart.length >= 1 ? (
                     <div className='px-4 md:px-28'>
-                        <div className='grid grid-cols-3 items-center border-b-2 border-black uppercase font-extrabold text-lg py-5'>
-                            <p className=''>Item</p>
-                            <p className='text-center'>Quantity</p>
-                            <p className='ml-auto'>Price</p>
+                        <div className='grid grid-cols-6 items-center border-b-2 border-black uppercase font-extrabold text-lg py-5'>
+                            <p className='col-span-4'>Item</p>
+                            <p className='col-span-1 text-center'>Quantity</p>
+                            <p className='col-span-1 ml-auto'>Price</p>
                         </div>
                         {cart.map((item) => (
                             <div key={item.id} className='grid md:grid-cols-2 items-center border-b-2 border-black '>
