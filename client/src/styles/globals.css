@@ -33,6 +33,28 @@
 .filter{
     min-height: calc(100vh - var(--navbar-height));
 }
+
+.select-container {
+    position: relative;
+    height: 40px ;
+  }
+  
+  .select-container::before {
+    content: "▼";
+    position: absolute;
+    left: 24%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  .select-container select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  
   
 @media (max-width: 1024px) {
     .swiper-button-next,

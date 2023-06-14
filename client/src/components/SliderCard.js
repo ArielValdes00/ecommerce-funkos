@@ -11,12 +11,13 @@ import Heart from '../../public/icons/heart.png'
 import RedHeart from '../../public/icons/redHeart.png'
 import Image from 'next/image.js';
 import AddToCartButton from './AddToCartButton.js';
+import ButtonAdded from './ButtonProductAdded.js';
 
 const SliderCards = ({ title }) => {
     SliderCards.propTypes = {
         title: PropTypes.string.isRequired,
     };
-    const { recentProducts, toggleWishlist, isInWishlist } = useContext(ProductContext);
+    const { recentProducts, toggleWishlist, isInWishlist, isInCart } = useContext(ProductContext);
 
     return (
         <div className='px-12 md:px-28 relative bg-gray-100 py-10'>
@@ -56,10 +57,20 @@ const SliderCards = ({ title }) => {
                         <p className='uppercase'>{product.category}</p>
                         <Link href={`/products/${product.name}`}><h2 className='text-xl font-extrabold my-2 uppercase hover:underline'>{product.name}</h2></Link>
                         <p className='font-bold'>${product.price}</p>
-                        <AddToCartButton
-                            product={product}
-                            textButton={"add to cart"}
-                            className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'} />
+                        {!isInCart(product.id) ? (
+                            <AddToCartButton
+                                product={product}
+                                textButton={"add to cart"}
+                                className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'}
+                            />
+                        ) : (
+                            <ButtonAdded
+                                buttonText={'in cart'}
+                                disabled={true}
+                                product={product}
+                            />
+                        )}
+
                     </SwiperSlide>
                 ))}
             </Swiper>

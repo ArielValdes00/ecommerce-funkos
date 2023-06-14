@@ -24,8 +24,8 @@ const ModalPurchase = () => {
                         <h2 className='font-extrabold text-xl'>{selectedProductModal.name}</h2>
                         <p>${selectedProductModal.price}</p>
                         <p>Quantity: 1</p>
-                        <div className='flex flex-col lg:w-3/4 gap-2 mt-3 text-sm font-bold text-center mx-auto'>
-                            <Link href={"/cart"} className='rounded-full px-6 py-2 bg-black text-white hover:bg-white hover:text-black border-2 border-black transition duration-300'>VIEW CART</Link>
+                        <div className='flex flex-col lg:w-3/4 gap-2 mt-3 text-sm font-bold text-center mx-auto lg:mx-0'>
+                            <Link href={"/cart"} onClick={handleCloseModal} className='rounded-full px-6 py-2 bg-black text-white hover:bg-white hover:text-black border-2 border-black transition duration-300'>VIEW CART</Link>
                             <button onClick={handleCloseModal} className='rounded-full px-6 py-2 bg-gray-100 hover:border-black border-2 border-gray-100 text-black'>CONTINUE SHOPPING</button>
                         </div>
                     </div>

@@ -10,12 +10,12 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
-import AddToCartButton from '@/components/AddToCartButton'
 import ModalPurchase from '@/components/ModalPurchase'
+import ButtonAdded from '@/components/ButtonProductAdded'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { toggleWishlist, isInWishlist, showModal } = useContext(ProductContext)
+    const { toggleWishlist, isInWishlist, showModal, isInCart } = useContext(ProductContext)
 
     return (
         <div>
@@ -40,12 +40,15 @@ const productName = ({ product }) => {
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
-                        <AddToCartButton
-                            product={product}
-                            textButton={"add to cart"}
-                            className={'uppercase sm:w-3/4 md:w-1/2 lg:w-80 bg-black text-white text-xl font-bold rounded-full p-3'} />
-                        <p className='font-semibold lg:w-3/4 2xl:w-2/4'>{product.description}</p>
-                        <p className='text-xl font-semibold uppercase'>Stock: {product.stock}</p>
+                        <div className='w-2/3'>
+                            <ButtonAdded
+                                buttonText={isInCart(product.id) ? ('in cart') : ('add to cart')}
+                                product={product}
+                                className={'text-xl'}
+                                disabled={isInCart(product.id)}
+                            />
+                        </div>
+                        <p className='font-semibold lg:w-3/4 2xl:w-2/4 mt-4'>{product.description}</p>
                     </div>
                 </div>
             </section>

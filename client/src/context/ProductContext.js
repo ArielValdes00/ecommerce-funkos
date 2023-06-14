@@ -18,7 +18,14 @@ export const ProductProvider = ({ children }) => {
     const [selectedProductModal, setSelectedProductModal] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [selectedQuantities, setSelectedQuantities] = useState({});
 
+    const setSelectedQuantity = (productId, quantity) => {
+        setSelectedQuantities((prevSelectedQuantities) => ({
+            ...prevSelectedQuantities,
+            [productId]: quantity,
+        }));
+    };
 
     const addToWishlist = (productId) => {
         const productToAdd = products.find((product) => product.id === productId);
@@ -35,7 +42,11 @@ export const ProductProvider = ({ children }) => {
     const isInWishlist = (productId) => {
         return wishlist.some((product) => product.id === productId);
     };
-    
+    const isInCart = (productId) => {
+        const { cart } = cartState;
+        return cart.some((product) => product.id === productId);
+    };
+
     const toggleWishlist = (productId) => {
         if (isInWishlist(productId)) {
             removeFromWishlist(productId);
@@ -44,60 +55,65 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
-    const addItemToCart = (id) => {
+    const addItemToCart = (id, quantity = 1) => {
         const { cart } = cartState;
-        const productToAdd = products.find((product) => product.id === id);
-        setShowModal(true)
+        const productToAdd = products.find(product => product.id === id);
         setSelectedProductModal(productToAdd)
+        setShowModal(true)
+
         if (productToAdd) {
-            const itemInCart = cart.find((item) => item.id === id);
+            const itemInCart = cart.find(item => item.id === id);
 
             if (itemInCart) {
-                const newQuantity = itemInCart.quantity + 1;
-                const maxQuantity = Math.min(newQuantity, productToAdd.stock);
-                cartDispatch({ type: 'INCREMENT_QUANTITY', payload: { id, quantity: maxQuantity } });
-                cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
-
+                cartDispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
             } else {
-                const maxQuantity = Math.min(1, productToAdd.stock);
-                cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity: maxQuantity } });
-                cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
-
+                cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
             }
+
+            cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         }
     };
 
     const removeItemFromCart = (id) => {
-        const updatedCart = cartState.cart.filter((item) => item.id !== id);
+        const { cart } = cartState;
+
+        const updatedCart = cart.filter(item => item.id !== id);
+        const updatedQuantities = { ...selectedQuantities };
+        delete updatedQuantities[id];
+
         localStorage.setItem('cart', JSON.stringify(updatedCart));
-        cartDispatch({ type: 'REMOVE_ITEM', payload: updatedCart });
+        localStorage.setItem('selectedQuantities', JSON.stringify(updatedQuantities));
+
+        cartDispatch({ type: 'REMOVE_ITEM', payload: id });
         cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+
+        setSelectedQuantities(updatedQuantities);
     };
 
     const removeAllItemsFromCart = () => {
         cartDispatch({ type: 'REMOVE_ALL_ITEMS' });
-    };
-
-    const incrementQuantity = (id) => {
-        cartDispatch({ type: 'INCREMENT_QUANTITY', payload: id });
-        cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
-    };
-
-    const decrementQuantity = (id) => {
-        cartDispatch({ type: 'DECREMENT_QUANTITY', payload: id });
-        cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+        setSelectedQuantities({})
     };
 
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            cartDispatch({ type: 'LOAD_CART', payload: JSON.parse(savedCart) });
+        const getItems = (id, quantity) => {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cartDispatch({ type: 'LOAD_CART', payload: JSON.parse(savedCart) });
+                cartDispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
+            }
+            const savedQuantities = localStorage.getItem('selectedQuantities');
+            if (savedQuantities) {
+                const parsedQuantities = JSON.parse(savedQuantities);
+                setSelectedQuantities(parsedQuantities);
+            }
+            const savedWishlist = localStorage.getItem('wishlist');
+            if (savedWishlist) {
+                const parsedWishlist = JSON.parse(savedWishlist);
+                setWishlist(parsedWishlist);
+            }
         }
-        const savedWishlist = localStorage.getItem('wishlist');
-        if (savedWishlist) {
-            const parsedWishlist = JSON.parse(savedWishlist);
-            setWishlist(parsedWishlist);
-        }
+        getItems()
     }, []);
 
     const updateProducts = (newProducts) => {
@@ -193,8 +209,6 @@ export const ProductProvider = ({ children }) => {
                 cartDispatch,
                 addItemToCart,
                 removeItemFromCart,
-                incrementQuantity,
-                decrementQuantity,
                 removeAllItemsFromCart,
                 selectedProductModal,
                 wishlist,
@@ -202,7 +216,11 @@ export const ProductProvider = ({ children }) => {
                 toggleWishlist,
                 recentProducts,
                 showModal,
-                setShowModal
+                setShowModal,
+                isInCart,
+                selectedQuantities,
+                setSelectedQuantities,
+                setSelectedQuantity
             }}
         >
             {children}

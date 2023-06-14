@@ -13,6 +13,7 @@ import { ProductContext } from '../../context/ProductContext';
 import { useSession } from 'next-auth/react';
 import AddToCartButton from '@/components/AddToCartButton';
 import ModalPurchase from '@/components/ModalPurchase';
+import ButtonAdded from '@/components/ButtonProductAdded';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
@@ -25,9 +26,9 @@ const Products = ({ initialProducts }) => {
         totalProducts,
         toggleWishlist,
         isInWishlist,
-        showModal
+        showModal,
+        isInCart
     } = useContext(ProductContext);
-
 
     const showFilters = () => {
         setIsFilterModalOpen(!isFilterMenuOpen)
@@ -131,10 +132,19 @@ const Products = ({ initialProducts }) => {
                                 <p className="uppercase">{product.category}</p>
                                 <Link href={`/products/${product.name}`}><h3 className="font-extrabold uppercase hover:underline">{product.name}</h3></Link>
                                 <p className="font-semibold">${product.price}</p>
-                                <AddToCartButton
+                                {!isInCart(product.id) ? (
+                                    <AddToCartButton
+                                        product={product}
+                                        textButton={"add to cart"}
+                                        className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'}
+                                    />
+                                ) : (
+                                    <ButtonAdded
+                                    buttonText={'in cart'}
+                                    disabled={true}
                                     product={product}
-                                    textButton={"add to cart"}
-                                    className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'} />
+                                    />
+                                )}
                             </div>
                         ))}
                     </div>

@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react';
 import { purchase } from '../../utils/apiPurchase';
 
 const Cart = () => {
-    const { cartState, removeItemFromCart, incrementQuantity, decrementQuantity, removeAllItemsFromCart } = useContext(ProductContext);
+    const { cartState, removeItemFromCart, removeAllItemsFromCart } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null)
     const [productIds, setProductIds] = useState([])
@@ -74,9 +74,7 @@ const Cart = () => {
                                         <Image src={Delete} height={28} width={28} alt='Delete'></Image>
                                     </button>
                                     <div className='flex items-center justify-center rounded-full  '>
-                                        <button onClick={() => incrementQuantity(item.id)} className='text-xl font-bold px-2 border-2 border-black'>+</button>
                                         <p className='border-y-2 px-3 border-black text-xl font-semibold'>{item.quantity}</p>
-                                        <button onClick={() => decrementQuantity(item.id)} className='text-xl font-bold px-2 border-2 border-black'>-</button>
                                     </div>
                                     <p className='ml-auto font-extrabold text-lg me-2'>${item.price * item.quantity}.00</p>
                                 </div>

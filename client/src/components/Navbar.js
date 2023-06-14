@@ -96,7 +96,7 @@ const navbar = ({ session }) => {
                                     )}
                                 </div>
                             ) : (
-                                <Link href={"/login"} className='lg:bg-white lg:p-2 lg:me-6 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
+                                <Link href={"/login"} className='lg:bg-white lg:p-2 lg:me-4 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
                                     <Image src={User} alt='User' className='user'></Image>
                                     <p className='lg:hidden'>PROFILE</p>
                                 </Link>
