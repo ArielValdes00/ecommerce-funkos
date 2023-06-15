@@ -6,7 +6,6 @@ import SideBar from '@/components/SideBar'
 const sales = () => {
     const [data, setData] = useState([]);
 
-
     useEffect(() => {
         const fetchingData = async () => {
             try {

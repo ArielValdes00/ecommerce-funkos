@@ -27,7 +27,9 @@ const Products = ({ initialProducts }) => {
         toggleWishlist,
         isInWishlist,
         showModal,
-        isInCart
+        isInCart,
+        closeModal,
+        selectedProductModal,
     } = useContext(ProductContext);
 
     const showFilters = () => {
@@ -56,7 +58,17 @@ const Products = ({ initialProducts }) => {
         <>
             <Navbar session={session} />
             {showModal && (
-                <ModalPurchase />
+                <ModalPurchase
+                    title={'item(s) added to cart'}
+                    quantity={'quantity: 1'}
+                    firstButton={'view cart'}
+                    secondButton={'continue shopping'}
+                    category={selectedProductModal.category}
+                    name={selectedProductModal.name}
+                    image={selectedProductModal.image}
+                    price={selectedProductModal.price}
+                    handleConfirmation={closeModal}
+                />
             )}
             <section className="md:px-28 py-5">
                 <div className='mx-6'>
@@ -122,13 +134,13 @@ const Products = ({ initialProducts }) => {
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-2 py-5">
                         {filteredProducts.map((product) => (
-                            <div key={product.id} className="rounded-lg bg-white text-center p-5 border relative shadow">
+                            <div key={product.id} className="rounded-lg bg-white text-center p-3 border relative shadow">
                                 <Image
                                     onClick={() => toggleWishlist(product.id)}
                                     src={isInWishlist(product.id) ? RedHeart : Heart}
-                                    height={27} width={27} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
+                                    height={25} width={25} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
                                 </Image>
-                                <Link href={`/products/${product.name}`}><img src={product.image} alt={product.name} className='hover:scale-110 transition-transform duration-300 p-2'></img></Link>
+                                <Link href={`/products/${product.name}`}><img src={product.image} alt={product.name} className='hover:scale-110 transition-transform duration-300 p-2 pt-5'></img></Link>
                                 <p className="uppercase">{product.category}</p>
                                 <Link href={`/products/${product.name}`}><h3 className="font-extrabold uppercase hover:underline">{product.name}</h3></Link>
                                 <p className="font-semibold">${product.price}</p>
@@ -140,9 +152,9 @@ const Products = ({ initialProducts }) => {
                                     />
                                 ) : (
                                     <ButtonAdded
-                                    buttonText={'in cart'}
-                                    disabled={true}
-                                    product={product}
+                                        buttonText={'in cart'}
+                                        disabled={true}
+                                        product={product}
                                     />
                                 )}
                             </div>

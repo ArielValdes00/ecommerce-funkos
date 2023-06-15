@@ -9,27 +9,43 @@ export const cartReducer = (state, action) => {
                     if (item.id === itemToAdd.id) {
                         return {
                             ...item,
-                            quantity: item.quantity + itemToAdd.quantity,
+                            quantity: itemToAdd.quantity, 
                         };
                     }
                     return item;
                 });
 
+                const updatedQuantities = {
+                    ...state.selectedQuantities,
+                    [itemToAdd.id]: itemToAdd.quantity,
+                };
+
                 localStorage.setItem('cart', JSON.stringify(updatedCart));
+                localStorage.setItem('selectedQuantities', JSON.stringify(updatedQuantities));
 
                 return {
                     ...state,
                     cart: updatedCart,
+                    selectedQuantities: updatedQuantities,
                 };
             } else {
                 const updatedCart = [...state.cart, itemToAdd];
+                const updatedQuantities = {
+                    ...state.selectedQuantities,
+                    [itemToAdd.id]: itemToAdd.quantity,
+                };
+
                 localStorage.setItem('cart', JSON.stringify(updatedCart));
+                localStorage.setItem('selectedQuantities', JSON.stringify(updatedQuantities));
 
                 return {
                     ...state,
                     cart: updatedCart,
+                    selectedQuantities: updatedQuantities,
                 };
             }
+
+
 
         case 'LOAD_CART':
             return {
@@ -37,24 +53,6 @@ export const cartReducer = (state, action) => {
                 cart: action.payload,
             };
 
-        case 'UPDATE_QUANTITY':
-            const { id, quantity } = action.payload;
-            const updateCart = state.cart.map(item => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        quantity: quantity,
-                    };
-                }
-                return item;
-            });
-
-            localStorage.setItem('cart', JSON.stringify(updateCart));
-
-            return {
-                ...state,
-                cart: updateCart,
-            };
 
         case 'REMOVE_ITEM':
             const idToRemove = action.payload;

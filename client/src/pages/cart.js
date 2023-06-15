@@ -9,29 +9,48 @@ import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import { purchase } from '../../utils/apiPurchase';
+import SelectQuantity from '@/components/SelectQuantity';
+import ModalPurchase from '@/components/ModalPurchase';
 
 const Cart = () => {
-    const { cartState, removeItemFromCart, removeAllItemsFromCart } = useContext(ProductContext);
+    const { cartState, removeItemFromCart, removeAllItemsFromCart, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null)
     const [productIds, setProductIds] = useState([])
     const { data: session, status } = useSession();
-        
+    const [selectedProductId, setSelectedProductId] = useState(null);
+
+
+    const handleQuantityChange = (productId, newQuantity) => {
+        addItemToCart(productId, newQuantity);
+        setSelectedQuantity(productId, newQuantity)
+        setShowModal(false);
+    };
+
     useEffect(() => {
         if (status === 'authenticated' && session?.user?.id) {
             setUserId(session.user.id);
-          }
+        }
         const newProductIds = []
         for (const product of cart) {
-          const productId = product.id;
-    
-          newProductIds.push(productId)
-        }
-    
-        setProductIds(newProductIds)
-      }, [])
+            const productId = product.id;
 
-      const handlePurchase = async (e) => {
+            newProductIds.push(productId)
+        }
+
+        setProductIds(newProductIds)
+    }, [])
+
+    const openDeleteModal = (id) => {
+        console.log(selectedProductModal)
+        const {cart} = cartState;
+        const productToFind = cart.find(product => product.id === id);
+        setShowModal(true);
+        setSelectedProductId(id); 
+        setSelectedProductModal(productToFind)
+      };
+
+    const handlePurchase = async (e) => {
         e.preventDefault()
         try {
             const res = await purchase(userId, productIds)
@@ -39,11 +58,23 @@ const Cart = () => {
         } catch (error) {
             console.error(error)
         }
-      }
-
+    }
     return (
         <>
             <Navbar session={session} />
+            {showModal && (
+                <ModalPurchase
+                    title={'are you sure you want to remove the following product from the cart?'}
+                    firstButton={'yes'}
+                    secondButton={'cancel'}
+                    handleConfirmation={() => removeItemFromCart(selectedProductId)}
+                    category={selectedProductModal.category}
+                    price={selectedProductModal.price * selectedQuantities[selectedProductModal.id]}
+                    image={selectedProductModal.image}
+                    name={selectedProductModal.name}
+                    quantity={`quantity: ${selectedQuantities[selectedProductModal.id]}`}
+                    />
+            )}
             <section className='py-5'>
                 <div className='px-4 md:px-28 mb-7'>
                     <div className="text-xs text-gray-500 mb-5">
@@ -56,7 +87,7 @@ const Cart = () => {
                         <div className='grid grid-cols-6 items-center border-b-2 border-black uppercase font-extrabold text-lg py-5'>
                             <p className='col-span-4'>Item</p>
                             <p className='col-span-1 text-center'>Quantity</p>
-                            <p className='col-span-1 ml-auto'>Price</p>
+                            <p className='col-span-1 lg:ml-auto'>Price</p>
                         </div>
                         {cart.map((item) => (
                             <div key={item.id} className='grid md:grid-cols-2 items-center border-b-2 border-black '>
@@ -70,11 +101,16 @@ const Cart = () => {
                                     </div>
                                 </div>
                                 <div className='grid grid-cols-3 py-3 items-center md:col-span-1'>
-                                    <button onClick={() => removeItemFromCart(item.id)}>
+                                    <button onClick={() => openDeleteModal(item.id)}>
                                         <Image src={Delete} height={28} width={28} alt='Delete'></Image>
                                     </button>
-                                    <div className='flex items-center justify-center rounded-full  '>
-                                        <p className='border-y-2 px-3 border-black text-xl font-semibold'>{item.quantity}</p>
+                                    <div className='mx-auto w-1/3'>
+                                        <SelectQuantity
+                                            selectedQuantity={selectedQuantities[item.id] || 1}
+                                            handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
+                                            classNameContainer={'w-full select-container focus:outline-none font-bold'}
+                                            className={'bg-gray-100 rounded-full w-full h-full text-center pl-5'}
+                                        />
                                     </div>
                                     <p className='ml-auto font-extrabold text-lg me-2'>${item.price * item.quantity}.00</p>
                                 </div>
