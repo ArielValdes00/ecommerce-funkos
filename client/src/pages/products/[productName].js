@@ -44,7 +44,7 @@ const productName = ({ product }) => {
                             <ButtonAdded
                                 buttonText={isInCart(product.id) ? ('in cart') : ('add to cart')}
                                 product={product}
-                                className={'text-xl'}
+                                className={'text-2xl'}
                                 disabled={isInCart(product.id)}
                             />
                         </div>

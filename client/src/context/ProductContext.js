@@ -4,7 +4,10 @@ import { cartReducer } from '../reducer/cartReducer';
 
 const initialState = {
     cart: [],
-};
+    totalPrice: 0,
+    selectedQuantities: {},
+  };
+  
 
 export const ProductContext = createContext();
 
@@ -22,11 +25,11 @@ export const ProductProvider = ({ children }) => {
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
-            ...prevSelectedQuantities,
-            [productId]: quantity,
+          ...prevSelectedQuantities,
+          [productId]: quantity,
         }));
-    };
-
+      };
+      
     const addToWishlist = (productId) => {
         const productToAdd = products.find((product) => product.id === productId);
         setWishlist((prevWishlist) => [...prevWishlist, productToAdd]);
@@ -55,26 +58,32 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
+    const closeModal = () => {
+        setShowModal(false)
+    }
+
     const addItemToCart = (id, quantity = 1) => {
         const { cart } = cartState;
         const productToAdd = products.find(product => product.id === id);
-        setSelectedProductModal(productToAdd)
-        setShowModal(true)
-
+        setSelectedProductModal(productToAdd);
+        setShowModal(true);
+      
         if (productToAdd) {
-            const itemInCart = cart.find(item => item.id === id);
-
-            if (itemInCart) {
-                cartDispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
-            } else {
-                cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
-            }
-
-            cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+          const itemInCart = cart.find(item => item.id === id);
+      
+          if (itemInCart) {
+            cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
+          } else {
+            cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
+          }
+      
+          cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         }
-    };
+      };
+      
 
     const removeItemFromCart = (id) => {
+        setShowModal(false)
         const { cart } = cartState;
 
         const updatedCart = cart.filter(item => item.id !== id);
@@ -96,11 +105,10 @@ export const ProductProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const getItems = (id, quantity) => {
+        const getItems = () => {
             const savedCart = localStorage.getItem('cart');
             if (savedCart) {
                 cartDispatch({ type: 'LOAD_CART', payload: JSON.parse(savedCart) });
-                cartDispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
             }
             const savedQuantities = localStorage.getItem('selectedQuantities');
             if (savedQuantities) {
@@ -206,10 +214,12 @@ export const ProductProvider = ({ children }) => {
                 handleSearchChange,
                 getRecentProducts,
                 cartState,
+                closeModal,
                 cartDispatch,
                 addItemToCart,
                 removeItemFromCart,
                 removeAllItemsFromCart,
+                setSelectedProductModal,
                 selectedProductModal,
                 wishlist,
                 isInWishlist,
@@ -218,8 +228,8 @@ export const ProductProvider = ({ children }) => {
                 showModal,
                 setShowModal,
                 isInCart,
-                selectedQuantities,
-                setSelectedQuantities,
+                selectedQuantities: selectedQuantities,
+                setSelectedQuantities: setSelectedQuantities,
                 setSelectedQuantity
             }}
         >

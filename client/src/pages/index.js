@@ -12,12 +12,22 @@ import ModalPurchase from '@/components/ModalPurchase';
 
 export default function Home() {
     const { data: session } = useSession();
-    const { showModal } = useContext(ProductContext);
+    const { showModal, selectedProductModal, closeModal } = useContext(ProductContext);
+
     return (
         <div>
             <Navbar session={session} />
             {showModal && (
-                <ModalPurchase />
+                <ModalPurchase
+                    title={'item(s) added to cart'}
+                    name={selectedProductModal.name}
+                    image={selectedProductModal.image}
+                    price={selectedProductModal.price}
+                    quantity={'quantity: 1'}
+                    firstButton={'view cart'}
+                    secondButton={'continue shopping'}
+                    handleConfirmation={closeModal}
+                />
             )}
             <section className="bg-sky-800 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
                 <div className="grid lg:grid-cols-2 gap-7 items-center md:px-28">
