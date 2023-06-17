@@ -14,6 +14,8 @@ import { useSession } from 'next-auth/react';
 import AddToCartButton from '@/components/AddToCartButton';
 import ModalPurchase from '@/components/ModalPurchase';
 import ButtonAdded from '@/components/ButtonProductAdded';
+import ModalWishlist from '@/components/ModalWishlist';
+import Loader from '@/components/Loader';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
@@ -29,7 +31,9 @@ const Products = ({ initialProducts }) => {
         showModal,
         isInCart,
         closeModal,
-        selectedProductModal
+        selectedProductModal,
+        showModalWishlist,
+        isLoading, setIsLoading
     } = useContext(ProductContext);
 
     const showFilters = () => {
@@ -135,7 +139,13 @@ const Products = ({ initialProducts }) => {
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-2 py-5">
                         {filteredProducts.map((product) => (
-                            <div key={product.id} className="rounded-lg bg-white text-center p-3 border relative shadow">
+                            <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center p-3 shadow relative`}>
+                                {isLoading && selectedProductModal === product.id && (
+                                    <Loader/>
+                                )}
+                                {showModalWishlist && selectedProductModal === product.id && (
+                                    <ModalWishlist className={'w-3/4 absolute'}/>
+                                )}
                                 <Image
                                     onClick={() => toggleWishlist(product.id)}
                                     src={isInWishlist(product.id) ? RedHeart : Heart}
@@ -149,7 +159,7 @@ const Products = ({ initialProducts }) => {
                                     <AddToCartButton
                                         product={product}
                                         textButton={"add to cart"}
-                                        className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'}
+                                        className={`${isLoading && selectedProductModal === product.id ? 'bg-neutral-600 border-neutral-600' : 'bg-gray-100 border-gray-100'} border-2 uppercase rounded-full px-3 py-2 mt-3 w-full  font-bold hover:border-black`}
                                     />
                                 ) : (
                                     <ButtonAdded

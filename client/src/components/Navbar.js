@@ -51,7 +51,7 @@ const navbar = ({ session }) => {
 
     return (
         <header>
-            <nav className='md:px-28 py-4 bg-black relative'>
+            <nav className='md:px-28 py-4 bg-black relative z-50'>
                 <ul className='text-white flex px-3 items-center'>
                     <li className='lg:hidden flex-grow '>
                         <Image src={MenuHamburguer} height={40} width={40} alt='Menu' onClick={handleMenuHamburguer} className='cursor-pointer ' />

@@ -6,7 +6,7 @@ const initialState = {
     cart: [],
     totalPrice: 0,
     selectedQuantities: {},
-  };
+};
 
 export const ProductContext = createContext();
 
@@ -21,14 +21,16 @@ export const ProductProvider = ({ children }) => {
     const [recentProducts, setRecentProducts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedQuantities, setSelectedQuantities] = useState({});
+    const [showModalWishlist, setShowModalWishlist] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
-          ...prevSelectedQuantities,
-          [productId]: quantity,
+            ...prevSelectedQuantities,
+            [productId]: quantity,
         }));
-      };
-      
+    };
+
     const addToWishlist = (productId) => {
         const productToAdd = products.find((product) => product.id === productId);
         setSelectedProductModal(productToAdd)
@@ -51,16 +53,28 @@ export const ProductProvider = ({ children }) => {
     };
 
     const toggleWishlist = (productId) => {
+        setIsLoading(true);
         if (isInWishlist(productId)) {
+            setSelectedProductModal(productId);
             removeFromWishlist(productId);
-            setShowModal(false)
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 500);
         } else {
             addToWishlist(productId);
+            setSelectedProductModal(productId);
+            setTimeout(() => {
+                setShowModalWishlist(true);
+                setIsLoading(false);
+            }, 500);
+            setTimeout(() => {
+                setShowModalWishlist(false);
+            }, 3000);
         }
     };
-
+    
     const closeModal = () => {
-        setShowModal(false)
+        setShowModal(false);
     }
 
     const addItemToCart = (id, quantity = 1, showProductModal) => {
@@ -69,23 +83,23 @@ export const ProductProvider = ({ children }) => {
         if (showProductModal) {
             setSelectedProductModal(productToAdd);
             setShowModal(true);
-          } else {
+        } else {
             setSelectedProductModal(productToAdd);
             console.log("Mostrar otro modal en lugar del modal de productos");
-          }
-      
-        if (productToAdd) {
-          const itemInCart = cart.find(item => item.id === id);
-      
-          if (itemInCart) {
-            cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
-          } else {
-            cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
-          }
-      
-          cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         }
-      };   
+
+        if (productToAdd) {
+            const itemInCart = cart.find(item => item.id === id);
+
+            if (itemInCart) {
+                cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
+            } else {
+                cartDispatch({ type: 'ADD_ITEM', payload: { ...productToAdd, quantity } });
+            }
+
+            cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
+        }
+    };
 
     const removeItemFromCart = (id) => {
         setShowModal(false)
@@ -237,7 +251,11 @@ export const ProductProvider = ({ children }) => {
                 isInCart,
                 selectedQuantities,
                 setSelectedQuantities,
-                setSelectedQuantity
+                setSelectedQuantity,
+                setShowModalWishlist,
+                showModalWishlist,
+                isLoading,
+                setIsLoading
             }}
         >
             {children}

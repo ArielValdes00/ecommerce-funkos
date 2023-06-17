@@ -1,10 +1,9 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Scrollbar, A11y } from 'swiper';
-import PropTypes from 'prop-types';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { ProductContext } from "../context/ProductContext.js"
 import Link from 'next/link.js';
 import Heart from '../../public/icons/heart.png'
@@ -12,10 +11,12 @@ import RedHeart from '../../public/icons/redHeart.png'
 import Image from 'next/image.js';
 import AddToCartButton from './AddToCartButton.js';
 import ButtonAdded from './ButtonProductAdded.js';
+import ModalWishlist from './ModalWishlist.js';
+import Loader from './Loader.js';
 
 const SliderCards = ({ title }) => {
-  
-    const { recentProducts, toggleWishlist, isInWishlist, isInCart } = useContext(ProductContext);
+
+    const { recentProducts, toggleWishlist, isInWishlist, isInCart, showModalWishlist, selectedProductModal, isLoading } = useContext(ProductContext);
 
     return (
         <div className='px-12 md:px-28 relative py-10'>
@@ -45,7 +46,13 @@ const SliderCards = ({ title }) => {
             >
 
                 {recentProducts.map((product) => (
-                    <SwiperSlide key={product.id} className='rounded-lg shadow-lg border border-gray-100 text-center mx-auto p-5 my-5 bg-white relative'>
+                    <SwiperSlide key={product.id} className={`${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} rounded-lg shadow-lg border border-gray-100 text-center mx-auto p-5 my-5 relative`}>
+                        {isLoading && selectedProductModal === product.id && (
+                            <Loader />
+                        )}
+                        {showModalWishlist && selectedProductModal === product.id && (
+                            <ModalWishlist className={'w-3/4 absolute'} />
+                        )}
                         <Image
                             onClick={() => toggleWishlist(product.id)}
                             src={isInWishlist(product.id) ? RedHeart : Heart}
@@ -59,7 +66,7 @@ const SliderCards = ({ title }) => {
                             <AddToCartButton
                                 product={product}
                                 textButton={"add to cart"}
-                                className={'border-2 uppercase border-gray-100 rounded-full px-3 py-2 mt-3 w-full bg-gray-100 font-bold hover:border-black'}
+                                className={`${isLoading && selectedProductModal === product.id ? 'bg-neutral-600 border-neutral-600' : 'bg-gray-100 border-gray-100'}'border-2 uppercase rounded-full px-3 py-2 mt-3 w-full font-bold hover:border-black`}
                             />
                         ) : (
                             <ButtonAdded

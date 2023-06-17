@@ -122,40 +122,6 @@ const Cart = () => {
                                 <button onClick={handlePurchase} type="submit" className="px-8 py-2 rounded-full bg-blue-700 text-white shadow-lg uppercase font-semibold shadow-lg">Checkout</button>
                                 <button onClick={removeAllItemsFromCart} className="px-7 py-2 rounded-full bg-red-700 text-white shadow-lg uppercase font-semibold">Empty Cart</button>
                             </div>
-                            <div className="px-4 md:px-28">
-                                <div className="grid grid-cols-6 items-center border-b-2 border-black uppercase font-extrabold text-lg py-5">
-                                    <p className="col-span-4">Item</p>
-                                    <p className="col-span-1 text-center">Quantity</p>
-                                    <p className="col-span-1 lg:ml-auto">Price</p>
-                                </div>
-                                {cart.map((item) => (
-                                    <div key={item.id} className="grid md:grid-cols-2 items-center border-b-2 border-black ">
-                                        <div className="grid grid-cols-3 gap-7 items-center lg:gap-5 py-3 md:col-span-1">
-                                            <Link href={`/products/${item.name}`} className="col-span-1">
-                                                <img src={item.image} height={130} width={130} alt={item.name} />
-                                            </Link>
-                                            <div className="col-span-2">
-                                                <p className="uppercase font-semibold text-lg">{item.category}</p>
-                                                <Link href={`/products/${item.name}`} className="text-center uppercase md:text-2xl text-4xl font-extrabold hover:underline">{item.name}</Link>
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-3 py-3 items-center md:col-span-1">
-                                            <button onClick={() => openDeleteModal(item.id)}>
-                                                <Image src={Delete} height={28} width={28} alt="Delete" />
-                                            </button>
-                                            <div className="mx-auto w-1/3">
-                                                <SelectQuantity
-                                                    selectedQuantity={selectedQuantities[item.id] || 1}
-                                                    handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
-                                                    classNameContainer="w-full select-container focus:outline-none font-bold"
-                                                    className="bg-gray-100 rounded-full w-full h-full text-center pl-5"
-                                                />
-                                            </div>
-                                            <p className="ml-auto font-extrabold text-lg me-2">${item.price * item.quantity}.00</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
                         <div className="py-5 text-center bg-white">
                             <SliderCards title="you might also like" />

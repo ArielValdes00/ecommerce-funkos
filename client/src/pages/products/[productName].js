@@ -12,10 +12,12 @@ import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
 import ModalPurchase from '@/components/ModalPurchase'
 import ButtonAdded from '@/components/ButtonProductAdded'
+import ModalWishlist from '@/components/ModalWishlist'
+import SliderCards from '@/components/SliderCard'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { toggleWishlist, isInWishlist, showModal, isInCart } = useContext(ProductContext)
+    const { toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading } = useContext(ProductContext)
 
     return (
         <div>
@@ -24,11 +26,21 @@ const productName = ({ product }) => {
                 <ModalPurchase />
             )}
             <section className='px-4 md:px-28 py-5 mb-5'>
-                <div className='text-xs text-gray-500'>
+                {isLoading && selectedProductModal === product.id && (
+                    <div className="fixed inset-0 transition-opacity z-40">
+                        <div className="absolute inset-0 bg-neutral-800 opacity-75"></div>
+                    </div>
+                )}
+
+                <div className='text-xs text-gray-600'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
                 </div>
                 <div className='grid lg:grid-cols-2 mt-5 gap-6 lg:gap-12'>
                     <div className='border bg-gray-200 relative'>
+
+                        {showModalWishlist && selectedProductModal === product.id && (
+                            <ModalWishlist className={'fixed w-1/5'} />
+                        )}
                         <Image
                             onClick={() => toggleWishlist(product.id)}
                             src={isInWishlist(product.id) ? RedHeart : Heart}
@@ -52,6 +64,9 @@ const productName = ({ product }) => {
                     </div>
                 </div>
             </section>
+            <div className="py-5 text-center bg-white">
+                <SliderCards title="you might also like" />
+            </div>
             <BannerSocialMedia />
             <Footer />
         </div>
