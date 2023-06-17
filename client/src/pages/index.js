@@ -13,7 +13,6 @@ import ModalPurchase from '@/components/ModalPurchase';
 export default function Home() {
     const { data: session } = useSession();
     const { showModal, selectedProductModal, closeModal } = useContext(ProductContext);
-
     return (
         <div>
             <Navbar session={session} />

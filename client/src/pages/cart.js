@@ -38,12 +38,10 @@ const Cart = () => {
 
             newProductIds.push(productId)
         }
-
         setProductIds(newProductIds)
     }, [])
 
     const openDeleteModal = (id) => {
-
         const { cart } = cartState;
         const productToFind = cart.find(product => product.id === id);
         setShowModal(true);

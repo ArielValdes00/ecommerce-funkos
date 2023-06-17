@@ -7,7 +7,6 @@ const initialState = {
     totalPrice: 0,
     selectedQuantities: {},
   };
-  
 
 export const ProductContext = createContext();
 
@@ -86,8 +85,7 @@ export const ProductProvider = ({ children }) => {
       
           cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         }
-      };
-      
+      };   
 
     const removeItemFromCart = (id) => {
         setShowModal(false)
@@ -222,10 +220,12 @@ export const ProductProvider = ({ children }) => {
                 getRecentProducts,
                 cartState,
                 closeModal,
+                closeModal,
                 cartDispatch,
                 addItemToCart,
                 removeItemFromCart,
                 removeAllItemsFromCart,
+                setSelectedProductModal,
                 setSelectedProductModal,
                 selectedProductModal,
                 wishlist,
@@ -235,8 +235,8 @@ export const ProductProvider = ({ children }) => {
                 showModal,
                 setShowModal,
                 isInCart,
-                selectedQuantities: selectedQuantities,
-                setSelectedQuantities: setSelectedQuantities,
+                selectedQuantities,
+                setSelectedQuantities,
                 setSelectedQuantity
             }}
         >

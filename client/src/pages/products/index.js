@@ -29,7 +29,7 @@ const Products = ({ initialProducts }) => {
         showModal,
         isInCart,
         closeModal,
-        selectedProductModal,
+        selectedProductModal
     } = useContext(ProductContext);
 
     const showFilters = () => {
