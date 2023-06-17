@@ -32,6 +32,7 @@ export const ProductProvider = ({ children }) => {
       
     const addToWishlist = (productId) => {
         const productToAdd = products.find((product) => product.id === productId);
+        setSelectedProductModal(productToAdd)
         setWishlist((prevWishlist) => [...prevWishlist, productToAdd]);
         localStorage.setItem('wishlist', JSON.stringify([...wishlist, productToAdd]));
     };
@@ -53,6 +54,7 @@ export const ProductProvider = ({ children }) => {
     const toggleWishlist = (productId) => {
         if (isInWishlist(productId)) {
             removeFromWishlist(productId);
+            setShowModal(false)
         } else {
             addToWishlist(productId);
         }
@@ -62,11 +64,16 @@ export const ProductProvider = ({ children }) => {
         setShowModal(false)
     }
 
-    const addItemToCart = (id, quantity = 1) => {
+    const addItemToCart = (id, quantity = 1, showProductModal) => {
         const { cart } = cartState;
         const productToAdd = products.find(product => product.id === id);
-        setSelectedProductModal(productToAdd);
-        setShowModal(true);
+        if (showProductModal) {
+            setSelectedProductModal(productToAdd);
+            setShowModal(true);
+          } else {
+            setSelectedProductModal(productToAdd);
+            console.log("Mostrar otro modal en lugar del modal de productos");
+          }
       
         if (productToAdd) {
           const itemInCart = cart.find(item => item.id === id);

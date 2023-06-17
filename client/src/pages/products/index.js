@@ -68,6 +68,7 @@ const Products = ({ initialProducts }) => {
                     image={selectedProductModal.image}
                     price={selectedProductModal.price}
                     handleConfirmation={closeModal}
+                    redirect={'/cart'}
                 />
             )}
             <section className="md:px-28 py-5">

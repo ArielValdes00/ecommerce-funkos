@@ -14,14 +14,12 @@ import AddToCartButton from './AddToCartButton.js';
 import ButtonAdded from './ButtonProductAdded.js';
 
 const SliderCards = ({ title }) => {
-    SliderCards.propTypes = {
-        title: PropTypes.string.isRequired,
-    };
+  
     const { recentProducts, toggleWishlist, isInWishlist, isInCart } = useContext(ProductContext);
 
     return (
-        <div className='px-12 md:px-28 relative bg-gray-100 py-10'>
-            <h2 className='text-5xl font-extrabold py-8'>{title}</h2>
+        <div className='px-12 md:px-28 relative py-10'>
+            <h2 className='text-5xl font-extrabold py-8 uppercase'>{title}</h2>
             <div className="swiper-button-next hidden"></div>
             <div className="swiper-button-prev hidden"></div>
             <Swiper
@@ -47,7 +45,7 @@ const SliderCards = ({ title }) => {
             >
 
                 {recentProducts.map((product) => (
-                    <SwiperSlide key={product.id} className='border rounded-lg shadow-lg text-center mx-auto p-5 bg-white relative'>
+                    <SwiperSlide key={product.id} className='rounded-lg shadow-lg border border-gray-100 text-center mx-auto p-5 my-5 bg-white relative'>
                         <Image
                             onClick={() => toggleWishlist(product.id)}
                             src={isInWishlist(product.id) ? RedHeart : Heart}

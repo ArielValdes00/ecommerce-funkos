@@ -8,14 +8,34 @@ import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
 import RedHeart from "../../public/icons/redHeart.png"
 import Image from 'next/image';
+import ModalPurchase from '@/components/ModalPurchase';
 
 const Wishlist = () => {
     const { data: session } = useSession();
-    const { wishlist, toggleWishlist, isInWishlist } = useContext(ProductContext);
+    const { wishlist, toggleWishlist, isInWishlist, setShowModal, showModal, selectedProductModal, setSelectedProductModal } = useContext(ProductContext);
+
+    const handleOpenModal = (id) => {
+        const findProduct = wishlist.find(product => product.id === id)
+        setSelectedProductModal(findProduct)
+        setShowModal(true)
+    }
 
     return (
         <div>
             <Navbar session={session} />
+            {showModal && (
+                <ModalPurchase
+                    title={'are you sure you want to remove the following product from your wishlist?'}
+                    firstButton={'yes'}
+                    secondButton={'cancel'}
+                    handleConfirmation={() => toggleWishlist(selectedProductModal.id)}
+                    category={selectedProductModal.category}
+                    image={selectedProductModal.image}
+                    name={selectedProductModal.name}
+                    price={selectedProductModal.price}
+                    redirect={'/wishlist'}
+                />
+            )}
             <section className='py-5 md:28 bg-gray-100'>
                 <div className='px-4 md:px-28 mb-4'>
                     <div className="text-xs text-gray-500 mb-5">
@@ -28,7 +48,7 @@ const Wishlist = () => {
                         <div key={product.id} className='bg-white grid grid-cols-2 md:grid-cols-3 items-center py-5 gap-8 border-b'>
                             <div className='relative'>
                                 <Image
-                                    onClick={() => toggleWishlist(product.id)}
+                                    onClick={() => handleOpenModal(product.id)}
                                     src={isInWishlist(product.id) ? RedHeart : Heart}
                                     width={25} height={25} alt='RemoveProduct' className='absolute right-0 cursor-pointer'></Image>
                                 <img src={product.image} width={150} height={150} alt={product.name} className='ms-2 sm:mx-auto' />
@@ -40,6 +60,7 @@ const Wishlist = () => {
                                 <div className='pe-3 mt-4 md:hidden'>
                                     <AddToCartButton
                                         product={product}
+                                        showProductModal={false}
                                         textButton={"move to cart"}
                                         className={'uppercase bg-black text-white rounded-full py-2 px-4 font-bold w-full'}
                                     />
@@ -48,8 +69,9 @@ const Wishlist = () => {
                             <div className='pe-3 mt-4 hidden md:block'>
                                 <AddToCartButton
                                     product={product}
+                                    showProductModal={false}
                                     textButton={"move to cart"}
-                                    className={'lg:py-4 uppercase bg-black text-white rounded-full py-2 px-4 font-bold w-full'}
+                                    className={'lg:py-4 uppercase bg-black text-white rounded-full py-2 font-bold w-full hover:bg-white hover:text-black border-2 border-black transition duration-300'}
                                 />
                             </div>
                         </div>

@@ -27,6 +27,7 @@ export default function Home() {
                     firstButton={'view cart'}
                     secondButton={'continue shopping'}
                     handleConfirmation={closeModal}
+                    redirect={'/cart'}
                 />
             )}
             <section className="bg-sky-800 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
@@ -44,9 +45,9 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <section>
-                <SliderCards title={"NEW ARRIVAL"} />
-                <SliderCards title={"BEST SELLING"} />
+            <section className='bg-gray-100'>
+                <SliderCards title={"new arrival"} />
+                <SliderCards title={"best selling"} />
             </section>
             <section>
                 <BannerSocialMedia />
