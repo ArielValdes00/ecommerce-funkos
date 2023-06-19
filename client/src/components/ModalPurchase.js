@@ -8,7 +8,7 @@ const ModalPurchase = ({ title, name, price, image, quantity, category, handleCo
     const { closeModal } = useContext(ProductContext)
 
     return (
-        <div className='fixed inset-0 z-40 flex items-center justify-center w-full'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center w-full'>
             <div className='absolute bg-white w-[320px] md:w-2/3 lg:w-1/2 p-4 rounded-xl shadow-lg z-10 relative animate__animated animate__fadeInDown'>
                 <div className='lg:flex lg:me-20'>
                     <p className='font-bold text-lg uppercase text-center pt-8 lg:p-0 lg:text-start'>{title}</p>

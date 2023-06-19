@@ -76,11 +76,11 @@ const Cart = () => {
                 />
             )}
             <section className="py-5">
-                <div className="px-4 md:px-28 mb-7">
-                    <div className="text-xs text-gray-500 mb-5">
+                <div className="md:px-28 mb-7 mx-4">
+                <div className="text-xs text-gray-500 mb-7">
                         <Link href={"/"}>Funko</Link> / <span>Cart</span>
                     </div>
-                    <h1 className="uppercase font-extrabold text-5xl">my cart</h1>
+                    <h1 className="text-5xl font-extrabold mb-7 py-4">MY CART</h1>
                 </div>
                 {cart.length >= 1 ? (
                     <>
@@ -123,7 +123,7 @@ const Cart = () => {
                                 <button onClick={removeAllItemsFromCart} className="px-7 py-2 rounded-full bg-red-700 text-white shadow-lg uppercase font-semibold">Empty Cart</button>
                             </div>
                         </div>
-                        <div className="py-5 text-center bg-white">
+                        <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="you might also like" />
                         </div>
                     </>
@@ -136,7 +136,7 @@ const Cart = () => {
                             </div>
                             <Image src={EmptyCart} height={315} width={315} alt="Wall-e" />
                         </div>
-                        <div className="py-5 text-center bg-white">
+                        <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="check these out!" />
                         </div>
                     </>

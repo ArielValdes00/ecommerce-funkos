@@ -23,6 +23,7 @@ export const ProductProvider = ({ children }) => {
     const [selectedQuantities, setSelectedQuantities] = useState({});
     const [showModalWishlist, setShowModalWishlist] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [removeModalClicked, setRemoveModalClicked] = useState(false);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
@@ -53,6 +54,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     const toggleWishlist = (productId) => {
+        setShowModal(false)
         setIsLoading(true);
         if (isInWishlist(productId)) {
             setSelectedProductModal(productId);
@@ -72,22 +74,17 @@ export const ProductProvider = ({ children }) => {
             }, 3000);
         }
     };
-    
+
     const closeModal = () => {
         setShowModal(false);
     }
 
-    const addItemToCart = (id, quantity = 1, showProductModal) => {
+    const addItemToCart = (id, quantity = 1) => {
         const { cart } = cartState;
         const productToAdd = products.find(product => product.id === id);
-        if (showProductModal) {
-            setSelectedProductModal(productToAdd);
-            setShowModal(true);
-        } else {
-            setSelectedProductModal(productToAdd);
-            console.log("Mostrar otro modal en lugar del modal de productos");
-        }
-
+        setRemoveModalClicked(false)
+        setSelectedProductModal(productToAdd);
+        setShowModal(true);
         if (productToAdd) {
             const itemInCart = cart.find(item => item.id === id);
 
@@ -255,7 +252,9 @@ export const ProductProvider = ({ children }) => {
                 setShowModalWishlist,
                 showModalWishlist,
                 isLoading,
-                setIsLoading
+                setIsLoading,
+                setRemoveModalClicked,
+                removeModalClicked
             }}
         >
             {children}

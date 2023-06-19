@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import GoogleButton from '@/components/GoogleButton';
 import Input from '@/components/Inputs';
-import Link from 'next/link';
 import axios from 'axios';
-const register = () => {
+
+const Register = ({ onClick }) => {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -14,7 +14,7 @@ const register = () => {
     })
 
     const router = useRouter()
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -28,16 +28,14 @@ const register = () => {
         }
     }
 
-
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
-
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full sm:max-w-md lg:max-w-lg">
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pb-5 pt-3">
-                    <h2 className='font-extrabold text-4xl text-center mb-5 pb-5'>FUNKO</h2>
+        <div className="flex items-center justify-center bg-gray-100">
+            <div className="w-full  lg:max-w-lg">
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-6">
+                    <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>REGISTER</h2>
                     <div className="mb-4">
                         <Input
                             type={"text"}
@@ -107,18 +105,18 @@ const register = () => {
                         </div>
                         <GoogleButton />
                     </div>
-                    <div className="mt-4 text-center">
-                        <p className="text-sm text-gray-600">
-                            Already have an account?{' '}
-                            <Link href={"/login"} className="text-black hover:text-gray-800 font-bold">
+                    <div className="mt-4">
+                        <p className="text-sm text-gray-600 flex justify-center gap-1">
+                            Already have an account?
+                            <span onClick={onClick} className="text-black hover:text-gray-800 font-bold cursor-pointer underline">
                                 Log in
-                            </Link>
+                            </span>
                         </p>
                     </div>
                 </form>
             </div >
         </div >
-    );
-};
+    )
+}
 
-export default register;
+export default Register

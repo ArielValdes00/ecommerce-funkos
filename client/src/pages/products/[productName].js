@@ -17,13 +17,24 @@ import SliderCards from '@/components/SliderCard'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading } = useContext(ProductContext)
+    const { toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading, closeModal } = useContext(ProductContext)
 
     return (
         <div>
             <Navbar session={session} />
             {showModal && (
-                <ModalPurchase />
+                <ModalPurchase
+                title={'item(s) added to cart'}
+                quantity={'quantity: 1'}
+                firstButton={'view cart'}
+                secondButton={'continue shopping'}
+                category={selectedProductModal.category}
+                name={selectedProductModal.name}
+                image={selectedProductModal.image}
+                price={selectedProductModal.price}
+                handleConfirmation={closeModal}
+                redirect={'/cart'}
+            />
             )}
             <section className='px-4 md:px-28 py-5 mb-5'>
                 {isLoading && selectedProductModal === product.id && (

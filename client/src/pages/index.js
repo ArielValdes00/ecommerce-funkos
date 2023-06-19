@@ -29,8 +29,8 @@ export default function Home() {
                     redirect={'/cart'}
                 />
             )}
-            <section className="bg-sky-800 grid min-h-screen" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
-                <div className="grid lg:grid-cols-2 gap-7 items-center md:px-28">
+            <section className="bg-sky-800 grid min-h-screen md:px-28" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
+                <div className="grid lg:grid-cols-2 gap-7 items-center">
                     <div className="text-white flex flex-col gap-3 justify-center items-start px-5 mt-5">
                         <h3 className="font-semibold text-sm md:text-xl w-full">GOTHAM KNIGHTS</h3>
                         <h1 className="text-lg md:text-4xl font-extrabold w-full">WINGS OF VENGEANCE</h1>
