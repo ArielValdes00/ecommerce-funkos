@@ -75,11 +75,11 @@ const Products = ({ initialProducts }) => {
                     redirect={'/cart'}
                 />
             )}
-            <section className="md:px-28 py-5 mx-4">
-                    <div className="text-xs text-gray-500 mb-7">
+            <section className="md:px-28 py-5 sm:mx-4">
+                    <div className="text-xs text-gray-500 mb-7 mx-4 sm:mx-0">
                         <Link href={"/"}>Funko</Link> / <span>Products</span>
                     </div>
-                    <h1 className="text-5xl font-extrabold mb-7 py-4">PRODUCTS</h1>
+                    <h1 className="text-5xl font-extrabold mb-7 py-4 mx-4 sm:mx-0">PRODUCTS</h1>
                 <div className="bg-gray-100 p-4 mb-8">
                     <div className="flex items-center gap-8 px-3">
                         <div className='flex items-center justify-between w-full lg:hidden'>

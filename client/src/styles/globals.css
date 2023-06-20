@@ -8,6 +8,11 @@
     --navbar-height: 70px; 
 }
 
+.fondo{
+    background-image: url('/fondo.jpg');
+    background-size: cover;
+}
+
 .swiper-button-next,
 .swiper-button-prev {
     --swiper-navigation-size: 27px;

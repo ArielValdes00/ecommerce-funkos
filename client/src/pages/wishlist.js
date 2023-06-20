@@ -21,7 +21,7 @@ const Wishlist = () => {
         setSelectedProductModal, isInCart, closeModal,
         setRemoveModalClicked, removeModalClicked
     } = useContext(ProductContext);
-    
+
     const [isLogin, setIsLogin] = useState(true);
 
     const toggleForm = () => {
@@ -72,40 +72,50 @@ const Wishlist = () => {
                     }
                 />
             )}
-            <section className='py-5 md:px-28 bg-gray-100 mx-4'>
-                <div className="text-xs text-gray-500 mb-7">
-                    <Link href={"/"}>Funko</Link> / <span>Wishlist</span>
+            <section className='py-5 md:px-28 bg-gray-100'>
+                <div className='mx-4'>
+                    <div className="text-xs text-gray-500 mb-7">
+                        <Link href={"/"}>Funko</Link> / <span>Wishlist</span>
+                    </div>
+                    <h1 className="text-5xl font-extrabold mb-7 py-4">WISHLIST</h1>
                 </div>
-                <h1 className="text-5xl font-extrabold mb-7 py-4">WISHLIST</h1>
-                <div className="py-5 my-8 grid xl:grid-cols-2 gap-4">
+                <div className="py-5 my-8 grid xl:grid-cols-2 gap-4 mx-4">
                     <div>
                         {wishlist.length === 0 ? (
                             <div className='bg-white text-center'>
-                                <p className='uppercase font-semibold py-14'>No hay items en la wishlist.</p>
+                                <p className='font-semibold py-14'>The list is empty.</p>
                             </div>
                         ) : (
                             wishlist.map((product) => (
-                                <div key={product.id} className='bg-white grid grid-cols-2 md:grid-cols-3 items-center py-5 gap-8 border-b'>
+                                <div key={product.id} className='bg-white grid grid-cols-2 md:grid-cols-3 items-center py-5 gap-9 border-b'>
                                     <div className='relative'>
                                         <Image
                                             onClick={() => handleOpenModal(product.id)}
                                             src={isInWishlist(product.id) ? RedHeart : Heart}
                                             width={25} height={25} alt='RemoveProduct' className='absolute right-0 cursor-pointer'></Image>
-                                        <img src={product.image} width={150} height={150} alt={product.name} className='ms-2 sm:mx-auto' />
+                                        <img src={product.image} width={150} height={150} alt={product.name} className='sm:mx-auto' />
                                     </div>
-                                    <div className='flex flex-col gap-1 items-center'>
+                                    <div className='flex flex-col items-start justify-center md:ms-3'>
                                         <p className='uppercase font-semibold lg:text-xl'>{product.category}</p>
-                                        <h3 className='font-extrabold uppercase text-center text-xl lg:text-2xl'>{product.name}</h3>
+                                        <h3 className='font-extrabold uppercase text-start text-xl lg:text-2xl'>{product.name}</h3>
                                         <p className='font-semibold lg:text-xl'>${product.price}</p>
-                                        <div className='pe-3 mt-4 md:hidden'>
-                                            <AddToCartButton
-                                                product={product}
-                                                textButton={"move to cart"}
-                                                className={'uppercase bg-black text-white rounded-full py-2 px-4  font-semibold '}
-                                            />
+                                        <div className='mt-4 md:hidden'>
+                                            {!isInCart(product.id) ? (
+                                                <AddToCartButton
+                                                    product={product}
+                                                    textButton={"move to cart"}
+                                                    className={'uppercase bg-black text-white rounded-full py-2 px-4 text-sm font-semibold'}
+                                                />
+                                            ) : (
+                                                <ButtonAdded
+                                                    buttonText={'in cart'}
+                                                    disabled={true}
+                                                    product={product}
+                                                />
+                                            )}
                                         </div>
                                     </div>
-                                    <div className='pe-3 mt-4 hidden md:block'>
+                                    <div className='mt-4 hidden md:block me-4'>
                                         {!isInCart(product.id) ? (
                                             <AddToCartButton
                                                 product={product}

@@ -63,7 +63,7 @@ const productName = ({ product }) => {
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
                         <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
-                        <div className='w-2/3'>
+                        <div className='md:w-2/3'>
                             <ButtonAdded
                                 buttonText={isInCart(product.id) ? ('in cart') : ('add to cart')}
                                 product={product}
