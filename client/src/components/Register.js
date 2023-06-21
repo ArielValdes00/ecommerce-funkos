@@ -5,15 +5,15 @@ import Input from '@/components/Inputs';
 import axios from 'axios';
 
 const Register = ({ onClick }) => {
+    const router = useRouter()
     const [form, setForm] = useState({
         name: "",
         email: "",
         areaCode: "",
         phoneNumber: "",
         password: "",
+        confirmPassword: ""
     })
-
-    const router = useRouter()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,58 +28,50 @@ const Register = ({ onClick }) => {
         }
     }
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
     return (
         <div className="flex items-center justify-center bg-gray-100">
             <div className="w-full  lg:max-w-lg">
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-6">
                     <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>REGISTER</h2>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <Input
                             type={"text"}
                             placeholder={"Name"}
                             labelName={"Name"}
                             name={"name"}
-                            onChange={handleChange}
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <Input
                             type={"email"}
                             placeholder={"Email Address"}
                             labelName={"Email Address"}
                             name={"email"}
-                            onChange={handleChange}
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <div className="grid grid-cols-2 gap-4">
                             <Input
                                 type={"text"}
                                 placeholder={"Area Code"}
                                 labelName={"Area Code"}
                                 name={"areaCode"}
-                                onChange={handleChange}
                             />
                             <Input
                                 type={"text"}
                                 placeholder={"Phone Number"}
                                 labelName={"Phone Number"}
-                                name={"phoneNumber"}
-                                onChange={handleChange}
+                                name={"phone"}
                             />
                         </div>
                     </div>
-                    <div className="mb-4 flex">
+                    <div className="mb-12 flex">
                         <div className="w-1/2 pr-2">
                             <Input
                                 type={"password"}
                                 placeholder={"Password"}
                                 labelName={"Password"}
                                 name={"password"}
-                                onChange={handleChange}
                             />
                         </div>
                         <div className="w-1/2 pl-2">
@@ -87,7 +79,7 @@ const Register = ({ onClick }) => {
                                 type={"password"}
                                 placeholder={"Confirm Password"}
                                 labelName={"Confirm Password"}
-                                onChange={handleChange}
+                                name={"confirmPassword"}
                             />
                         </div>
                     </div>

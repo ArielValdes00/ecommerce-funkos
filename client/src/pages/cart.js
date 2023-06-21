@@ -91,8 +91,8 @@ const Cart = () => {
                     redirect={'/cart'}
                 />
             )}
-            <section className="py-5 mx-4">
-                <div className="mb-7 md:px-28">
+            <section className="py-5 ">
+                <div className="mb-7 md:px-28 mx-4">
                     <div className="text-xs text-gray-500 mb-7">
                         <Link href={"/"}>Funko</Link> / <span>Cart</span>
                     </div>
@@ -104,23 +104,23 @@ const Cart = () => {
                             <div className='grid xl:grid-cols-5 grid-cols-1 gap-8'>
                                 <div className='xl:col-span-3'>
                                     <div className="grid grid-cols-6 items-center border-b-2 border-black uppercase font-extrabold text-lg py-5">
-                                        <p className="lg:col-span-4 col-span-2">Item</p>
-                                        <p className="lg:col-span-1 col-span-2 text-center">Qty</p>
-                                        <p className="lg:col-span-1 col-span-2 ml-auto">Total</p>
+                                        <p className="md:col-span-4 col-span-2">Item</p>
+                                        <p className="md:col-span-1 col-span-2 text-center md:text-center">Qty</p>
+                                        <p className="md:col-span-1 col-span-2 ml-auto">Total</p>
                                     </div>
                                     {cart.map((item) => (
-                                        <div key={item.id} className="grid md:grid-cols-2 items-center border-b-2 border-black ">
+                                        <div key={item.id} className="grid md:grid-cols-2 items-center border-b-2 border-black mb-2">
                                             <div className="grid grid-cols-3 gap-7 items-center lg:gap-5 py-3 md:col-span-1">
                                                 <Link href={`/products/${item.name}`} className="col-span-1">
                                                     <img src={item.image} height={130} width={130} alt={item.name} />
                                                 </Link>
                                                 <div className="col-span-2">
-                                                    <p className="uppercase font-semibold text-lg">{item.category}</p>
-                                                    <Link href={`/products/${item.name}`} className="text-center uppercase md:text-2xl text-4xl font-extrabold hover:underline">{item.name}</Link>
+                                                    <p className="uppercase font-semibold lg:text-lg">{item.category}</p>
+                                                    <Link href={`/products/${item.name}`} className="text-center uppercase md:text-2xl text-3xl font-extrabold hover:underline">{item.name}</Link>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-3 py-3 items-center md:col-span-1">
-                                                <button onClick={() => openDeleteModal(item.id)} className='mx-auto'>
+                                                <button onClick={() => openDeleteModal(item.id)} className='md:mx-auto'>
                                                     <Image src={Delete} height={28} width={28} alt="Delete" />
                                                 </button>
                                                 <div className="mx-auto w-1/2">
@@ -136,7 +136,7 @@ const Cart = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className='xl:col-span-2'>
+                                <div className='xl:col-span-2 mt-3'>
                                     <ProgressBar totalPrice={cartState.totalPrice} freeShippingThreshold={freeShippingThreshold} />
                                     <div className='bg-gray-100 rounded-lg p-6 flex flex-col gap-5 text-lg'>
                                         <div className='grid grid-cols-2 border-b-2 pb-3'>

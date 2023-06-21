@@ -36,7 +36,7 @@ const Login = ({ onClick }) => {
             <div className="w-full max-w-lg">
                 <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center shadow-md rounded px-8 max-h-2xl py-6">
                     <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>LOG IN</h2>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <Input
                             type={"email"}
                             placeholder={"Email Address"}
@@ -45,7 +45,7 @@ const Login = ({ onClick }) => {
                             name={"email"}
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <Input
                             type={"password"}
                             placeholder={"Password"}
