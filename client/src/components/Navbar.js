@@ -69,15 +69,6 @@ const navbar = ({ session }) => {
                             {session ? (
                                 <div className='relative'>
                                     <div className='flex items-center justify-center gap-1'>
-                                        {session.user.image !== '0' && (
-                                            <img
-                                                src={session.user.image}
-                                                height={26}
-                                                width={26}
-                                                alt='User'
-                                                className='rounded-full'
-                                            />
-                                        )}
                                         <h3 className='lg:text-xl font-extrabold uppercase cursor-pointer me-3' onClick={handleMenuToggle}>
                                             {session.user.name}
                                         </h3>

@@ -22,7 +22,9 @@ const Login = ({ onClick }) => {
                 email: form.email,
                 password: form.password,
                 callbackUrl: "/",
-            })
+                redirect: false
+            });
+            console.log(res.error)
         } catch (error) {
             console.error(error)
         }
@@ -52,8 +54,8 @@ const Login = ({ onClick }) => {
                             labelName={"Password"}
                             onChange={handleChange}
                             name={"password"}
-                        />
-                        <div className='text-end mt-2 me-2'> 
+                         />
+                        <div className='text-end mt-2 me-2'>
                             <a className="font-bold text-sm text-black hover:text-gray-800 underline" href="#">
                                 Forgot Password?
                             </a>
@@ -64,7 +66,7 @@ const Login = ({ onClick }) => {
                             className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded"
                             type="submit"
                         >
-                            LOG IN
+                            Log in
                         </button>
                         <div className="flex items-center my-3">
                             <div className="px-4 border border-gray-300"></div>

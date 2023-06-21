@@ -93,11 +93,11 @@ const Wishlist = () => {
                                             onClick={() => handleOpenModal(product.id)}
                                             src={isInWishlist(product.id) ? RedHeart : Heart}
                                             width={25} height={25} alt='RemoveProduct' className='absolute right-0 cursor-pointer'></Image>
-                                        <img src={product.image} width={150} height={150} alt={product.name} className='sm:mx-auto' />
+                                        <Link href={`/products/${product.name}`}><img src={product.image} width={150} height={150} alt={product.name} className='sm:mx-auto' /></Link>
                                     </div>
                                     <div className='flex flex-col items-start justify-center md:ms-3'>
                                         <p className='uppercase font-semibold lg:text-xl'>{product.category}</p>
-                                        <h3 className='font-extrabold uppercase text-start text-xl lg:text-2xl'>{product.name}</h3>
+                                        <Link href={`/products/${product.name}`} className='font-extrabold uppercase text-start text-xl lg:text-2xl hover:underline'>{product.name}</Link>
                                         <p className='font-semibold lg:text-xl'>${product.price}</p>
                                         <div className='mt-4 md:hidden'>
                                             {!isInCart(product.id) ? (

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext, useState } from 'react';
 import GoogleButton from '@/components/GoogleButton';
 import Input from '@/components/Inputs';
 import axios from 'axios';
-
+import { isValidName, isValidEmail, isValidAreaCode, isValidPhone, isValidPassword } from '../../utils/validations';
+import Image from 'next/image';
+import { ProductContext } from '@/context/ProductContext';
+import Loader from '../../public/icons/loader.gif'
 const Register = ({ onClick }) => {
-    const router = useRouter()
+    const { isLoading, setIsLoading } = useContext(ProductContext)
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -15,18 +17,40 @@ const Register = ({ onClick }) => {
         confirmPassword: ""
     })
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prevState) => ({
+            ...prevState, [name]: value
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const res = await axios.post("http://localhost:4000/api/users", form)
-            if (res.status === 201) {
-                router.push("/login")
+
+        if (
+            isValidName(form.name) &&
+            isValidEmail(form.email) &&
+            isValidAreaCode(form.areaCode) &&
+            isValidPhone(form.phoneNumber) &&
+            isValidPassword(form.password) &&
+            form.password === form.confirmPassword
+        ) {
+            setIsLoading(true);
+            try {
+                const res = await axios.post('http://localhost:4000/api/users', form);
+                if (res.status === 201) {
+                    setTimeout(() => {
+                        setIsLoading(false);
+                        window.location.reload();
+                    }, 2000);
+                }
+                console.log(res);
+            } catch (error) {
+                console.error(error);
             }
-            console.log(res)
-        } catch (error) {
-            console.error(error)
         }
-    }
+    };
+
 
     return (
         <div className="flex items-center justify-center bg-gray-100">
@@ -39,6 +63,8 @@ const Register = ({ onClick }) => {
                             placeholder={"Name"}
                             labelName={"Name"}
                             name={"name"}
+                            onChange={handleInputChange}
+                            formValue={form.name}
                         />
                     </div>
                     <div className="mb-6">
@@ -47,6 +73,8 @@ const Register = ({ onClick }) => {
                             placeholder={"Email Address"}
                             labelName={"Email Address"}
                             name={"email"}
+                            onChange={handleInputChange}
+                            formValue={form.email}
                         />
                     </div>
                     <div className="mb-6">
@@ -56,12 +84,16 @@ const Register = ({ onClick }) => {
                                 placeholder={"Area Code"}
                                 labelName={"Area Code"}
                                 name={"areaCode"}
+                                onChange={handleInputChange}
+                                formValue={form.areaCode}
                             />
                             <Input
                                 type={"text"}
                                 placeholder={"Phone Number"}
                                 labelName={"Phone Number"}
-                                name={"phone"}
+                                name={"phoneNumber"}
+                                onChange={handleInputChange}
+                                formValue={form.phoneNumber}
                             />
                         </div>
                     </div>
@@ -72,6 +104,8 @@ const Register = ({ onClick }) => {
                                 placeholder={"Password"}
                                 labelName={"Password"}
                                 name={"password"}
+                                onChange={handleInputChange}
+                                formValue={form.password}
                             />
                         </div>
                         <div className="w-1/2 pl-2">
@@ -80,6 +114,8 @@ const Register = ({ onClick }) => {
                                 placeholder={"Confirm Password"}
                                 labelName={"Confirm Password"}
                                 name={"confirmPassword"}
+                                onChange={handleInputChange}
+                                passwordValue={form.password}
                             />
                         </div>
                     </div>
@@ -88,8 +124,14 @@ const Register = ({ onClick }) => {
                             className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded "
                             type="submit"
                         >
-                            Register
-                        </button>
+                            {isLoading ? (
+                                <div className='flex items-center justify-center'>
+                                    <Image src={Loader} height={25} width={25} alt='Loading'/>
+                                    <span>Loading...</span>
+                                </div>
+                            ) : (
+                                <span>Register</span>
+                            )}                        </button>
                         <div className="flex items-center my-3">
                             <div className="px-4 border border-gray-300"></div>
                             <div className="mx-2 text-gray-500 uppercase">or</div>

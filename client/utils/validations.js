@@ -19,7 +19,7 @@ export const isValidName = (name) => {
   };
   
   export const isValidPassword = (password) => {
-    const passwordRegex = /^[a-z]{8,16}$/;
+    const passwordRegex = /^[a-zA-Z0-9]{8,16}$/;
     return passwordRegex.test(password);
   };
   
