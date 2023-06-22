@@ -91,7 +91,7 @@ const Products = ({ initialProducts }) => {
                                 <p className='font-semibold text-lg'>{`(${totalProducts}) Results`}</p>
                             </div>
                         </div>
-                        <div className={`${isFilterMenuOpen ? "block fixed bg-gray-100 text-black top-0 min-h-screen right-0 z-50" : "hidden"} flex flex-col lg:p-0 lg:grid gap-7 lg:grid-cols-4 items-center lg:w-full w-full  lg:col-span-4`}>
+                        <div className={`${isFilterMenuOpen ? "block fixed bg-gray-100 text-black top-0 min-h-screen right-0 z-50" : "hidden"} flex flex-col lg:p-0 lg:grid gap-5 lg:grid-cols-4 items-center lg:w-full w-full  lg:col-span-4`}>
                             <div className='lg:hidden flex justify-between w-full px-5 py-3'>
                                 <div className='flex items-center gap-2 font-extrabold text-lg'>
                                     <Image src={Filter} height={20} width={20} alt='Filter' />

@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
-import Input from '@/components/Inputs'
-import GoogleButton from '@/components/GoogleButton'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+import React, { useContext, useState } from 'react';
+import GoogleButton from '@/components/GoogleButton';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
+import { ProductContext } from '@/context/ProductContext';
+import { isValidEmail, isValidPassword } from '../../utils/validations';
+import Eye from '../../public/icons/eye.png';
+import EyeSlash from '../../public/icons/eye-slash.png';
+import Image from 'next/image';
 
 const Login = ({ onClick }) => {
     const { data: session, status } = useSession()
+    const { isLoading, setIsLoading } = useContext(ProductContext)
+    const [emailError, setEmailError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [passwordError, setPasswordError] = useState("");
     const router = useRouter()
     if (status !== 'loading' && status === "authenticated") {
         router.push("/")
@@ -17,6 +25,15 @@ const Login = ({ onClick }) => {
     })
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!isValidEmail(form.email)) {
+            setEmailError("Invalid Format")
+            setTimeout(() => setEmailError(""), 4000);
+            return;
+        } else if (!isValidPassword(form.password)) {
+            setPasswordError("Invalid Format")
+            setTimeout(() => setPasswordError(""), 4000);
+            return;
+        }
         try {
             const res = await signIn('credentials', {
                 email: form.email,
@@ -24,7 +41,18 @@ const Login = ({ onClick }) => {
                 callbackUrl: "/",
                 redirect: false
             });
-            console.log(res.error)
+            setEmailError("");
+            setPasswordError("");
+            if (res.error === "invalid email") {
+                setEmailError("Invalid email. Please check your email address.");
+                setTimeout(() => setEmailError(""), 4000);
+            } else if (res.error === "invalid password") {
+                setPasswordError("Invalid password. Please check your password.");
+                setTimeout(() => setPasswordError(""), 4000);
+            }
+            else {
+                setIsLoading(true)
+            }
         } catch (error) {
             console.error(error)
         }
@@ -36,25 +64,41 @@ const Login = ({ onClick }) => {
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-lg">
-                <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center shadow-md rounded px-8 max-h-2xl py-6">
+                <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center shadow-md rounded max-h-2xl p-6">
                     <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>LOG IN</h2>
                     <div className="mb-6">
-                        <Input
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={'Email Address'}>
+                            Email Address
+                        </label>
+                        <input
                             type={"email"}
-                            placeholder={"Email Address"}
-                            labelName={"Email Address"}
+                            placeholder={"Your Email"}
                             onChange={handleChange}
                             name={"email"}
+                            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                         />
+                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                     </div>
-                    <div className="mb-6">
-                        <Input
-                            type={"password"}
-                            placeholder={"Password"}
-                            labelName={"Password"}
+                    <div className="mb-6 relative">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={'Password'}>
+                            Password
+                        </label>
+                        <input
+                            type={!showPassword ? "password" : "text"}
+                            placeholder={"Your Password"}
                             onChange={handleChange}
                             name={"password"}
-                         />
+                            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                        />
+                        <Image
+                            src={!showPassword ? EyeSlash : Eye}
+                            height={20}
+                            width={20}
+                            alt='Show Password'
+                            onClick={() => setShowPassword(!showPassword)}
+                            className='absolute right-5 top-[37px]'
+                        />
+                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                         <div className='text-end mt-2 me-2'>
                             <a className="font-bold text-sm text-black hover:text-gray-800 underline" href="#">
                                 Forgot Password?
@@ -66,7 +110,11 @@ const Login = ({ onClick }) => {
                             className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded"
                             type="submit"
                         >
-                            Log in
+                            {isLoading ? (
+                                <span>Loading...</span>
+                            ) : (
+                                <span>Log in</span>
+                            )}
                         </button>
                         <div className="flex items-center my-3">
                             <div className="px-4 border border-gray-300"></div>

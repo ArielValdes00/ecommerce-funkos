@@ -5,9 +5,14 @@ import axios from 'axios';
 import { isValidName, isValidEmail, isValidAreaCode, isValidPhone, isValidPassword } from '../../utils/validations';
 import Image from 'next/image';
 import { ProductContext } from '@/context/ProductContext';
-import Loader from '../../public/icons/loader.gif'
+import Loader from '../../public/icons/loader.gif';
+import Eye from '../../public/icons/eye.png';
+import EyeSlash from '../../public/icons/eye-slash.png';
+
 const Register = ({ onClick }) => {
     const { isLoading, setIsLoading } = useContext(ProductContext)
+    const [showPassword1, setShowPassword1] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -54,13 +59,13 @@ const Register = ({ onClick }) => {
 
     return (
         <div className="flex items-center justify-center bg-gray-100">
-            <div className="w-full  lg:max-w-lg">
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-6">
+            <div className="w-full lg:max-w-lg">
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6">
                     <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>REGISTER</h2>
                     <div className="mb-6">
                         <Input
                             type={"text"}
-                            placeholder={"Name"}
+                            placeholder={"Your Name"}
                             labelName={"Name"}
                             name={"name"}
                             onChange={handleInputChange}
@@ -70,7 +75,7 @@ const Register = ({ onClick }) => {
                     <div className="mb-6">
                         <Input
                             type={"email"}
-                            placeholder={"Email Address"}
+                            placeholder={"Your Email"}
                             labelName={"Email Address"}
                             name={"email"}
                             onChange={handleInputChange}
@@ -81,7 +86,7 @@ const Register = ({ onClick }) => {
                         <div className="grid grid-cols-2 gap-4">
                             <Input
                                 type={"text"}
-                                placeholder={"Area Code"}
+                                placeholder={"Your Area Code"}
                                 labelName={"Area Code"}
                                 name={"areaCode"}
                                 onChange={handleInputChange}
@@ -89,7 +94,7 @@ const Register = ({ onClick }) => {
                             />
                             <Input
                                 type={"text"}
-                                placeholder={"Phone Number"}
+                                placeholder={"Your Phone Number"}
                                 labelName={"Phone Number"}
                                 name={"phoneNumber"}
                                 onChange={handleInputChange}
@@ -98,24 +103,40 @@ const Register = ({ onClick }) => {
                         </div>
                     </div>
                     <div className="mb-12 flex">
-                        <div className="w-1/2 pr-2">
+                        <div className="w-1/2 pr-2 relative">
                             <Input
-                                type={"password"}
-                                placeholder={"Password"}
+                                type={!showPassword1 ? "password" : "text"}
+                                placeholder={"Your Password"}
                                 labelName={"Password"}
                                 name={"password"}
                                 onChange={handleInputChange}
                                 formValue={form.password}
                             />
+                            <Image
+                                src={!showPassword1 ? EyeSlash : Eye}
+                                height={20}
+                                width={20}
+                                alt='Show Password'
+                                onClick={() => setShowPassword1(!showPassword1)}
+                                className='absolute right-5 top-[37px]'
+                            />
                         </div>
-                        <div className="w-1/2 pl-2">
+                        <div className="w-1/2 pl-2 relative">
                             <Input
-                                type={"password"}
-                                placeholder={"Confirm Password"}
+                                type={!showPassword2 ? "password" : "text"}
+                                placeholder={"Confirm Your Password"}
                                 labelName={"Confirm Password"}
                                 name={"confirmPassword"}
                                 onChange={handleInputChange}
                                 passwordValue={form.password}
+                            />
+                            <Image
+                                src={!showPassword2 ? EyeSlash : Eye}
+                                height={20}
+                                width={20}
+                                alt='Hide Password'
+                                onClick={() => setShowPassword2(!showPassword2)}
+                                className='absolute right-3 top-[37px]'
                             />
                         </div>
                     </div>
@@ -126,12 +147,13 @@ const Register = ({ onClick }) => {
                         >
                             {isLoading ? (
                                 <div className='flex items-center justify-center'>
-                                    <Image src={Loader} height={25} width={25} alt='Loading'/>
+                                    <Image src={Loader} height={25} width={25} alt='Loading' />
                                     <span>Loading...</span>
                                 </div>
                             ) : (
                                 <span>Register</span>
-                            )}                        </button>
+                            )}
+                        </button>
                         <div className="flex items-center my-3">
                             <div className="px-4 border border-gray-300"></div>
                             <div className="mx-2 text-gray-500 uppercase">or</div>

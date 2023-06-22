@@ -87,18 +87,19 @@ const Wishlist = () => {
                             </div>
                         ) : (
                             wishlist.map((product) => (
-                                <div key={product.id} className='bg-white grid grid-cols-2 md:grid-cols-3 items-center py-5 gap-9 border-b'>
+                                <div key={product.id} className='bg-white grid grid-cols-2 md:grid-cols-3 items-center py-5 gap-9 border-b px-4'>
                                     <div className='relative'>
                                         <Image
                                             onClick={() => handleOpenModal(product.id)}
                                             src={isInWishlist(product.id) ? RedHeart : Heart}
-                                            width={25} height={25} alt='RemoveProduct' className='absolute right-0 cursor-pointer'></Image>
-                                        <Link href={`/products/${product.name}`}><img src={product.image} width={150} height={150} alt={product.name} className='sm:mx-auto' /></Link>
+                                            width={25} height={25} alt='RemoveProduct' className='absolute right-0 cursor-pointer'>
+                                        </Image>
+                                        <Link href={`/products/${product.name}`}><img src={product.image} width={120} height={120} alt={product.name} className='sm:mx-auto mt-3' /></Link>
                                     </div>
-                                    <div className='flex flex-col items-start justify-center md:ms-3'>
-                                        <p className='uppercase font-semibold lg:text-xl'>{product.category}</p>
-                                        <Link href={`/products/${product.name}`} className='font-extrabold uppercase text-start text-xl lg:text-2xl hover:underline'>{product.name}</Link>
-                                        <p className='font-semibold lg:text-xl'>${product.price}</p>
+                                    <div className='flex flex-col gap-1 items-start justify-center sm:ms-3'>
+                                        <p className='uppercase font-semibold'>{product.category}</p>
+                                        <Link href={`/products/${product.name}`} className='font-extrabold uppercase text-start text-xl hover:underline'>{product.name}</Link>
+                                        <p className='font-semibold'>${product.price}</p>
                                         <div className='mt-4 md:hidden'>
                                             {!isInCart(product.id) ? (
                                                 <AddToCartButton
@@ -115,12 +116,12 @@ const Wishlist = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className='mt-4 hidden md:block me-4'>
+                                    <div className='mt-4 hidden md:block me-4 w-full'>
                                         {!isInCart(product.id) ? (
                                             <AddToCartButton
                                                 product={product}
                                                 textButton={"move to cart"}
-                                                className={'lg:py-3 uppercase bg-black text-white rounded-full py-2 font-semibold w-full xl:w-full lg:w-2/3 hover:bg-white hover:text-black border-2 border-black transition duration-300'}
+                                                className={'lg:py-3 uppercase px-1 text-sm bg-black text-white rounded-full py-2 font-semibold w-full xl:w-full lg:w-2/3 hover:bg-white hover:text-black border-2 border-black transition duration-300'}
                                             />
                                         ) : (
                                             <ButtonAdded
