@@ -40,7 +40,16 @@ export const authOptions = {
                 if (!isPasswordMatched) {
                     throw new Error("invalid password")
                 }
-                return user;
+                const userData = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    areaCode: user.areaCode,
+                    phoneNumber: user.phoneNumber,
+                };
+                console.log(userData)
+
+                return userData;
             }
         })
     ],
@@ -50,14 +59,24 @@ export const authOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
+                token.areaCode = user.areaCode;
+                token.phoneNumber = user.phoneNumber;
             }
             return token
         },
         async session({ session, token }) {
-            session.user.id = token.id
-            return session
-        }
+            session.user = {
+              id: token.id,
+              name: token.name,
+              email: token.email,
+              areaCode: token.areaCode,
+              phoneNumber: token.phoneNumber,
+            };
+            return session;
+          }
     }
 };
 
