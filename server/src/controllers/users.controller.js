@@ -81,13 +81,15 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { username, email, password } = req.body;
+        const { username, email, password, phoneNumber, areaCode } = req.body;
 
         const user = await User.findOne({
             where: {
                 id: userId,
             },
         });
+        console.log('Found user:', user);
+        
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -97,23 +99,29 @@ export const updateUser = async (req, res) => {
         if (password) {
             hashedPassword = await bcrypt.hash(password, 10);
         }
-        await User.update(
-            {
-                username: username || user.username,
-                email: email || user.email,
-                password: hashedPassword,
+
+        const updatedFields = {
+            username: username || user.username,
+            email: email || user.email,
+            phoneNumber: phoneNumber || user.phoneNumber,
+            areaCode: areaCode || user.areaCode,
+            password: hashedPassword,
+        };
+
+        await User.update(updatedFields, {
+            where: {
+                id: userId,
             },
-            {
-                where: {
-                    id: userId,
-                },
-            }
-        );
+        });
+        console.log('Updated fields:', updatedFields);
+        
+
         res.status(200).json({ message: "User updated successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 export const deleteUser = async (req, res) => {
     try {
@@ -144,11 +152,9 @@ export const getToken = async (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decodedToken.sub;
-
-
-        res.status(200).json({ message: 'Datos guardados exitosamente' });
+        res.status(200).json({ message: 'Data saved successfully' });
     } catch (error) {
-        res.status(401).json({ error: 'Token inválido' });
+        res.status(401).json({ error: 'Invalid Token' });
     }
 };
 

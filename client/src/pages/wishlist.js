@@ -15,7 +15,7 @@ import Register from '@/components/Register';
 import ButtonAdded from '@/components/ButtonProductAdded';
 
 const Wishlist = () => {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const { wishlist, toggleWishlist, isInWishlist,
         setShowModal, showModal, selectedProductModal,
         setSelectedProductModal, isInCart, closeModal,
@@ -135,17 +135,23 @@ const Wishlist = () => {
                             ))
                         )}
                     </div>
-                    <div className='relative z-40'>
-                        <div className='hidden xl:grid'>
-                            <Image src={AccountHeader} height={160} width={160} alt='Welcome!'
-                                className='absolute top-[-34px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700' />
+                    {status === "authenticated" ? (
+                        <div>
+                            <h2>Aca nose que poner</h2>
                         </div>
-                        {isLogin ? (
-                            <Login onClick={toggleForm} />
-                        ) : (
-                            <Register onClick={toggleForm} />
-                        )}
-                    </div>
+                    ) : (
+                        <div className='relative z-40'>
+                            <div className='hidden xl:grid'>
+                                <Image src={AccountHeader} height={160} width={160} alt='Welcome!'
+                                    className='absolute top-[-34px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700' />
+                            </div>
+                            {isLogin ? (
+                                <Login onClick={toggleForm} />
+                            ) : (
+                                <Register onClick={toggleForm} />
+                            )}
+                        </div>
+                    )}
                 </div>
             </section>
             <BannerSocialMedia />

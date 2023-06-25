@@ -1,7 +1,5 @@
 import React, { useContext, useState } from 'react';
 import GoogleButton from '@/components/GoogleButton';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { ProductContext } from '@/context/ProductContext';
 import { isValidEmail, isValidPassword } from '../../utils/validations';
@@ -10,15 +8,11 @@ import EyeSlash from '../../public/icons/eye-slash.png';
 import Image from 'next/image';
 
 const Login = ({ onClick }) => {
-    const { data: session, status } = useSession()
     const { isLoading, setIsLoading } = useContext(ProductContext)
     const [emailError, setEmailError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
-    const router = useRouter()
-    if (status !== 'loading' && status === "authenticated") {
-        router.push("/")
-    }
+    
     const [form, setForm] = useState({
         email: "",
         password: ""

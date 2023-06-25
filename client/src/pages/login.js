@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Login from '@/components/Login';
 import Navbar from '@/components/Navbar';
 import { useSession } from 'next-auth/react';
@@ -8,8 +9,12 @@ import Footer from '@/components/Footer';
 import Register from '@/components/Register';
 
 const login = () => {
-    const { data: session } = useSession();
+    const { data: session,status } = useSession();
+    const router = useRouter()
     const [isLogin, setIsLogin] = useState(true);
+    if (status !== 'loading' && status === "authenticated") {
+        router.push("/")
+    }
 
     const toggleForm = () => {
         setIsLogin(!isLogin);

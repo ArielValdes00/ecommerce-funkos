@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from "next-auth/providers/credentials";
+import { getUser } from '../../../../utils/apiUsers';
 import dotenv from 'dotenv';
 import SequelizeAdapter from "@next-auth/sequelize-adapter";
 import { Sequelize } from "sequelize";
@@ -64,20 +65,27 @@ export const authOptions = {
                 token.email = user.email;
                 token.areaCode = user.areaCode;
                 token.phoneNumber = user.phoneNumber;
+            } else {
+                const updatedUser = await getUser(token.id);
+                token.name = updatedUser.name;
+                token.email = updatedUser.email;
+                token.areaCode = updatedUser.areaCode;
+                token.phoneNumber = updatedUser.phoneNumber;
             }
-            return token
+            return token;
         },
         async session({ session, token }) {
             session.user = {
-              id: token.id,
-              name: token.name,
-              email: token.email,
-              areaCode: token.areaCode,
-              phoneNumber: token.phoneNumber,
+                id: token.id,
+                name: token.name,
+                email: token.email,
+                areaCode: token.areaCode,
+                phoneNumber: token.phoneNumber,
             };
             return session;
-          }
+        },
     }
+
 };
 
 export default NextAuth({

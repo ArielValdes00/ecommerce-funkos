@@ -75,7 +75,7 @@ const navbar = ({ session }) => {
                                     </div>
                                     {isMenuOpen && (
                                         <ul className={'absolute right-0 pe-3 mt-2 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold'}>
-                                            <Link href='#' className='flex items-center justify-between gap-3 px-5 py-2'>
+                                            <Link href={"/profile"} className='flex items-center justify-between gap-3 px-5 py-2'>
                                                 <Image src={User} height={17} width={17} alt='User'></Image>
                                                 <span>Profile</span>
                                             </Link>
