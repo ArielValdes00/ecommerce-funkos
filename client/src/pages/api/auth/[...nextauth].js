@@ -47,9 +47,11 @@ export const authOptions = {
                     email: user.email,
                     areaCode: user.areaCode,
                     phoneNumber: user.phoneNumber,
+                    address: user.address,
+                    postalCode: user.postalCode,
+                    identificationNumber: user.identificationNumber,
+                    recipientName: user.recipientName
                 };
-                console.log(userData)
-
                 return userData;
             }
         })
@@ -65,12 +67,20 @@ export const authOptions = {
                 token.email = user.email;
                 token.areaCode = user.areaCode;
                 token.phoneNumber = user.phoneNumber;
+                token.address = user.address;
+                token.postalCode = user.postalCode;
+                token.identificationNumber = user.identificationNumber;
+                token.recipientName = user.recipientName;
             } else {
                 const updatedUser = await getUser(token.id);
                 token.name = updatedUser.name;
                 token.email = updatedUser.email;
                 token.areaCode = updatedUser.areaCode;
                 token.phoneNumber = updatedUser.phoneNumber;
+                token.address = updatedUser.address;
+                token.postalCode = updatedUser.postalCode;
+                token.identificationNumber = updatedUser.identificationNumber;
+                token.recipientName = updatedUser.recipientName;
             }
             return token;
         },
@@ -81,6 +91,10 @@ export const authOptions = {
                 email: token.email,
                 areaCode: token.areaCode,
                 phoneNumber: token.phoneNumber,
+                address: token.address,
+                postalCode: token.postalCode,
+                identificationNumber: token.identificationNumber,
+                recipientName: token.recipientName
             };
             return session;
         },

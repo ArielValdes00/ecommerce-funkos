@@ -4,6 +4,8 @@ import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Delete from '../../public/icons/delete.png'
+import Security from '../../public/icons/security.png'
+import SecurityDark from '../../public/icons/security-dark.png'
 import EmptyCart from '../../public/icons/empty-cart.png'
 import Image from 'next/image';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
@@ -22,6 +24,7 @@ const Cart = () => {
     const [productIds, setProductIds] = useState([])
     const { data: session, status } = useSession();
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [isHovered, setIsHovered] = useState(false)
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
 
     const freeShippingThreshold = 50;
@@ -156,7 +159,19 @@ const Cart = () => {
                                             <p className='text-xl'>Estimated Total</p>
                                             <span className='ml-auto'>${cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95)}</span>
                                         </div>
-                                        <button className='text-lg border-2 uppercase rounded-full px-3 py-2 mt-3 w-full font-extrabold border-black hover:bg-white hover:text-black bg-black text-white'>SECURE CHECKOUT</button>
+                                        <button
+                                            onMouseEnter={() => setIsHovered(true)}
+                                            onMouseLeave={() => setIsHovered(false)}
+                                            className='flex justify-center items-center gap-3 text-lg border-2 uppercase rounded-full px-3 py-2 mt-3 w-full font-extrabold border-black hover:bg-white hover:text-black bg-black text-white'>
+                                            <Image
+                                                src={isHovered ? SecurityDark : Security}
+                                                height={22}
+                                                width={22}
+                                                alt='Checkout'
+                                            />
+                                            <span className=''>SECURE CHECKOUT</span>
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>

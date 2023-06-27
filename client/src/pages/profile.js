@@ -10,6 +10,7 @@ import Map from '../../public/icons/map.png';
 import Pencil from '../../public/icons/pencil.png';
 import Shopping from '../../public/icons/shopping.png';
 import Info from '../../public/icons/info.png';
+import Confirm from '../../public/icons/confirm.png';
 import Image from 'next/image';
 
 const profile = ({ session }) => {
@@ -26,10 +27,14 @@ const profile = ({ session }) => {
         return <div>Loading...</div>;
     }
     const [editing, setEditing] = useState(false);
+    const [editingAddress, setEditingAddress] = useState(false);
     const [updatedUser, setUpdatedUser] = useState(user);
 
     const handleInputChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
+    };
+    const handleEditAddress = () => {
+        setEditingAddress(true);
     };
 
     const handleEditClick = () => {
@@ -41,6 +46,7 @@ const profile = ({ session }) => {
         const updatedSession = await getSession();
         setUpdatedUser(updatedSession.user);
         setEditing(false);
+        setEditingAddress(false);
     };
 
     return (
@@ -66,7 +72,7 @@ const profile = ({ session }) => {
                     <div>
                         <div className='bg-white p-4 rounded-lg border w-full'>
                             <div className='mb-5 flex items-center gap-3'>
-                                <Image src={Info} height={30} width={30} alt='Info'/>
+                                <Image src={Info} height={30} width={30} alt='Info' />
                                 <p className='font-extrabold text-2xl'>My Information</p>
                             </div>
                             <div>
@@ -77,6 +83,7 @@ const profile = ({ session }) => {
                                         name="name"
                                         value={updatedUser.name}
                                         onChange={handleInputChange}
+                                        className={'w-full'}
                                     />
                                 ) : (
                                     <span className=''>{updatedUser.name}</span>
@@ -90,47 +97,46 @@ const profile = ({ session }) => {
                                         name="email"
                                         value={updatedUser.email}
                                         onChange={handleInputChange}
+                                        className={'w-full'}
                                     />
                                 ) : (
                                     <span>{updatedUser.email}</span>
                                 )}
                             </div>
                             <div>
-                                <strong>Phone Number:</strong>{' '}
-                                {editing ? (
-                                    <input
-                                        type="text"
-                                        name="phoneNumber"
-                                        value={updatedUser.phoneNumber}
-                                        onChange={handleInputChange}
-                                    />
-                                ) : (
-                                    <span>{updatedUser.phoneNumber}</span>
-                                )}
-                            </div>
-                            <div>
-                                <strong>Area Code:</strong>{' '}
+                                <strong>Area Code: </strong>
                                 {editing ? (
                                     <input
                                         type="text"
                                         name="areaCode"
                                         value={updatedUser.areaCode}
                                         onChange={handleInputChange}
+                                        className={'w-full'}
                                     />
                                 ) : (
                                     <span>{updatedUser.areaCode}</span>
                                 )}
                             </div>
+                            <div>
+                                <strong>Phone Number: </strong>
+                                {editing ? (
+                                    <input
+                                        type="text"
+                                        name="phoneNumber"
+                                        value={updatedUser.phoneNumber}
+                                        onChange={handleInputChange}
+                                        className={'w-full'}
+                                    />
+                                ) : (
+                                    <span>{updatedUser.phoneNumber}</span>
+                                )}
+                            </div>
                             <div className='flex justify-center mt-5'>
-                                {!editing && (
-                                    <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black' onClick={handleEditClick}>
-                                        <Image src={Pencil} height={16} width={16} alt='Pencil' />
-                                        Edit
-                                    </button>
-                                )}
-                                {editing && (
-                                    <button onClick={handleSaveClick}>Save</button>
-                                )}
+                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black'
+                                    onClick={!editing ? handleEditClick : handleSaveClick}>
+                                    <Image src={!editing ? Pencil : Confirm} height={16} width={16} alt='Pencil' />
+                                    {!editing ? 'Add or Change Address' : 'Save'}
+                                </button>
                             </div>
                         </div>
                         <div className='bg-white rounded-lg p-4 border w-full mt-4'>
@@ -139,21 +145,66 @@ const profile = ({ session }) => {
                                 <p className='font-extrabold text-2xl'>My Address</p>
                             </div>
                             <div>
-                                <strong>Domicilio:</strong>
+                                <strong>Address: </strong>
+                                {editingAddress ? (
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={updatedUser.address}
+                                        onChange={handleInputChange}
+                                        className='w-full'
+                                    />
+                                ) : (
+                                    <span>{updatedUser.address}</span>
+                                )}
                             </div>
                             <div>
-                                <strong>Codigo Postal:</strong>
+                                <strong>Postal Code: </strong>
+                                {editingAddress ? (
+                                    <input
+                                        type="text"
+                                        name="postalCode"
+                                        value={updatedUser.postalCode}
+                                        onChange={handleInputChange}
+                                        className='w-full'
+                                    />
+                                ) : (
+                                    <span>{updatedUser.postalCode}</span>
+                                )}
                             </div>
                             <div>
-                                <strong>DNI:</strong>
+                                <strong>ID Number: </strong>
+                                {editingAddress ? (
+                                    <input
+                                        type="text"
+                                        name="identificationNumber"
+                                        value={updatedUser.identificationNumber}
+                                        onChange={handleInputChange}
+                                        className='w-full shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-1'
+                                    />
+                                ) : (
+                                    <span>{updatedUser.identificationNumber}</span>
+                                )}
                             </div>
                             <div>
-                                <strong>Receives:</strong>
+                                <strong>Receives: </strong>
+                                {editingAddress ? (
+                                    <input
+                                        type="text"
+                                        name="recipientName"
+                                        value={updatedUser.recipientName}
+                                        onChange={handleInputChange}
+                                        className='w-full'
+                                    />
+                                ) : (
+                                    <span>{updatedUser.recipientName}</span>
+                                )}
                             </div>
                             <div className='flex justify-center mt-5'>
-                                <button className='w-full flex gap-2 items-center justify-center font-semibold bg-gray-100 rounded-full px-5 py-2 border-2 border-black'>
-                                    <Image src={Pencil} height={16} width={16} alt='Edit' />
-                                    Add or Change Address
+                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black'
+                                    onClick={!editingAddress ? handleEditAddress : handleSaveClick}>
+                                    <Image src={!editingAddress ? Pencil : Confirm} height={16} width={16} alt='Edit' />
+                                    {!editingAddress ? 'Add or Change Address' : 'Save'}
                                 </button>
                             </div>
                         </div>

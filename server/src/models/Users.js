@@ -33,6 +33,22 @@ export const User = sequelize.define("users", {
         allowNull: false,
         defaultValue: false,
     },
+    postalCode: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    identificationNumber: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    recipientName: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     image: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -53,6 +69,8 @@ export const User = sequelize.define("users", {
         onUpdate: DataTypes.NOW
     }
 });
+
+
 
 
 
