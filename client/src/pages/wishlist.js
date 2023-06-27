@@ -137,7 +137,7 @@ const Wishlist = () => {
                     </div>
                     {status === "authenticated" ? (
                         <div>
-                            <h2>Aca nose que poner</h2>
+                            <h2>???</h2>
                         </div>
                     ) : (
                         <div className='relative z-40'>

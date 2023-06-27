@@ -81,7 +81,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { username, email, password, phoneNumber, areaCode } = req.body;
+        const { name, email, password, phoneNumber, areaCode } = req.body;
 
         const user = await User.findOne({
             where: {
@@ -101,7 +101,7 @@ export const updateUser = async (req, res) => {
         }
 
         const updatedFields = {
-            username: username || user.username,
+            name: name || user.name,
             email: email || user.email,
             phoneNumber: phoneNumber || user.phoneNumber,
             areaCode: areaCode || user.areaCode,
