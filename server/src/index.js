@@ -1,12 +1,12 @@
 import app from "./app.js";
 import { sequelize } from "./database/database.js";
+import { PORT } from './config.js';
 
 async function main() {
     try {
         await sequelize.sync()
-        console.log("database conected");
-        app.listen(4000);
-        console.log("server is listening on port 4000");
+        app.listen(PORT);
+        console.log(`server is listening on port ${PORT}`);
     } catch (error) {
         console.log(error)
     }
