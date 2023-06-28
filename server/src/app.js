@@ -21,5 +21,8 @@ associateModels();
 app.use(purchaseRoutes)
 app.use(productsRoutes);
 app.use(usersRoutes)
+app.get('/', function (req, res) {
+    res.send('Hello World!')
+  })
 
 export default app;
