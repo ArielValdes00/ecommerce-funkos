@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
-import ModalClose from '../../public/icons/closemodal.png'
+import ModalClose from '/public/icons/closemodal.png'
 import Image from 'next/image'
 import Link from 'next/link'
 

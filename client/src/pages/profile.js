@@ -6,12 +6,12 @@ import Link from 'next/link';
 import { updateUser } from '../../utils/apiUsers';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
-import Map from '../../public/icons/map.png';
-import Pencil from '../../public/icons/pencil.png';
-import Shopping from '../../public/icons/shopping.png';
-import Info from '../../public/icons/info.png';
-import Confirm from '../../public/icons/confirm.png';
-import Logout from '../../public/icons/logout.png';
+import Map from '/public/icons/map.png';
+import Pencil from '/public/icons/pencil.png';
+import Shopping from '/public/icons/shopping.png';
+import Info from '/public/icons/info.png';
+import Confirm from '/public/icons/confirm.png';
+import Logout from '/public/icons/logout.png';
 import Image from 'next/image';
 
 const profile = ({ session }) => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState, useContext, useEffect } from 'react';
-import User from '../../public/icons/user.png';
-import Logout from '../../public/icons/logout.png';
-import BlackHeart from '../../public/icons/blackHeart.png';
-import RedHeart from '../../public/icons/redHeart.png';
-import MenuHamburguer from '../../public/icons/menuHamburger.png';
-import Cart from '../../public/icons/shopping-cart.png';
+import User from '/public/icons/user.png';
+import Logout from '/public/icons/logout.png';
+import BlackHeart from '/public/icons/blackHeart.png';
+import RedHeart from '/public/icons/redHeart.png';
+import MenuHamburguer from '/public/icons/menuHamburger.png';
+import Cart from '/public/icons/shopping-cart.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, signOut } from 'next-auth/react';

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia";
-import FondoFunko from "../../public/fondo-funko.png";
+import FondoFunko from "/public/fondo-funko.png";
 import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
 import Image from "next/image";

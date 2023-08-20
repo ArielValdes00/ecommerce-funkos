@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
-import RedHeart from "../../public/icons/redHeart.png"
-import AccountHeader from "../../public/icons/account-header.png"
+import RedHeart from "/public/icons/redHeart.png"
+import AccountHeader from "/public/icons/account-header.png"
 import Image from 'next/image';
 import ModalPurchase from '@/components/ModalPurchase';
 import Login from '@/components/Login';
