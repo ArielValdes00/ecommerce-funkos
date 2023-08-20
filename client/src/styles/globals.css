@@ -60,6 +60,7 @@
     -moz-appearance: none;
     appearance: none;
   }
+
   
 @media (max-width: 1024px) {
     .swiper-button-next,
@@ -73,6 +74,11 @@
     .user{
         height: 20px;
         width: 20px;
+    }
+    .fondo {
+        background-image: url('/fondo-mobile.jpg');
+        background-size: cover;
+        object-fit: cover;
     }
 }
   

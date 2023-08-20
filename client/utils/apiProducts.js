@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:4000/api/products';
+const API_URL = 'http://localhost:5000/api/products';
 
 export const getProducts = async (limit) => {
     try {
@@ -71,6 +71,7 @@ export const deleteImage = async (id) => {
   export const getProduct = async (name) => {
     try {
         const response = await axios.get(`${API_URL}/${name}`);
+        console.log(response)
         return response.data;
     } catch (error) {
         console.log(error);

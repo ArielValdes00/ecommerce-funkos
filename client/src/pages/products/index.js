@@ -81,7 +81,7 @@ const Products = ({ initialProducts }) => {
                     </div>
                     <h1 className="text-5xl font-extrabold mb-7 py-4 mx-4 sm:mx-0">PRODUCTS</h1>
                 <div className="bg-gray-100 p-4 mb-8">
-                    <div className="flex items-center gap-8 px-3">
+                    <div className="flex items-center gap-8">
                         <div className='flex items-center justify-between w-full lg:hidden'>
                             <button onClick={showFilters} className='flex gap-3 font-extrabold'>
                                 <Image src={Filter} height={20} width={20} alt='Filter'></Image>
@@ -135,7 +135,7 @@ const Products = ({ initialProducts }) => {
                         </div>
 
                     </div>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-2 py-5">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-5">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center p-3 shadow relative`}>
                                 {isLoading && selectedProductModal === product.id && (

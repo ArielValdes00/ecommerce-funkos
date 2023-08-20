@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Icon from '../../public/icons/indicator-icon.svg'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 const ProgressBar = ({ totalPrice, freeShippingThreshold }) => {
     const [progressPercentage, setProgressPercentage] = useState(0);
 
@@ -32,7 +33,7 @@ const ProgressBar = ({ totalPrice, freeShippingThreshold }) => {
                     <Image
                         src={Icon}
                         width={30}
-                        className="bg-gray-100 rounded-full p-1 h-[30px] border border-black animate__pulse"
+                        className="bg-gray-100 rounded-full p-1 h-[30px] border border-black"
                         alt="Funko"
                     />
                 </div>

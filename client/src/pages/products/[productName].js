@@ -36,7 +36,7 @@ const productName = ({ product }) => {
                 redirect={'/cart'}
             />
             )}
-            <section className='px-4 md:px-28 py-5 mb-5'>
+            <section className='px-4 md:px-28 py-5 '>
                 {isLoading && selectedProductModal === product.id && (
                     <div className="fixed inset-0 transition-opacity z-40">
                         <div className="absolute inset-0 bg-neutral-800 opacity-75"></div>
@@ -46,7 +46,7 @@ const productName = ({ product }) => {
                 <div className='text-xs text-gray-600'>
                     <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
                 </div>
-                <div className='grid lg:grid-cols-2 mt-5 gap-6 lg:gap-12'>
+                <div className='grid lg:grid-cols-2 mt-5 lg:gap-5'>
                     <div className='border bg-gray-200 relative'>
 
                         {showModalWishlist && selectedProductModal === product.id && (
@@ -57,11 +57,11 @@ const productName = ({ product }) => {
                             src={isInWishlist(product.id) ? RedHeart : Heart}
                             height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer'>
                         </Image>
-                        <img src={product.image} alt={product.name} height={520} width={520} className=' mx-auto'></img>
+                        <img src={product.image} alt={product.name} height={520} width={520} className='mx-auto'></img>
                     </div>
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-2 mt-4 lg:mt-0'>
                         <p className='uppercase text-lg font-semibold'>{product.category}</p>
-                        <h1 className='uppercase text-6xl font-extrabold'>{product.name}</h1>
+                        <h1 className='uppercase text-3xl lg:text-6xl font-extrabold'>pop! {product.name}</h1>
                         <p className='font-semibold text-2xl'>${product.price}</p>
                         <div className='md:w-2/3'>
                             <ButtonAdded
@@ -71,7 +71,7 @@ const productName = ({ product }) => {
                                 disabled={isInCart(product.id)}
                             />
                         </div>
-                        <p className='font-semibold lg:w-3/4 2xl:w-2/4 mt-4'>{product.description}</p>
+                        <p className='font-semibold mt-4 break-words'>{product.description}</p>
                     </div>
                 </div>
             </section>

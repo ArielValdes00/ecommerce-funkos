@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia";
-import FondoFunko from "../../public/fondoFunko.png";
+import FondoFunko from "../../public/fondo-funko.png";
 import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
 import Image from "next/image";
@@ -32,8 +32,8 @@ export default function Home() {
             <section className="fondo grid min-h-screen md:px-28" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
                 <div className="grid lg:grid-cols-2 lg:gap-7 items-center">
                     <div className="text-white flex flex-col gap-5 justify-center items-start px-5 mt-5 lg:m-0">
-                        <h1 className="text-lg md:text-4xl font-extrabold w-full text-center lg:text-start">MAXIMUM VOLTAGE</h1>
-                        <p className="font-semibold text-sm md:text-xl mx-auto lg:m-0">Light Up Your DC Comic Set.</p>
+                        <h1 className="text-lg md:text-4xl font-extrabold w-full text-center lg:text-start">DOUBLE TROUBLE</h1>
+                        <p className="font-semibold text-sm md:text-xl mx-auto lg:m-0">Put Your Training to Good Use! Team Up with the 2-Pack Pop! Yuji Itadori & Aoi Todo and Complete Your Anime Set. </p>
                         <Link href={"/products"} className='pt-3 mx-auto lg:m-0'>
                             <button className="text-sm rounded-full bg-white text-black px-4 py-2 font-bold border-2 border-white hover:border-black">SHOP COLLECTION</button>
                         </Link>

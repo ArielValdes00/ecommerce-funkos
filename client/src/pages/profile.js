@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
-import { useSession, getSession } from 'next-auth/react';
+import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { updateUser } from '../../utils/apiUsers';
@@ -11,6 +11,7 @@ import Pencil from '../../public/icons/pencil.png';
 import Shopping from '../../public/icons/shopping.png';
 import Info from '../../public/icons/info.png';
 import Confirm from '../../public/icons/confirm.png';
+import Logout from '../../public/icons/logout.png';
 import Image from 'next/image';
 
 const profile = ({ session }) => {
@@ -59,7 +60,7 @@ const profile = ({ session }) => {
                     </div>
                     <h1 className="text-5xl font-extrabold mb-7 py-4">MY ACCOUNT</h1>
                 </div>
-                <div className='grid xl:grid-cols-3 gap-4 mb-7'>
+                <div className='grid xl:grid-cols-3 gap-4'>
                     <div className='xl:col-span-2 bg-white p-4 rounded-lg border'>
                         <div className='flex items-center gap-2'>
                             <Image src={Shopping} height={30} width={30} alt='Shopping' />
@@ -132,7 +133,7 @@ const profile = ({ session }) => {
                                 )}
                             </div>
                             <div className='flex justify-center mt-5'>
-                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black'
+                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
                                     onClick={!editing ? handleEditClick : handleSaveClick}>
                                     <Image src={!editing ? Pencil : Confirm} height={16} width={16} alt='Pencil' />
                                     {!editing ? 'Add or Change Address' : 'Save'}
@@ -201,12 +202,18 @@ const profile = ({ session }) => {
                                 )}
                             </div>
                             <div className='flex justify-center mt-5'>
-                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black'
+                                <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
                                     onClick={!editingAddress ? handleEditAddress : handleSaveClick}>
                                     <Image src={!editingAddress ? Pencil : Confirm} height={16} width={16} alt='Edit' />
                                     {!editingAddress ? 'Add or Change Address' : 'Save'}
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                    <div className='lg:hidden bg-white p-4 rounded-lg border'>
+                        <div className='flex items-center justify-center w-1/2 md:w-1/3 mx-auto bg-gray-100 border-2 border-black rounded-full py-2 px-4 gap-2 cursor-pointer hover:bg-gray-200' onClick={signOut}>
+                            <Image src={Logout} height={20} width={20} alt='Logout' />
+                            <p className='font-semibold'>Logout</p>
                         </div>
                     </div>
                 </div>

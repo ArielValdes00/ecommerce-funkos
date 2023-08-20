@@ -60,7 +60,7 @@ const Login = ({ onClick }) => {
             <div className="w-full max-w-lg">
                 <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center shadow-md rounded max-h-2xl p-6">
                     <h2 className='font-extrabold text-5xl text-center mb-5 pb-5'>LOG IN</h2>
-                    <div className="mb-6">
+                    <div className="mb-6 w-full">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={'Email Address'}>
                             Email Address
                         </label>
