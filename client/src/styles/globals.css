@@ -61,6 +61,16 @@
     appearance: none;
   }
 
+  .selected {
+    background-color: rgb(38 38 38);
+}
+
+.bg-color{
+    color: rgb(156 163 175);
+    width: 192px;
+}
+
+
   
 @media (max-width: 1024px) {
     .swiper-button-next,

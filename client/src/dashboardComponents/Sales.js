@@ -1,9 +1,8 @@
 import React from 'react'
-import { getCart } from '../../../utils/apiPurchase'
+import { getCart } from '../../utils/apiPurchase'
 import { useEffect, useState } from 'react'
-import SideBar from '@/dashboardComponents/SideBar'
 
-const sales = () => {
+const Sales = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -20,8 +19,7 @@ const sales = () => {
     }, [])
     return (
         <div>
-            <SideBar />
-            <div className='absolute left-48 bg-gray-100'>
+            <div className='bg-gray-100'>
                 <h1 className='text-5xl text-center font-extrabold'>VENTAS</h1>
                 {data.map((user) => (
                     <div key={user.id} className='grid grid-cols-2'>
@@ -50,4 +48,4 @@ const sales = () => {
     )
 }
 
-export default sales
+export default Sales

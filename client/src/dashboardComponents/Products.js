@@ -1,12 +1,10 @@
 import React from 'react'
-import { deleteProducts, updateProducts } from "../../../utils/apiProducts";
-import { createProducts, getProducts } from "../../../utils/apiProducts"
-import { getSession } from 'next-auth/react';
+import { deleteProducts, updateProducts } from "../../utils/apiProducts";
+import { createProducts, getProducts } from "../../utils/apiProducts"
 import { useState, useEffect } from "react";
 import { useRef } from "react";
-import SideBar from '@/dashboardComponents/SideBar';
 
-const products = ({ session }) => {
+const Products = () => {
     const imageInputRef = useRef(null);
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({
@@ -107,15 +105,11 @@ const products = ({ session }) => {
 
     return (
         <div>
-            <SideBar />
-            <div className='absolute left-48 bg-white'>
+            <div className='bg-white'>
                 <h1 className="text-center font-extrabold text-5xl m-3">
                     PRODUCTS
                 </h1>
                 <div className="w-full max-w-md mx-auto text-center p-3">
-                    <div className='flex text-lg'>
-                        <h3>Welcome! {session.user.name}</h3>
-                    </div>
                     <button onClick={handleOpenModal} className="bg-blue-500 text-white py-2 px-4 rounded">
                         Create Product
                     </button>
@@ -197,20 +191,6 @@ const products = ({ session }) => {
     )
 }
 
-export const getServerSideProps = async (context) => {
-    const session = await getSession(context);
-    if (!session) return {
-        redirect: {
-            destination: '/dashboard',
-            permanent: false
-        }
-    }
 
-    return {
-        props: {
-            session
-        }
-    }
-}
 
-export default products
+export default Products

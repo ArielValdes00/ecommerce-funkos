@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { deleteUsers, getUsers } from '../../../utils/apiUsers';
-import SideBar from '@/dashboardComponents/SideBar';
+import { deleteUsers, getUsers } from '../../utils/apiUsers';
 
-const users = () => {
+const Users = () => {
     const [users, setUsers] = useState([])
 
     const fetchUsers = async () => {
@@ -25,8 +24,7 @@ const users = () => {
 
     return (
         <div>
-            <SideBar />
-            <div className='absolute left-48 bg-gray-100'>
+            <div className='bg-gray-100'>
                 <div className='py-5 mb-3'>
                     <h1 className='text-5xl font-extrabold text-center uppercase'>Registered Users</h1>
                 </div>
@@ -58,4 +56,4 @@ const users = () => {
 }
 
 
-export default users
+export default Users
