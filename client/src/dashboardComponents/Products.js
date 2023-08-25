@@ -106,9 +106,6 @@ const Products = () => {
     return (
         <div>
             <div className='bg-white'>
-                <h1 className="text-center font-extrabold text-5xl m-3">
-                    PRODUCTS
-                </h1>
                 <div className="w-full max-w-md mx-auto text-center p-3">
                     <button onClick={handleOpenModal} className="bg-blue-500 text-white py-2 px-4 rounded">
                         Create Product

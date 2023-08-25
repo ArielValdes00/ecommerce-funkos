@@ -20,7 +20,6 @@ const Sales = () => {
     return (
         <div>
             <div className='bg-gray-100'>
-                <h1 className='text-5xl text-center font-extrabold'>VENTAS</h1>
                 {data.map((user) => (
                     <div key={user.id} className='grid grid-cols-2'>
                         <div>

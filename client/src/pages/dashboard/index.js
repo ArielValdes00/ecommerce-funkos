@@ -4,9 +4,10 @@ import SideBar from '@/dashboardComponents/SideBar';
 import Products from '@/dashboardComponents/Products';
 import Sales from '@/dashboardComponents/Sales';
 import Users from '@/dashboardComponents/Users';
+import NavBar from '@/dashboardComponents/NavBar';
 
 export default function IndexPage({ session }) {
-    const [selectedSection, setSelectedSection] = useState('products'); 
+    const [selectedSection, setSelectedSection] = useState('products');
 
     const renderSelectedSection = () => {
         switch (selectedSection) {
@@ -26,8 +27,8 @@ export default function IndexPage({ session }) {
         <div>
             <SideBar setSelectedSection={setSelectedSection} selectedSection={selectedSection} />
             <div className='absolute left-48'>
-                    <h3>Welcome! {session.user.name}</h3>
-                    {renderSelectedSection()}
+                <NavBar section={selectedSection} session={session}/>
+                {renderSelectedSection()}
             </div>
         </div>
     );

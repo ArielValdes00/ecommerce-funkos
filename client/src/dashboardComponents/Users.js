@@ -25,9 +25,6 @@ const Users = () => {
     return (
         <div>
             <div className='bg-gray-100'>
-                <div className='py-5 mb-3'>
-                    <h1 className='text-5xl font-extrabold text-center uppercase'>Registered Users</h1>
-                </div>
                 <div>
                     <ul className='grid grid-cols-6 text-center gap-7 border-b border-black py-3 font-bold text-xl'>
                         <p>Name</p>

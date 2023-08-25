@@ -1,6 +1,6 @@
 import React from 'react';
 import SalesIcon from '/public/icons/sales.png';
-import ProductsIcon from '/public/icons/products.png'
+import ProductsIcon from '/public/icons/products.png';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 
@@ -11,7 +11,7 @@ const SideBar = ({ setSelectedSection, selectedSection }) => {
 
     return (
             <div className='fixed flex flex-col justify-between font-semibold h-screen bg-black bg-color'>
-                <div className='text-start py-5'>
+                <div className='text-start pb-5 pt-2'>
                     <h2 className='text-3xl font-extrabold text-white text-center'>FUNKO</h2>
                 </div>
                 <div className='flex flex-col gap-4 items-start mx-auto text-lg'>
