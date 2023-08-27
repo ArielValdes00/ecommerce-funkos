@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
         <ProductProvider>
             <SessionProvider>
             <Head>
-                <title>Porfolio</title>
+                <title>Funko Store</title>
                 <link rel="icon" href="/logo-title.png" />
                 <meta name="description" content="Welcome to my Full Stack Developer portfolio. I am Ariel Valdés, a passionate Full Stack Developer with expertise in building web applications. Here you can explore some of my projects and works, showcasing my skills in front-end and back-end development, as well as database management. Feel free to browse around and get in touch if you're interested in collaborating on exciting projects!" />
                 <meta property="og:title" content="Full Stack Developer Portfolio - Ariel Valdés" />

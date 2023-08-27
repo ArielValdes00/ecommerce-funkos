@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
@@ -26,9 +27,10 @@ const Cart = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [isHovered, setIsHovered] = useState(false)
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
-
+    const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95))
     const freeShippingThreshold = 50;
     const priceShipping = cartState.totalPrice >= 50 ? 'FREE' : '$6.95';
+    const [checkoutProcess, setCheckoutProcess] = useState(false);
     useEffect(() => {
         const calculateTotalItems = () => {
             const local = localStorage.getItem('selectedQuantities');
@@ -40,6 +42,11 @@ const Cart = () => {
 
         calculateTotalItems();
     }, []);
+
+    useEffect(() => {
+        console.log(estimatedTotal)
+    }, [estimatedTotal])
+
 
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
@@ -69,13 +76,7 @@ const Cart = () => {
     };
 
     const handlePurchase = async (e) => {
-        e.preventDefault()
-        try {
-            const res = await purchase(userId, productIds)
-            console.log(res)
-        } catch (error) {
-            console.error(error)
-        }
+        setCheckoutProcess(true);
     }
 
     return (
@@ -157,11 +158,12 @@ const Cart = () => {
                                         </div>
                                         <div className='grid grid-cols-2 font-extrabold'>
                                             <p className='text-xl'>Estimated Total</p>
-                                            <span className='ml-auto'>${cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95)}</span>
+                                            <span className='ml-auto'>${estimatedTotal}</span>
                                         </div>
                                         <button
                                             onMouseEnter={() => setIsHovered(true)}
                                             onMouseLeave={() => setIsHovered(false)}
+                                            onClick={handlePurchase}
                                             className='flex justify-center items-center gap-3 text-lg border-2 uppercase rounded-full px-3 py-2 mt-3 w-full font-extrabold border-black hover:bg-white hover:text-black bg-black text-white'>
                                             <Image
                                                 src={isHovered ? SecurityDark : Security}
@@ -169,13 +171,43 @@ const Cart = () => {
                                                 width={22}
                                                 alt='Checkout'
                                             />
-                                            <span className=''>SECURE CHECKOUT</span>
+                                            <span>SECURE CHECKOUT</span>
                                         </button>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {checkoutProcess &&
+                            <PayPalScriptProvider
+                                options={{
+                                    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                                }}
+                            >
+                                <PayPalButtons
+                                    createOrder={(data, actions) => {
+                                        console.log(estimatedTotal)
+                                        return actions.order.create({
+                                            purchase_units: [
+                                                {
+                                                    amount: {
+                                                        value: estimatedTotal,
+                                                    },
+                                                },
+                                            ],
+                                        });
+                                    }}
+                                    onApprove={(data, actions) => {
+                                        return actions.order.capture().then((details) => {
+                                            alert("Payment completed successfully!");
+                                        });
+                                    }}
+                                    onCancel={() => {
+                                        setCheckoutProcess(false);
+                                    }}
+                                />
+                            </PayPalScriptProvider>
+                        }
                         <div className="py-5 text-center bg-white mx-3 px-0">
                             <SliderCards title="you might also like" />
                         </div>
