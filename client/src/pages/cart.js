@@ -22,7 +22,6 @@ const Cart = () => {
     const { cartState, removeItemFromCart, setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null)
-    const [productIds, setProductIds] = useState([])
     const { data: session, status } = useSession();
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [isHovered, setIsHovered] = useState(false)
@@ -43,11 +42,8 @@ const Cart = () => {
         calculateTotalItems();
     }, []);
 
-    useEffect(() => {
-        console.log(estimatedTotal)
-    }, [estimatedTotal])
 
-
+    console.log(cart)
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
         setSelectedQuantity(productId, newQuantity)
@@ -58,13 +54,6 @@ const Cart = () => {
         if (status === 'authenticated' && session?.user?.id) {
             setUserId(session.user.id);
         }
-        const newProductIds = []
-        for (const product of cart) {
-            const productId = product.id;
-
-            newProductIds.push(productId)
-        }
-        setProductIds(newProductIds)
     }, [])
 
     const openDeleteModal = (id) => {
@@ -142,7 +131,7 @@ const Cart = () => {
                                 </div>
                                 <div className='xl:col-span-2 mt-3'>
                                     <ProgressBar totalPrice={cartState.totalPrice} freeShippingThreshold={freeShippingThreshold} />
-                                    <div className='bg-gray-100 rounded-lg p-6 flex flex-col gap-5 text-lg'>
+                                    <div className='bg-gray-100 rounded-lg pt-6 pb-2 px-6 flex flex-col gap-5 text-lg'>
                                         <div className='grid grid-cols-2 border-b-2 pb-3'>
                                             <p className='font-extrabold text-3xl'>SUMMARY</p>
                                             <p className='ml-auto font-semibold'>{totalItems} ITEMS</p>
@@ -173,41 +162,61 @@ const Cart = () => {
                                             />
                                             <span>SECURE CHECKOUT</span>
                                         </button>
+                                        <div>
+                                            {checkoutProcess &&
+                                                <PayPalScriptProvider
+                                                    options={{
+                                                        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                                                    }}
+                                                >
+                                                    <PayPalButtons
+                                                        style={{
+                                                            shape: 'pill'
+                                                        }}
+                                                        createOrder={(data, actions) => {
+                                                            return actions.order.create({
+                                                                purchase_units: [{
+                                                                    amount: {
+                                                                        value: estimatedTotal,
+                                                                        breakdown: {
+                                                                            item_total: {
+                                                                                currency_code: 'USD',
+                                                                                value: estimatedTotal
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    items: cart.map(product => ({
+                                                                        name: product.name,
+                                                                        quantity: product.quantity,
+                                                                        category: 'PHYSICAL_GOODS',
+                                                                        unit_amount: {
+                                                                            currency_code: 'USD',
+                                                                            value: product.price
+                                                                        }
+                                                                    }))
+                                                                }]
+                                                            });
+                                                        }}
+                                                        onApprove={async (data, actions) => {
+                                                            const order = await actions.order.capture();
+                                                            const cart = data.orderID
+                                                            console.log(order);
 
+                                                            const response = await purchase(userId, cart);
+
+                                                            console.log(response);
+                                                        }}
+                                                        onCancel={() => {
+                                                            setCheckoutProcess(false);
+                                                        }}
+                                                    />
+                                                </PayPalScriptProvider>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {checkoutProcess &&
-                            <PayPalScriptProvider
-                                options={{
-                                    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-                                }}
-                            >
-                                <PayPalButtons
-                                    createOrder={(data, actions) => {
-                                        console.log(estimatedTotal)
-                                        return actions.order.create({
-                                            purchase_units: [
-                                                {
-                                                    amount: {
-                                                        value: estimatedTotal,
-                                                    },
-                                                },
-                                            ],
-                                        });
-                                    }}
-                                    onApprove={(data, actions) => {
-                                        return actions.order.capture().then((details) => {
-                                            alert("Payment completed successfully!");
-                                        });
-                                    }}
-                                    onCancel={() => {
-                                        setCheckoutProcess(false);
-                                    }}
-                                />
-                            </PayPalScriptProvider>
-                        }
                         <div className="py-5 text-center bg-white mx-3 px-0">
                             <SliderCards title="you might also like" />
                         </div>
