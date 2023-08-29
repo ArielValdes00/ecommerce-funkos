@@ -21,7 +21,7 @@ import ProgressBar from '@/components/ProgressBar';
 const Cart = () => {
     const { cartState, removeItemFromCart, setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
-    const [userId, setUserId] = useState(null)
+    const [userId, setUserId] = useState(null);
     const { data: session, status } = useSession();
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [isHovered, setIsHovered] = useState(false)
@@ -43,7 +43,6 @@ const Cart = () => {
     }, []);
 
 
-    console.log(cart)
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
         setSelectedQuantity(productId, newQuantity)
@@ -51,10 +50,10 @@ const Cart = () => {
     };
 
     useEffect(() => {
-        if (status === 'authenticated' && session?.user?.id) {
+        if (status === 'authenticated' && session.user.id) {
             setUserId(session.user.id);
         }
-    }, [])
+    }, [session])
 
     const openDeleteModal = (id) => {
         const { cart } = cartState;
@@ -186,6 +185,7 @@ const Cart = () => {
                                                                         }
                                                                     },
                                                                     items: cart.map(product => ({
+                                                                        sku: product.id,
                                                                         name: product.name,
                                                                         quantity: product.quantity,
                                                                         category: 'PHYSICAL_GOODS',
@@ -199,12 +199,7 @@ const Cart = () => {
                                                         }}
                                                         onApprove={async (data, actions) => {
                                                             const order = await actions.order.capture();
-                                                            const cart = data.orderID
-                                                            console.log(order);
-
-                                                            const response = await purchase(userId, cart);
-
-                                                            console.log(response);
+                                                            await purchase(userId, order);
                                                         }}
                                                         onCancel={() => {
                                                             setCheckoutProcess(false);

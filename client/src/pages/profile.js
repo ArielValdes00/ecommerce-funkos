@@ -13,10 +13,12 @@ import Info from '/public/icons/info.png';
 import Confirm from '/public/icons/confirm.png';
 import Logout from '/public/icons/logout.png';
 import Image from 'next/image';
+import { getUserPurchaseHistory } from '../../utils/apiPurchase';
 
 const profile = ({ session }) => {
     const { data: status } = useSession();
     const router = useRouter();
+    const [userId, setUserId] = useState(session.user.id);
     const user = session.user
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -30,6 +32,7 @@ const profile = ({ session }) => {
     const [editing, setEditing] = useState(false);
     const [editingAddress, setEditingAddress] = useState(false);
     const [updatedUser, setUpdatedUser] = useState(user);
+    const [data, setData] = useState([]);
 
     const handleInputChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
@@ -50,6 +53,16 @@ const profile = ({ session }) => {
         setEditingAddress(false);
     };
 
+    useEffect(() => {
+        if (userId) {
+            const getPurchase = async () => {
+                const res = await getUserPurchaseHistory(userId)
+                setData(res);
+            }
+            getPurchase()
+        }
+    }, [])
+
     return (
         <div className='bg-gray-100'>
             <Navbar session={session} />
@@ -67,7 +80,21 @@ const profile = ({ session }) => {
                             <p className='font-extrabold text-2xl'>My Shopping</p>
                         </div>
                         <div className='pb-5 flex items-center justify-center h-full'>
-                            <p className='py-14'>Empty</p>
+                            {data ?
+                                <div className='pb-5 uppercase font-semibold text-center flex items-center justify-center flex-wrap h-full'>
+                                    {data.map((product) => (
+                                        <div key={product.productId}>
+                                            <img src={product.productImage} height={200} width={200} alt={product.productName}></img>
+                                            <p>{product.productName}</p>
+                                            <p>${product.productPrice}</p>
+                                            <p>{product.productCategory}</p>
+                                            <p>Quantity: {product.quantity}</p>
+                                        </div>
+                                    ))}
+                                    <p>Total Price: ${data.reduce((total, product) => total + product.productPrice * product.quantity, 0)}</p>                                </div>
+                                :
+                                <p className='py-14'>Empty</p>
+                            }
                         </div>
                     </div>
                     <div>

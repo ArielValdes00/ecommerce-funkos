@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
+import { Cart } from "./Associate.js";
 
 export const Product = sequelize.define("products", {
     id: {
@@ -27,3 +28,6 @@ export const Product = sequelize.define("products", {
     }
 
 })
+
+
+

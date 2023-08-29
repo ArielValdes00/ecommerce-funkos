@@ -2,12 +2,23 @@ import axios from "axios";
 
 const API_URL = 'http://localhost:5000/api';
 
-export const purchase = async (userId, cart) => {
+export const purchase = async (userId, order) => {
     try {
-        const res = await axios.post(`${API_URL}/purchase`, { userId, cart });
+        const res = await axios.post(`${API_URL}/purchase`, { userId, order });
         return res.data;
     } catch (error) {
         console.error(error);
         return [];
     }
 };
+
+export const getUserPurchaseHistory = async (userId) => {
+    try {
+        const response = await axios.post(`${API_URL}/getUserPurchaseHistory`, { userId });
+        return response.data.purchaseHistory;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
