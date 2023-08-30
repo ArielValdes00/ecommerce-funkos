@@ -70,6 +70,44 @@
     width: 192px;
 }
 
+.menu-open {
+    animation: slide-in 0.3s ease;
+  }
+
+.menu-icon {
+    width: 39px;
+    height: 33px;
+    transition: transform 0.3s ease;
+  }
+  
+  .menu-line {
+    height: 6px;
+    background-color: white;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+  }
+  
+  .line-1-cross {
+    transform: translateY(10px) rotate(-47deg);
+  }
+  
+  .line-2-hidden {
+    opacity: 0;
+  }
+  
+  .line-3-cross {
+    transform: translateY(-12px) rotate(47deg);
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
 
   
 @media (max-width: 1024px) {
@@ -91,6 +129,8 @@
         object-fit: cover;
     }
 }
+
+
   
 
 

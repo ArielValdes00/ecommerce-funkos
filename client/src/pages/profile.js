@@ -81,13 +81,13 @@ const profile = ({ session }) => {
                         </div>
                         <div className='pb-5 flex items-center justify-center h-full'>
                             {data ?
-                                <div className='pb-5 uppercase font-semibold text-center flex items-center justify-center flex-wrap h-full'>
+                                <div className='pb-5 uppercase font-semibold text-center flex items-center justify-around flex-wrap h-full'>
                                     {data.map((product) => (
-                                        <div key={product.productId}>
-                                            <img src={product.productImage} height={200} width={200} alt={product.productName}></img>
-                                            <p>{product.productName}</p>
+                                        <div key={product.productId} className='rounded-lg border shadow-md p-3'>
+                                            <img src={product.productImage} height={170} width={170} alt={product.productName}></img>
+                                            <p className='font-normal'>{product.productCategory}</p>
+                                            <p className='font-extrabold'>{product.productName}</p>
                                             <p>${product.productPrice}</p>
-                                            <p>{product.productCategory}</p>
                                             <p>Quantity: {product.quantity}</p>
                                         </div>
                                     ))}

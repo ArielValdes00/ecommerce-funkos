@@ -14,8 +14,8 @@ import ButtonAdded from './ButtonProductAdded.js';
 import ModalWishlist from './ModalWishlist.js';
 import Loader from './Loader.js';
 
-const SliderCards = ({ title }) => {
-    const { recentProducts, toggleWishlist, isInWishlist, isInCart, showModalWishlist, selectedProductModal, isLoading } = useContext(ProductContext);
+const SliderCards = ({ title, products }) => {
+    const { toggleWishlist, isInWishlist, isInCart, showModalWishlist, selectedProductModal, isLoading } = useContext(ProductContext);
     const swiperRef = useRef(null);
 
     const onSwiperInit = (swiper) => {
@@ -61,7 +61,7 @@ const SliderCards = ({ title }) => {
                 loop={true}
                 scrollbar={{ draggable: true }}
             >
-                {recentProducts.map((product) => (
+                {products?.map((product) => (
                     <SwiperSlide key={product.id} className={`${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} rounded-lg shadow-lg border border-gray-100 text-center mx-auto p-5 my-5 relative`}>
                         {isLoading && selectedProductModal === product.id && (
                             <Loader/>
@@ -74,7 +74,7 @@ const SliderCards = ({ title }) => {
                             src={isInWishlist(product.id) ? RedHeart : Heart}
                             height={35} width={35} alt='Wishlist' className='absolute right-6 z-50 cursor-pointer'>
                         </Image>
-                        <Link href={`/products/${product.name}`}><img src={product.image} height={270} width={270} alt={product.name} className='mx-auto hover:scale-115 transition-transform duration-300 p-3'></img></Link>
+                        <Link href={`/products/${product.name}`}><img src={product.image} height={270} width={270} alt={product.name} className='mx-auto hover:scale-110 transition-transform duration-300 p-3'></img></Link>
                         <p className='uppercase'>{product.category}</p>
                         <Link href={`/products/${product.name}`}><h2 className='text-xl font-extrabold my-2 uppercase hover:underline'>{product.name}</h2></Link>
                         <p className='font-bold'>${product.price}</p>

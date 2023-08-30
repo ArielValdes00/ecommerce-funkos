@@ -87,7 +87,7 @@ const Wishlist = () => {
                             </div>
                         ) : (
                             wishlist.map((product) => (
-                                <div key={product.id} className='bg-white grid grid-cols-2 items-center py-5 gap-14 border-b px-4'>
+                                <div key={product.id} className='bg-white grid grid-cols-2 items-center py-5 gap-8 md:gap-14 border-b px-4'>
                                     <div className='relative mx-auto '>
                                         <Image
                                             onClick={() => handleOpenModal(product.id)}

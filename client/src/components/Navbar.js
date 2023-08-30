@@ -4,7 +4,6 @@ import User from '/public/icons/user.png';
 import Logout from '/public/icons/logout.png';
 import BlackHeart from '/public/icons/blackHeart.png';
 import RedHeart from '/public/icons/redHeart.png';
-import MenuHamburguer from '/public/icons/menuHamburger.png';
 import Cart from '/public/icons/shopping-cart.png';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -72,13 +71,20 @@ const navbar = ({ session }) => {
         <header>
             <nav className='md:px-28 py-4 bg-black relative z-50'>
                 <ul className='text-white flex px-3 items-center'>
-                    <li className='lg:hidden flex-grow '>
-                        <Image src={MenuHamburguer} height={40} width={40} alt='Menu' onClick={handleMenuHamburguer} className='cursor-pointer ' />
+                    <li className='flex-grow lg:hidden'>
+                        <div className='menu-icon flex flex-col justify-around cursor-pointer' onClick={handleMenuHamburguer}>
+                            <span className={`menu-line line-1 ${isMenuHamburguerOpen ? 'line-1-cross' : ''}`}></span>
+                            <span className={`menu-line line-2 ${isMenuHamburguerOpen ? 'line-2-hidden' : ''}`}></span>
+                            <span className={`menu-line line-3 ${isMenuHamburguerOpen ? 'line-3-cross' : ''}`}></span>
+                        </div>
                     </li>
                     <li className='flex-grow lg:grow-0'>
                         <span className='text-4xl font-extrabold'>FUNKO</span>
                     </li>
-                    <div className={`${isMenuHamburguerOpen ? "flex absolute text-black bg-gray-100 left-0 top-[76px] h-screen w-full py-20 z-50" : "hidden"} lg:flex flex-col lg:flex-row justify-center border-2 border-black lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
+                    <div className={`${isMenuHamburguerOpen
+                        ? "menu-open flex absolute text-black bg-gray-100 left-0 top-[76px] pb-20 h-screen w-full z-50"
+                        : "hidden"
+                        } lg:flex flex-col lg:flex-row justify-center lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
                         <div className='flex flex-col gap-14 lg:gap-0 items-center lg:flex-row lg:w-full lg:justify-evenly px-3 py-2 lg:p-0'>
                             <Link href={"/"}>HOME</Link>
                             <Link href={"/products"}>PRODUCTS</Link>

@@ -17,7 +17,7 @@ export const handlePurchase = async (req, res) => {
                 const parsedQuantity = parseInt(quantity);
 
                 await Cart.create({
-                    userId: userId, 
+                    userId: userId,
                     productId: productInstance.id,
                     quantity: parsedQuantity
                 });
@@ -34,14 +34,13 @@ export const handlePurchase = async (req, res) => {
 
 export const getUserPurchaseHistory = async (req, res) => {
     const { userId } = req.body;
-    console.log(userId)
 
     try {
         const user = await User.findByPk(userId, {
             include: {
                 model: Cart,
                 include: {
-                    model: Product 
+                    model: Product
                 }
             }
         });
@@ -60,9 +59,48 @@ export const getUserPurchaseHistory = async (req, res) => {
 
         res.status(200).json({ purchaseHistory });
     } catch (error) {
-        console.error('Error retrieving purchase history:', error);
         res.status(500).json({ error: 'Error retrieving purchase history' });
     }
 }
+
+export const getMostSoldProducts = async (req, res) => {
+    try {
+        const soldProducts = await Cart.findAll({
+            include: {
+                model: Product,
+                attributes: ['id', 'name', 'price', 'category', 'image'],
+            },
+        });
+
+        const productSalesMap = new Map();
+
+        soldProducts.forEach(cartItem => {
+            const productId = cartItem.product.id;
+            const quantity = cartItem.quantity;
+
+            if (productSalesMap.has(productId)) {
+                productSalesMap.set(productId, productSalesMap.get(productId) + quantity);
+            } else {
+                productSalesMap.set(productId, quantity);
+            }
+        });
+
+        const sortedProducts = [...productSalesMap.entries()]
+            .sort((a, b) => b[1] - a[1])
+            .map(([productId, quantity]) => ({
+                productId,
+                quantity,
+                ...soldProducts.find(cartItem => cartItem.product.id === productId).product.dataValues,
+            }));
+
+        const last6MostSoldProducts = sortedProducts.slice(0, 6);
+
+
+        res.status(200).json({ mostSoldProducts: last6MostSoldProducts });
+    } catch (error) {
+        res.status(500).json({ error: 'Error retrieving most sold products' });
+    }
+};
+
 
 

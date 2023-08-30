@@ -12,7 +12,7 @@ import ModalPurchase from '@/components/ModalPurchase';
 
 export default function Home() {
     const { data: session } = useSession();
-    const { showModal, selectedProductModal, closeModal } = useContext(ProductContext);
+    const { showModal, selectedProductModal, closeModal, recentProducts, mostSoldProducts } = useContext(ProductContext);
     return (
         <div>
             <Navbar session={session} />
@@ -31,10 +31,10 @@ export default function Home() {
             )}
             <section className="fondo grid min-h-screen md:px-28" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
                 <div className="grid lg:grid-cols-2 lg:gap-7 items-center">
-                    <div className="text-white flex flex-col gap-5 justify-center items-start px-5 mt-5 lg:m-0">
-                        <h1 className="text-lg md:text-4xl font-extrabold w-full text-center lg:text-start">DOUBLE TROUBLE</h1>
-                        <p className="font-semibold text-sm md:text-xl mx-auto lg:m-0">Put Your Training to Good Use! Team Up with the 2-Pack Pop! Yuji Itadori & Aoi Todo and Complete Your Anime Set. </p>
-                        <Link href={"/products"} className='pt-3 mx-auto lg:m-0'>
+                    <div className="text-white flex flex-col gap-3 md:gap-5 justify-center items-start px-5 mt-5 lg:m-0">
+                        <h1 className="text-2xl md:text-4xl font-extrabold w-full text-center lg:text-start">DOUBLE TROUBLE</h1>
+                        <p className="font-semibold text-sm md:text-xl max-w-xs md:max-w-md text-center lg:text-start mx-auto lg:m-0">Put Your Training to Good Use! Team Up with the 2-Pack Pop! Yuji Itadori & Aoi Todo and Complete Your Anime Set. </p>
+                        <Link href={"/products"} className='pt-1 lg:pt-3 mx-auto lg:m-0'>
                             <button className="text-sm rounded-full bg-white text-black px-4 py-2 font-bold border-2 border-white hover:border-black">SHOP COLLECTION</button>
                         </Link>
                     </div>
@@ -44,8 +44,8 @@ export default function Home() {
                 </div>
             </section>
             <section className='bg-gray-100'>
-                <SliderCards title={"new arrival"} />
-                <SliderCards title={"best selling"} />
+                <SliderCards title={"new arrival"} products={recentProducts}/>
+                <SliderCards title={"best selling"} products={mostSoldProducts}/>
             </section>
             <section>
                 <BannerSocialMedia />

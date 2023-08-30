@@ -17,19 +17,27 @@ import SelectQuantity from '@/components/SelectQuantity';
 import ModalPurchase from '@/components/ModalPurchase';
 import SliderCards from '@/components/SliderCard';
 import ProgressBar from '@/components/ProgressBar';
+import { useRouter } from 'next/router';
 
 const Cart = () => {
-    const { cartState, removeItemFromCart, setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
+    const { recentProducts, cartState, removeAllItemsFromCart, removeItemFromCart, setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null);
     const { data: session, status } = useSession();
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [shippingCost, setShippingCost] = useState(0);
     const [isHovered, setIsHovered] = useState(false)
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
     const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95))
     const freeShippingThreshold = 50;
-    const priceShipping = cartState.totalPrice >= 50 ? 'FREE' : '$6.95';
     const [checkoutProcess, setCheckoutProcess] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const priceShipping = cartState.totalPrice >= 50 ? 'FREE' : '6.95';
+        setShippingCost(priceShipping === 'FREE' ? 0 : parseFloat(priceShipping));
+    }, [cartState]);
+
     useEffect(() => {
         const calculateTotalItems = () => {
             const local = localStorage.getItem('selectedQuantities');
@@ -60,11 +68,15 @@ const Cart = () => {
         const productToFind = cart.find(product => product.id === id);
         setShowModal(true);
         setSelectedProductId(id);
-        setSelectedProductModal(productToFind)
+        setSelectedProductModal(productToFind);
     };
 
     const handlePurchase = async (e) => {
-        setCheckoutProcess(true);
+        if (!userId) {
+            router.push("/login");
+        } else {
+            setCheckoutProcess(true);
+        }
     }
 
     return (
@@ -142,7 +154,7 @@ const Cart = () => {
                                         </div>
                                         <div className='grid grid-cols-2 font-semibold'>
                                             <p>SHIPPING</p>
-                                            <span className='ml-auto'>{priceShipping}</span>
+                                            <span className='ml-auto'>{shippingCost === 0 ? 'FREE' : `$${shippingCost}`}</span>
                                         </div>
                                         <div className='grid grid-cols-2 font-extrabold'>
                                             <p className='text-xl'>Estimated Total</p>
@@ -173,6 +185,7 @@ const Cart = () => {
                                                             shape: 'pill'
                                                         }}
                                                         createOrder={(data, actions) => {
+                                                            const itemTotal = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
                                                             return actions.order.create({
                                                                 purchase_units: [{
                                                                     amount: {
@@ -180,7 +193,11 @@ const Cart = () => {
                                                                         breakdown: {
                                                                             item_total: {
                                                                                 currency_code: 'USD',
-                                                                                value: estimatedTotal
+                                                                                value: itemTotal
+                                                                            },
+                                                                            shipping: {
+                                                                                currency_code: 'USD',
+                                                                                value: shippingCost 
                                                                             }
                                                                         }
                                                                     },
@@ -200,6 +217,7 @@ const Cart = () => {
                                                         onApprove={async (data, actions) => {
                                                             const order = await actions.order.capture();
                                                             await purchase(userId, order);
+                                                            removeAllItemsFromCart();
                                                         }}
                                                         onCancel={() => {
                                                             setCheckoutProcess(false);
@@ -213,7 +231,7 @@ const Cart = () => {
                             </div>
                         </div>
                         <div className="py-5 text-center bg-white mx-3 px-0">
-                            <SliderCards title="you might also like" />
+                            <SliderCards title="you might also like" products={recentProducts}/>
                         </div>
                     </>
                 ) : (
@@ -226,7 +244,7 @@ const Cart = () => {
                             <Image src={EmptyCart} height={315} width={315} alt="Wall-e" />
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
-                            <SliderCards title="check these out!" />
+                            <SliderCards title="check these out!" products={recentProducts}/>
                         </div>
                     </>
                 )}

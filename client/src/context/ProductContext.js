@@ -1,6 +1,7 @@
 import React, { createContext, useState, useReducer, useEffect } from 'react';
 import { getProducts } from '../../utils/apiProducts';
 import { cartReducer } from '../reducer/cartReducer';
+import { getMostSoldProducts } from '../../utils/apiPurchase';
 
 const initialState = {
     cart: [],
@@ -24,6 +25,7 @@ export const ProductProvider = ({ children }) => {
     const [showModalWishlist, setShowModalWishlist] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [removeModalClicked, setRemoveModalClicked] = useState(false);
+    const [mostSoldProducts, setMostSoldProducts] = useState([]);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
@@ -190,6 +192,15 @@ export const ProductProvider = ({ children }) => {
         setFilteredProducts(sorted);
     };
 
+    useEffect(() => {
+        const handleGetMostSoldProducts = async () => {
+            const res = await getMostSoldProducts();
+            setMostSoldProducts(res);
+        }
+        handleGetMostSoldProducts();
+    }, [])
+
+    
     const getRecentProducts = async () => {
         try {
             const limit = 6;
@@ -254,7 +265,8 @@ export const ProductProvider = ({ children }) => {
                 isLoading,
                 setIsLoading,
                 setRemoveModalClicked,
-                removeModalClicked
+                removeModalClicked,
+                mostSoldProducts
             }}
         >
             {children}

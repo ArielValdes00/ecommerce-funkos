@@ -17,7 +17,7 @@ import SliderCards from '@/components/SliderCard'
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading, closeModal } = useContext(ProductContext)
+    const { mostSoldProducts, toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading, closeModal } = useContext(ProductContext)
 
     return (
         <div>
@@ -76,7 +76,7 @@ const productName = ({ product }) => {
                 </div>
             </section>
             <div className="py-5 text-center bg-white">
-                <SliderCards title="you might also like" />
+                <SliderCards title="you might also like" products={mostSoldProducts}/>
             </div>
             <BannerSocialMedia />
             <Footer />
