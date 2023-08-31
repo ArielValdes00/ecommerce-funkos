@@ -20,19 +20,36 @@ const User = sequelize.define('users', {
     },
     areaCode: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     phoneNumber: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
+    },
+    postalCode: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    identificationNumber: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    recipientName: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
     image: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false,
     },
     email_verified: {
         type: DataTypes.BOOLEAN,
@@ -47,7 +64,11 @@ const User = sequelize.define('users', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
         onUpdate: DataTypes.NOW
-    }
+    },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 });
 
 export default User;

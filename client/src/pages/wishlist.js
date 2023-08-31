@@ -9,10 +9,12 @@ import AddToCartButton from '@/components/AddToCartButton';
 import RedHeart from "/public/icons/redHeart.png"
 import AccountHeader from "/public/icons/account-header.png"
 import Image from 'next/image';
-import ModalPurchase from '@/components/ModalPurchase';
+import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
 import ButtonAdded from '@/components/ButtonProductAdded';
+import ContactForm from '@/components/miscellaneous/ContactForm';
+import { toast, ToastContainer } from 'react-toastify'
 
 const Wishlist = () => {
     const { data: session, status } = useSession();
@@ -126,7 +128,9 @@ const Wishlist = () => {
                     </div>
                     {status === "authenticated" ? (
                         <div>
-                            <h2>???</h2>
+                            <ContactForm toast={toast} title={
+                                <h2 className='font-extrabold text-4xl text-center uppercase mb-5 pb-5'>Contact Us</h2>
+                            } />
                         </div>
                     ) : (
                         <div className='relative z-40'>
@@ -145,6 +149,15 @@ const Wishlist = () => {
             </section>
             <BannerSocialMedia />
             <Footer />
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                theme="light"
+            />
         </div>
     );
 };

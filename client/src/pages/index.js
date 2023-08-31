@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useSession } from 'next-auth/react';
 import Footer from "@/components/Footer";
 import { ProductContext } from '@/context/ProductContext';
-import ModalPurchase from '@/components/ModalPurchase';
+import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 
 export default function Home() {
     const { data: session } = useSession();

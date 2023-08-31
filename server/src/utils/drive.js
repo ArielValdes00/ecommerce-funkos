@@ -25,7 +25,6 @@ export const uploadImage = async (file) => {
     const media = {
         mimeType: file.mimetype, 
         body: Readable.from(file.buffer),
-
     };
 
     const response = await drive.files.create({

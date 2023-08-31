@@ -1,5 +1,5 @@
 import React from 'react'
-import { deleteProducts, updateProducts } from "../../utils/apiProducts";
+import { deleteProducts, updateProducts, uploadImage } from "../../utils/apiProducts";
 import { createProducts, getProducts } from "../../utils/apiProducts"
 import { useState, useEffect } from "react";
 import { useRef } from "react";
@@ -40,7 +40,6 @@ const Products = () => {
         try {
             if (currentProduct) {
                 const response = await updateProducts(currentProduct.id, form);
-                console.log(form)
                 setProducts(
                     products.map((product) =>
                         product.id === currentProduct.id ? { ...product, ...response } : product
@@ -58,6 +57,7 @@ const Products = () => {
                 formData.append("image", selectedFile);
 
                 const response = await createProducts(formData);
+                console.log('res',response)
                 imageInputRef.current.value = "";
 
                 setSelectedFile(null);
@@ -75,8 +75,6 @@ const Products = () => {
             console.error(error)
         }
     };
-
-
 
     const handleDelete = async (id) => {
         try {
@@ -166,7 +164,7 @@ const Products = () => {
                         <li>Delete</li>
                         <li>Update</li>
                     </ul>
-                    {products.map((product) => (
+                    {products?.map((product) => (
                         <div key={product.id} className="grid grid-cols-8 text-lg text-center items-center rounded border-gray-200 border-b">
                             <img src={product.image} width={105} alt={product.name} className='mx-auto p-1 py-2'></img>
                             <h3 className='capitalize'>{product.name}</h3>

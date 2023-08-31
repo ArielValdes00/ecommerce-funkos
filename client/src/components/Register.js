@@ -42,7 +42,7 @@ const Register = ({ onClick }) => {
         ) {
             setIsLoading(true);
             try {
-                const res = await axios.post('http://localhost:4000/api/users', form);
+                const res = await axios.post('http://localhost:5000/api/users', form);
                 if (res.status === 201) {
                     setTimeout(() => {
                         setIsLoading(false);

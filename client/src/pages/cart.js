@@ -4,31 +4,33 @@ import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import Delete from '../../public/icons/delete.png'
-import Security from '../../public/icons/security.png'
-import SecurityDark from '../../public/icons/security-dark.png'
-import EmptyCart from '../../public/icons/empty-cart.png'
+import Delete from '../../public/icons/delete.png';
+import Security from '../../public/icons/security.png';
+import SecurityDark from '../../public/icons/security-dark.png';
+import EmptyCart from '../../public/icons/empty-cart.png';
 import Image from 'next/image';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import { purchase } from '../../utils/apiPurchase';
 import SelectQuantity from '@/components/SelectQuantity';
-import ModalPurchase from '@/components/ModalPurchase';
+import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import SliderCards from '@/components/SliderCard';
 import ProgressBar from '@/components/ProgressBar';
 import { useRouter } from 'next/router';
 
 const Cart = () => {
-    const { recentProducts, cartState, removeAllItemsFromCart, removeItemFromCart, setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal, addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
+    const { recentProducts, cartState, removeAllItemsFromCart, removeItemFromCart,
+        setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal,
+        addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null);
     const { data: session, status } = useSession();
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [shippingCost, setShippingCost] = useState(0);
-    const [isHovered, setIsHovered] = useState(false)
+    const [isHovered, setIsHovered] = useState(false);
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
-    const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95))
+    const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95));
     const freeShippingThreshold = 50;
     const [checkoutProcess, setCheckoutProcess] = useState(false);
     const router = useRouter();
@@ -49,7 +51,6 @@ const Cart = () => {
 
         calculateTotalItems();
     }, []);
-
 
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
@@ -197,7 +198,7 @@ const Cart = () => {
                                                                             },
                                                                             shipping: {
                                                                                 currency_code: 'USD',
-                                                                                value: shippingCost 
+                                                                                value: shippingCost
                                                                             }
                                                                         }
                                                                     },
@@ -231,7 +232,7 @@ const Cart = () => {
                             </div>
                         </div>
                         <div className="py-5 text-center bg-white mx-3 px-0">
-                            <SliderCards title="you might also like" products={recentProducts}/>
+                            <SliderCards title="you might also like" products={recentProducts} />
                         </div>
                     </>
                 ) : (
@@ -244,7 +245,7 @@ const Cart = () => {
                             <Image src={EmptyCart} height={315} width={315} alt="Wall-e" />
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
-                            <SliderCards title="check these out!" products={recentProducts}/>
+                            <SliderCards title="check these out!" products={recentProducts} />
                         </div>
                     </>
                 )}

@@ -12,7 +12,7 @@ import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
 import ModalPurchase from '@/components/ModalPurchase'
 import ButtonAdded from '@/components/ButtonProductAdded'
-import ModalWishlist from '@/components/ModalWishlist'
+import ModalWishlist from '@/components/miscellaneous/ModalWishlist'
 import SliderCards from '@/components/SliderCard'
 
 const productName = ({ product }) => {

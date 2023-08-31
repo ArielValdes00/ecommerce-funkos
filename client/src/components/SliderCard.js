@@ -11,7 +11,7 @@ import RedHeart from '../../public/icons/redHeart.png'
 import Image from 'next/image.js';
 import AddToCartButton from './AddToCartButton.js';
 import ButtonAdded from './ButtonProductAdded.js';
-import ModalWishlist from './ModalWishlist.js';
+import ModalWishlist from './miscellaneous/ModalWishlist.js';
 import Loader from './Loader.js';
 
 const SliderCards = ({ title, products }) => {

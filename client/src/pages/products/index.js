@@ -12,9 +12,9 @@ import { useContext, useEffect, useState } from "react"
 import { ProductContext } from '../../context/ProductContext';
 import { useSession } from 'next-auth/react';
 import AddToCartButton from '@/components/AddToCartButton';
-import ModalPurchase from '@/components/ModalPurchase';
+import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import ButtonAdded from '@/components/ButtonProductAdded';
-import ModalWishlist from '@/components/ModalWishlist';
+import ModalWishlist from '@/components/miscellaneous/ModalWishlist';
 import Loader from '@/components/Loader';
 
 const Products = ({ initialProducts }) => {

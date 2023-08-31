@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '@/components/Navbar'
+import React, { useEffect, useState } from 'react';
+import Navbar from '@/components/Navbar';
 import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -75,23 +75,26 @@ const profile = ({ session }) => {
                 </div>
                 <div className='grid xl:grid-cols-3 gap-4'>
                     <div className='xl:col-span-2 bg-white p-4 rounded-lg border'>
-                        <div className='flex items-center gap-2'>
-                            <Image src={Shopping} height={30} width={30} alt='Shopping' />
-                            <p className='font-extrabold text-2xl'>My Shopping</p>
+                        <div className='flex items-center justify-between mb-4'>
+                            <div className='flex items-center gap-1 px-2'>
+                                <Image src={Shopping} height={30} width={30} alt='Shopping' />
+                                <p className='font-extrabold text-2xl'>My Shopping</p>
+                            </div>
+                            {data && <p className='font-bold'>Total Spent: ${data?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
                         </div>
-                        <div className='pb-5 flex items-center justify-center h-full'>
+                        <div className='pb-8 flex items-center justify-center h-full'>
                             {data ?
-                                <div className='pb-5 uppercase font-semibold text-center flex items-center justify-around flex-wrap h-full'>
+                                <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center h-full'>
                                     {data.map((product) => (
-                                        <div key={product.productId} className='rounded-lg border shadow-md p-3'>
+                                        <Link href={`/products/${product.productName}`} key={product.productId} className='rounded-lg border shadow-md p-3 hover:scale-[1.02] transition-transform duration-200'>
                                             <img src={product.productImage} height={170} width={170} alt={product.productName}></img>
                                             <p className='font-normal'>{product.productCategory}</p>
                                             <p className='font-extrabold'>{product.productName}</p>
                                             <p>${product.productPrice}</p>
                                             <p>Quantity: {product.quantity}</p>
-                                        </div>
+                                        </Link>
                                     ))}
-                                    <p>Total Price: ${data.reduce((total, product) => total + product.productPrice * product.quantity, 0)}</p>                                </div>
+                                </div>
                                 :
                                 <p className='py-14'>Empty</p>
                             }
@@ -111,10 +114,10 @@ const profile = ({ session }) => {
                                         name="name"
                                         value={updatedUser.name}
                                         onChange={handleInputChange}
-                                        className={'w-full'}
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
-                                    <span className=''>{updatedUser.name}</span>
+                                    <span>{updatedUser.name}</span>
                                 )}
                             </div>
                             <div>
@@ -125,7 +128,7 @@ const profile = ({ session }) => {
                                         name="email"
                                         value={updatedUser.email}
                                         onChange={handleInputChange}
-                                        className={'w-full'}
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.email}</span>
@@ -139,7 +142,7 @@ const profile = ({ session }) => {
                                         name="areaCode"
                                         value={updatedUser.areaCode}
                                         onChange={handleInputChange}
-                                        className={'w-full'}
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.areaCode}</span>
@@ -153,7 +156,7 @@ const profile = ({ session }) => {
                                         name="phoneNumber"
                                         value={updatedUser.phoneNumber}
                                         onChange={handleInputChange}
-                                        className={'w-full'}
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.phoneNumber}</span>
@@ -180,7 +183,7 @@ const profile = ({ session }) => {
                                         name="address"
                                         value={updatedUser.address}
                                         onChange={handleInputChange}
-                                        className='w-full'
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.address}</span>
@@ -194,7 +197,7 @@ const profile = ({ session }) => {
                                         name="postalCode"
                                         value={updatedUser.postalCode}
                                         onChange={handleInputChange}
-                                        className='w-full'
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.postalCode}</span>
@@ -208,7 +211,7 @@ const profile = ({ session }) => {
                                         name="identificationNumber"
                                         value={updatedUser.identificationNumber}
                                         onChange={handleInputChange}
-                                        className='w-full shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-1'
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.identificationNumber}</span>
@@ -222,7 +225,7 @@ const profile = ({ session }) => {
                                         name="recipientName"
                                         value={updatedUser.recipientName}
                                         onChange={handleInputChange}
-                                        className='w-full'
+                                        className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
                                 ) : (
                                     <span>{updatedUser.recipientName}</span>

@@ -20,18 +20,15 @@ export const User = sequelize.define("users", {
     },
     areaCode: {
         type: DataTypes.INTEGER,
-        defaultValue: false,
-        allowNull: false
+        allowNull: true
     },
     phoneNumber: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: false,
     },
     postalCode: {
         type: DataTypes.STRING,
@@ -69,6 +66,8 @@ export const User = sequelize.define("users", {
         onUpdate: DataTypes.NOW
     }
 });
+
+
 
 
 

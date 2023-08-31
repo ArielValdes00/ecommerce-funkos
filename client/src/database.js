@@ -1,6 +1,11 @@
 import Sequelize from "sequelize";
 
-export const sequelize = new Sequelize('ecommerce_funko', 'root', 'arielvaldes0102', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+export const sequelize = new Sequelize(process.env.NEXT_PUBLIC_DATABASE_URL, {
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
+})
+

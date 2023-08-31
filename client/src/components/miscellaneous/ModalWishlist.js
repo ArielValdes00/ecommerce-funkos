@@ -1,5 +1,5 @@
 import React from 'react'
-import Confirm from '../../public/icons/confirm.png'
+import Confirm from '/public/icons/confirm.png'
 import Image from 'next/image'
 
 const ModalWishlist = ({className}) => {

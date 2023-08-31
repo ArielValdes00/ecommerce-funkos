@@ -6,6 +6,9 @@ export const createProducts = async (req, res) => {
     try {
         const { name, price, description, category, stock } = req.body;
         const imageUrl = await uploadImage(req.file);
+        console.log(imageUrl)
+        console.log(name)
+        console.log(price)
         const product = await Product.create({
             name,
             price,
@@ -39,7 +42,7 @@ export const getProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit); // No se especifica valor predeterminado
+        const limit = parseInt(req.query.limit); 
         let products;
         if (limit && limit > 0) {
             products = await Product.findAll({
@@ -87,8 +90,6 @@ export const updateProducts = async (req, res) => {
             category,
             stock
         };
-        console.log(updateData)
-        console.log(decimalPrice)
         await Product.update(updateData, {
             where: { id },
         });
@@ -115,7 +116,7 @@ export const redirect = async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     fs.writeFileSync("creds.json", JSON.stringify(tokens));
-    res.send("succes")
+    res.send("success")
 }
 
 
