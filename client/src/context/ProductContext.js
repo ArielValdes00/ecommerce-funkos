@@ -207,7 +207,7 @@ export const ProductProvider = ({ children }) => {
             const recentProducts = await getProducts(limit);
             return recentProducts;
         } catch (error) {
-            console.error('Error al obtener los últimos productos:', error);
+            console.error(error);
             return [];
         }
     };
@@ -221,7 +221,7 @@ export const ProductProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        async function fetchProducts() {
+        const fetchProducts = async () => {
             const products = await getProducts();
             setProducts(products);
             cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });

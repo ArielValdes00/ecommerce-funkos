@@ -57,7 +57,7 @@ const Products = () => {
                 formData.append("image", selectedFile);
 
                 const response = await createProducts(formData);
-                console.log('res',response)
+                console.log('res', response)
                 imageInputRef.current.value = "";
 
                 setSelectedFile(null);

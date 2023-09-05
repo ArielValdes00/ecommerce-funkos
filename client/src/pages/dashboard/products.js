@@ -42,7 +42,6 @@ const products = ({ session }) => {
         try {
             if (currentProduct) {
                 const response = await updateProducts(currentProduct.id, form);
-                console.log(form)
                 setProducts(
                     products.map((product) =>
                         product.id === currentProduct.id ? { ...product, ...response } : product
@@ -57,7 +56,10 @@ const products = ({ session }) => {
                 formData.append("description", form.description);
                 formData.append("category", form.category);
                 formData.append("stock", form.stock);
-                formData.append("image", selectedFile);
+
+                if (selectedFile) {
+                    formData.append('image', selectedFile);
+                }
 
                 const response = await createProducts(formData);
                 imageInputRef.current.value = "";
@@ -77,8 +79,6 @@ const products = ({ session }) => {
             console.error(error)
         }
     };
-
-
 
     const handleDelete = async (id) => {
         try {
@@ -175,7 +175,7 @@ const products = ({ session }) => {
                         <li>Delete</li>
                         <li>Update</li>
                     </ul>
-                    {products.map((product) => (
+                    {products?.map((product) => (
                         <div key={product.id} className="grid grid-cols-8 text-lg text-center items-center rounded border-gray-200 border-b">
                             <img src={product.image} width={105} alt={product.name} className='mx-auto p-1 py-2'></img>
                             <h3 className='capitalize'>{product.name}</h3>

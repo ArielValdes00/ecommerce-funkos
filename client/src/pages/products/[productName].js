@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react'
 import { ProductContext } from '@/context/ProductContext'
-import ModalPurchase from '@/components/ModalPurchase'
+import ModalPurchase from '@/components/miscellaneous/ModalPurchase'
 import ButtonAdded from '@/components/ButtonProductAdded'
 import ModalWishlist from '@/components/miscellaneous/ModalWishlist'
 import SliderCards from '@/components/SliderCard'
@@ -50,7 +50,7 @@ const productName = ({ product }) => {
                     <div className='border bg-gray-200 relative'>
 
                         {showModalWishlist && selectedProductModal === product.id && (
-                            <ModalWishlist className={'fixed w-1/5'} />
+                            <ModalWishlist className={'fixed py-1 md:w-[25%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'} />
                         )}
                         <Image
                             onClick={() => toggleWishlist(product.id)}

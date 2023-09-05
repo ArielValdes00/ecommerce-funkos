@@ -12,7 +12,7 @@ export const Cart = sequelize.define(
             autoIncrement: true
         },
         userId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false
         },
         productId: {
@@ -44,6 +44,7 @@ export const associateModels = () => {
     Product.hasMany(Cart, { foreignKey: 'productId' });
     Cart.belongsTo(Product, { foreignKey: 'productId' });
 };
+
 
 
 

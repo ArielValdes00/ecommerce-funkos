@@ -18,8 +18,19 @@ import { getUserPurchaseHistory } from '../../utils/apiPurchase';
 const profile = ({ session }) => {
     const { data: status } = useSession();
     const router = useRouter();
-    const [userId, setUserId] = useState(session.user.id);
+    const [editing, setEditing] = useState(false);
+    const [editingAddress, setEditingAddress] = useState(false);
+    const [data, setData] = useState([]);
     const user = session.user
+
+    const groupedProducts = {};
+    data.forEach((product) => {
+        if (!groupedProducts[product.productId]) {
+            groupedProducts[product.productId] = { ...product, totalQuantity: 0 };
+        }
+        groupedProducts[product.productId].totalQuantity += product.quantity;
+    });
+
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.push('/login');
@@ -29,10 +40,9 @@ const profile = ({ session }) => {
     if (status === 'loading') {
         return <div>Loading...</div>;
     }
-    const [editing, setEditing] = useState(false);
-    const [editingAddress, setEditingAddress] = useState(false);
+
     const [updatedUser, setUpdatedUser] = useState(user);
-    const [data, setData] = useState([]);
+    const [userId, setUserId] = useState(session.user.id);
 
     const handleInputChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
@@ -84,14 +94,14 @@ const profile = ({ session }) => {
                         </div>
                         <div className='pb-8 flex items-center justify-center h-full'>
                             {data ?
-                                <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center h-full'>
-                                    {data.map((product) => (
+                                <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center'>
+                                    {Object.values(groupedProducts).map((product) => (
                                         <Link href={`/products/${product.productName}`} key={product.productId} className='rounded-lg border shadow-md p-3 hover:scale-[1.02] transition-transform duration-200'>
                                             <img src={product.productImage} height={170} width={170} alt={product.productName}></img>
                                             <p className='font-normal'>{product.productCategory}</p>
                                             <p className='font-extrabold'>{product.productName}</p>
                                             <p>${product.productPrice}</p>
-                                            <p>Quantity: {product.quantity}</p>
+                                            <p className='text-sm'>Quantity: {product.totalQuantity}</p>
                                         </Link>
                                     ))}
                                 </div>

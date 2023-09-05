@@ -87,9 +87,7 @@ export const updateUser = async (req, res) => {
             where: {
                 id: userId,
             },
-        });
-        console.log('Found user:', user);
-        
+        });        
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -116,9 +114,7 @@ export const updateUser = async (req, res) => {
             where: {
                 id: userId,
             },
-        });
-        console.log('Updated fields:', updatedFields);
-        
+        });        
 
         res.status(200).json({ message: "User updated successfully" });
     } catch (error) {

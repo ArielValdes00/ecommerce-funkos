@@ -24,11 +24,11 @@ export const User = sequelize.define("users", {
     },
     phoneNumber: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     postalCode: {
         type: DataTypes.STRING,
@@ -66,6 +66,9 @@ export const User = sequelize.define("users", {
         onUpdate: DataTypes.NOW
     }
 });
+
+
+
 
 
 

@@ -34,7 +34,6 @@ export const authOptions = {
                         email: email
                     }
                 });
-                console.log(user)
 
                 if (!user) {
                     throw new Error("invalid email")
@@ -75,6 +74,7 @@ export const authOptions = {
                 token.postalCode = user.postalCode;
                 token.identificationNumber = user.identificationNumber;
                 token.recipientName = user.recipientName;
+
             } else {
                 const updatedUser = await getUser(token.id);
                 token.name = updatedUser.name;
