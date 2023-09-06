@@ -24,7 +24,7 @@ const profile = ({ session }) => {
     const user = session.user
 
     const groupedProducts = {};
-    data.forEach((product) => {
+    data?.forEach((product) => {
         if (!groupedProducts[product.productId]) {
             groupedProducts[product.productId] = { ...product, totalQuantity: 0 };
         }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getCart } from '../../utils/apiPurchase'
+import { getCart } from '../../../utils/apiPurchase'
 import { useEffect, useState } from 'react'
 
 const Sales = () => {

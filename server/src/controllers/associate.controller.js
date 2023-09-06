@@ -95,7 +95,6 @@ export const getMostSoldProducts = async (req, res) => {
 
         const last6MostSoldProducts = sortedProducts.slice(0, 6);
 
-
         res.status(200).json({ mostSoldProducts: last6MostSoldProducts });
     } catch (error) {
         res.status(500).json({ error: 'Error retrieving most sold products' });

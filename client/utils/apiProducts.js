@@ -17,9 +17,9 @@ export const getProducts = async (limit) => {
     }
 };
 
-export const createProducts = async (productData) => {
+export const createProducts = async (formData) => {
     try {
-        const response = await axios.post(`${API_URL}`, productData);
+        const response = await axios.post(`${API_URL}`, formData);
         return response.data;
     } catch (error) {
         console.error(error);

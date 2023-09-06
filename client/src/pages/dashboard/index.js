@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { getSession } from 'next-auth/react';
-import SideBar from '@/dashboardComponents/SideBar';
-import Products from '@/dashboardComponents/Products';
-import Sales from '@/dashboardComponents/Sales';
-import Users from '@/dashboardComponents/Users';
-import NavBar from '@/dashboardComponents/NavBar';
+import SideBar from '@/components/dashboardComponents/SideBar';
+import Sales from '@/components/dashboardComponents/Sales';
+import Users from '@/components/dashboardComponents/Users';
+import NavBar from '@/components/dashboardComponents/NavBar';
+import AllProducts from '@/components/dashboardComponents/AllProducts';
 
 export default function IndexPage({ session }) {
     const [selectedSection, setSelectedSection] = useState('products');
@@ -12,7 +12,7 @@ export default function IndexPage({ session }) {
     const renderSelectedSection = () => {
         switch (selectedSection) {
             case 'products':
-                return <Products />;
+                return <AllProducts />;
             case 'sales':
                 return <Sales />;
             case 'profile':
@@ -27,7 +27,7 @@ export default function IndexPage({ session }) {
         <div>
             <SideBar setSelectedSection={setSelectedSection} selectedSection={selectedSection} />
             <div className='absolute left-48'>
-                <NavBar section={selectedSection} session={session}/>
+                <NavBar section={selectedSection} session={session} />
                 {renderSelectedSection()}
             </div>
         </div>

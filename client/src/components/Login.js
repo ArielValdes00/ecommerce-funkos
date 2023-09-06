@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react';
 import { ProductContext } from '@/context/ProductContext';
 import { isValidEmail, isValidPassword } from '../../utils/validations';
 import Eye from '../../public/icons/eye.png';
+import Loader from '../../public/icons/loader.gif';
 import EyeSlash from '../../public/icons/eye-slash.png';
 import Image from 'next/image';
 
@@ -29,6 +30,7 @@ const Login = ({ onClick }) => {
             return;
         }
         try {
+            setIsLoading(true);
             const res = await signIn('credentials', {
                 email: form.email,
                 password: form.password,
@@ -43,9 +45,6 @@ const Login = ({ onClick }) => {
             } else if (res.error === "invalid password") {
                 setPasswordError("Invalid password. Please check your password.");
                 setTimeout(() => setPasswordError(""), 4000);
-            }
-            else {
-                setIsLoading(true)
             }
         } catch (error) {
             console.error(error)
@@ -105,9 +104,12 @@ const Login = ({ onClick }) => {
                             type="submit"
                         >
                             {isLoading ? (
-                                <span>Loading...</span>
+                                <div className='flex items-center justify-center'>
+                                    <Image src={Loader} height={25} width={25} alt='Loading' />
+                                    <span>Loading...</span>
+                                </div>
                             ) : (
-                                <span>Log in</span>
+                                <span>Login</span>
                             )}
                         </button>
                         <div className="flex items-center my-3">

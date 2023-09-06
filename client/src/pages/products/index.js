@@ -19,6 +19,7 @@ import Loader from '@/components/Loader';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
+    const [hover, setHover] = useState(false);
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
     const { updateProducts,
         filteredProducts,
@@ -76,10 +77,10 @@ const Products = ({ initialProducts }) => {
                 />
             )}
             <section className="md:px-28 py-5 sm:mx-4">
-                    <div className="text-xs text-gray-500 mb-7 mx-4 sm:mx-0">
-                        <Link href={"/"}>Funko</Link> / <span>Products</span>
-                    </div>
-                    <h1 className="text-5xl font-extrabold mb-7 py-4 mx-4 sm:mx-0">PRODUCTS</h1>
+                <div className="text-xs text-gray-500 mb-7 mx-4 sm:mx-0">
+                    <Link href={"/"}>Funko</Link> / <span>Products</span>
+                </div>
+                <h1 className="text-5xl font-extrabold mb-7 py-4 mx-4 sm:mx-0">PRODUCTS</h1>
                 <div className="bg-gray-100 p-4 mb-8">
                     <div className="flex items-center gap-8">
                         <div className='flex items-center justify-between w-full lg:hidden'>
@@ -139,19 +140,25 @@ const Products = ({ initialProducts }) => {
                         {filteredProducts.map((product) => (
                             <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center p-3 shadow relative`}>
                                 {isLoading && selectedProductModal === product.id && (
-                                    <Loader/>
+                                    <Loader />
                                 )}
                                 {showModalWishlist && selectedProductModal === product.id && (
-                                    <ModalWishlist className={'w-3/4 absolute'}/>
+                                    <ModalWishlist className={'w-3/4 absolute'} />
                                 )}
                                 <Image
                                     onClick={() => toggleWishlist(product.id)}
                                     src={isInWishlist(product.id) ? RedHeart : Heart}
                                     height={25} width={25} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
                                 </Image>
-                                <Link href={`/products/${product.name}`}><img src={product.image} alt={product.name} className='hover:scale-110 transition-transform duration-300 p-2 pt-5'></img></Link>
+                                <Link href={`/products/${product.name}`}>
+                                    <div className='relative' onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+                                        <img src={hover ? product.boxImage : product.image} alt={product.name} className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5' />
+                                    </div>
+                                </Link>
                                 <p className="uppercase">{product.category}</p>
-                                <Link href={`/products/${product.name}`}><h3 className="font-extrabold uppercase hover:underline">{product.name}</h3></Link>
+                                <Link href={`/products/${product.name}`}>
+                                    <h3 className="font-extrabold uppercase hover:underline">{product.name}</h3>
+                                </Link>
                                 <p className="font-semibold">${product.price}</p>
                                 {!isInCart(product.id) ? (
                                     <AddToCartButton

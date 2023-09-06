@@ -6,6 +6,7 @@
 
 :root {
     --navbar-height: 70px; 
+    --animate-duration: 800ms;
 }
 
 .fondo{
@@ -97,6 +98,10 @@
   
   .line-3-cross {
     transform: translateY(-12px) rotate(47deg);
+  }
+
+  .animate__animated.animate__fadeInRight, .animate__animated.animate__fadeInLeft {
+    --animate-duration: .5s;
   }
 
   @keyframes slide-in {

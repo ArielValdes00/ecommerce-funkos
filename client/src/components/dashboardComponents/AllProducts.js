@@ -1,11 +1,12 @@
 import React from 'react'
-import { deleteProducts, updateProducts, uploadImage } from "../../utils/apiProducts";
-import { createProducts, getProducts } from "../../utils/apiProducts"
+import { deleteProducts, updateProducts } from "../../../utils/apiProducts";
+import { createProducts, getProducts } from "../../../utils/apiProducts"
 import { useState, useEffect } from "react";
 import { useRef } from "react";
 
-const Products = () => {
+const AllProducts = () => {
     const imageInputRef = useRef(null);
+    const boxImageInputRef = useRef(null);
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({
         name: "",
@@ -13,11 +14,17 @@ const Products = () => {
         description: "",
         category: "",
         stock: "",
-        image: null
+        image: "",
+        boxImage: "",
     })
     const [currentProduct, setCurrentProduct] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [boxImage, setBoxImage] = useState(null);
+
+    const handleBoxImageChange = (e) => {
+        setBoxImage(e.target.files[0]);
+    };
 
     const fetchProducts = async () => {
         const data = await getProducts();
@@ -54,11 +61,18 @@ const Products = () => {
                 formData.append("description", form.description);
                 formData.append("category", form.category);
                 formData.append("stock", form.stock);
-                formData.append("image", selectedFile);
 
+                if (selectedFile) {
+                    formData.append('image', selectedFile);
+                }
+
+                if (boxImage) {
+                    formData.append('boxImage', boxImage);
+                }
+                
                 const response = await createProducts(formData);
-                console.log('res', response)
                 imageInputRef.current.value = "";
+                boxImageInputRef.current.value = "";
 
                 setSelectedFile(null);
                 setForm({
@@ -67,7 +81,8 @@ const Products = () => {
                     description: "",
                     category: "",
                     stock: "",
-                    image: null,
+                    image: "",
+                    boxImage: ""
                 });
                 setProducts([...products, response]);
             }
@@ -141,7 +156,12 @@ const Products = () => {
                                             </div>
                                             <div>
                                                 <label htmlFor="image" className="block mb-1">Image:</label>
-                                                <input type="file" ref={imageInputRef} name="image" onChange={handleImageChange} />                                        </div>
+                                                <input type="file" ref={imageInputRef} name="image" onChange={handleImageChange} />
+                                            </div>
+                                            <div>
+                                                <label htmlFor="boxImage" className="block mb-1">Image with Box:</label>
+                                                <input type="file" ref={boxImageInputRef} name="boxImage" onChange={handleBoxImageChange} />
+                                            </div>
                                             <div className="col-span-2 mt-4">
                                                 <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mr-2">Create product</button>
                                                 <button type="button" onClick={handleCloseModal} className="border rounded-md px-4 py-2">Close</button>
@@ -188,4 +208,4 @@ const Products = () => {
 
 
 
-export default Products
+export default AllProducts

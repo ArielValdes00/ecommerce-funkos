@@ -24,9 +24,12 @@ export const Product = sequelize.define("products", {
     },
     image: {
         type: DataTypes.STRING
+    },
+    boxImage: {
+        type: DataTypes.STRING
     }
-
 })
+
 
 
 

@@ -199,7 +199,6 @@ export const ProductProvider = ({ children }) => {
         }
         handleGetMostSoldProducts();
     }, [])
-
     
     const getRecentProducts = async () => {
         try {
