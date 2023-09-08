@@ -37,17 +37,18 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ where: { email } });
+        console.log("user", user)
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log("password", isPasswordValid)
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid password" });
         }
-        const token = generateAuthToken(user.id);
-        res.status(200).json({ token });
+        res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error)
     }
 };
 
@@ -87,7 +88,7 @@ export const updateUser = async (req, res) => {
             where: {
                 id: userId,
             },
-        });        
+        });
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -114,7 +115,7 @@ export const updateUser = async (req, res) => {
             where: {
                 id: userId,
             },
-        });        
+        });
 
         res.status(200).json({ message: "User updated successfully" });
     } catch (error) {

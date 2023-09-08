@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { createUser, getUsers, getUser, updateUser, deleteUser, getToken } from '../controllers/users.controller.js';
+import { createUser, getUsers, getUser, updateUser, deleteUser, getToken, login } from '../controllers/users.controller.js';
 
 const router = Router();
 
 router.post("/api/users", createUser);
+router.post("/api/users/login", login);
 router.get("/api/users", getUsers);
 router.get("/api/users/:id", getUser);
 router.put("/api/users/:id", updateUser);

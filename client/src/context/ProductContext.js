@@ -1,7 +1,6 @@
 import React, { createContext, useState, useReducer, useEffect } from 'react';
 import { getProducts } from '../../utils/apiProducts';
 import { cartReducer } from '../reducer/cartReducer';
-import { getMostSoldProducts } from '../../utils/apiPurchase';
 
 const initialState = {
     cart: [],
@@ -18,14 +17,12 @@ export const ProductProvider = ({ children }) => {
     const [totalProducts, setTotalProducts] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
-    const [selectedProductModal, setSelectedProductModal] = useState([]);
-    const [recentProducts, setRecentProducts] = useState([]);
+    const [selectedProductModal, setSelectedProductModal] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedQuantities, setSelectedQuantities] = useState({});
     const [showModalWishlist, setShowModalWishlist] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [removeModalClicked, setRemoveModalClicked] = useState(false);
-    const [mostSoldProducts, setMostSoldProducts] = useState([]);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
@@ -82,11 +79,11 @@ export const ProductProvider = ({ children }) => {
     }
 
     const addItemToCart = (id, quantity = 1) => {
-        const { cart } = cartState;
         const productToAdd = products.find(product => product.id === id);
-        setRemoveModalClicked(false)
         setSelectedProductModal(productToAdd);
+        const { cart } = cartState;
         setShowModal(true);
+        setRemoveModalClicked(false)
         if (productToAdd) {
             const itemInCart = cart.find(item => item.id === id);
 
@@ -101,7 +98,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     const removeItemFromCart = (id) => {
-        setShowModal(false)
+        setShowModal(false);
         const { cart } = cartState;
 
         const updatedCart = cart.filter(item => item.id !== id);
@@ -191,33 +188,7 @@ export const ProductProvider = ({ children }) => {
         const sorted = [...filteredProducts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setFilteredProducts(sorted);
     };
-
-    useEffect(() => {
-        const handleGetMostSoldProducts = async () => {
-            const res = await getMostSoldProducts();
-            setMostSoldProducts(res);
-        }
-        handleGetMostSoldProducts();
-    }, [])
     
-    const getRecentProducts = async () => {
-        try {
-            const limit = 6;
-            const recentProducts = await getProducts(limit);
-            return recentProducts;
-        } catch (error) {
-            console.error(error);
-            return [];
-        }
-    };
-    useEffect(() => {
-        const fetchRecentProducts = async () => {
-            const products = await getRecentProducts();
-            setRecentProducts(products);
-        };
-
-        fetchRecentProducts();
-    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -238,7 +209,6 @@ export const ProductProvider = ({ children }) => {
                 handleCategoryChange,
                 handleSortChange,
                 handleSearchChange,
-                getRecentProducts,
                 cartState,
                 closeModal,
                 closeModal,
@@ -252,7 +222,6 @@ export const ProductProvider = ({ children }) => {
                 wishlist,
                 isInWishlist,
                 toggleWishlist,
-                recentProducts,
                 showModal,
                 setShowModal,
                 isInCart,
@@ -265,7 +234,6 @@ export const ProductProvider = ({ children }) => {
                 setIsLoading,
                 setRemoveModalClicked,
                 removeModalClicked,
-                mostSoldProducts
             }}
         >
             {children}

@@ -12,15 +12,16 @@ import Image from 'next/image';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
-import { purchase } from '../../utils/apiPurchase';
+import { getMostSoldProducts, purchase } from '../../utils/apiPurchase';
 import SelectQuantity from '@/components/SelectQuantity';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import SliderCards from '@/components/SliderCard';
 import ProgressBar from '@/components/ProgressBar';
 import { useRouter } from 'next/router';
+import { getProducts } from '../../utils/apiProducts';
 
-const Cart = () => {
-    const { recentProducts, cartState, removeAllItemsFromCart, removeItemFromCart,
+const Cart = ({recentProducts, mostSoldProducts}) => {
+    const { cartState, removeAllItemsFromCart, removeItemFromCart,
         setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal,
         addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
@@ -232,7 +233,7 @@ const Cart = () => {
                             </div>
                         </div>
                         <div className="py-5 text-center bg-white mx-3 px-0">
-                            <SliderCards title="you might also like" products={recentProducts} />
+                            <SliderCards title="you might also like" products={mostSoldProducts} />
                         </div>
                     </>
                 ) : (
@@ -255,5 +256,30 @@ const Cart = () => {
         </>
     );
 };
+
+export async function getServerSideProps(context) {
+    try {
+      const limit = 6;
+      const recentProducts = await getProducts(limit);
+      
+      const mostSoldProducts = await getMostSoldProducts();
+  
+      return {
+        props: {
+          recentProducts,
+          mostSoldProducts,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+  
+      return {
+        props: {
+          recentProducts: [],
+          mostSoldProducts: [],
+        },
+      };
+    }
+  }
 
 export default Cart;

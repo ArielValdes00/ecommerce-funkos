@@ -9,10 +9,12 @@ import { useSession } from 'next-auth/react';
 import Footer from "@/components/Footer";
 import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
+import { getProducts} from '../../utils/apiProducts';
+import { getMostSoldProducts } from '../../utils/apiPurchase';
 
-export default function Home() {
+export default function Home({ recentProducts, mostSoldProducts }) {
     const { data: session } = useSession();
-    const { showModal, selectedProductModal, closeModal, recentProducts, mostSoldProducts } = useContext(ProductContext);
+    const { showModal, selectedProductModal, closeModal } = useContext(ProductContext);
     return (
         <div>
             <Navbar session={session} />
@@ -44,8 +46,8 @@ export default function Home() {
                 </div>
             </section>
             <section className='bg-gray-100'>
-                <SliderCards title={"new arrival"} products={recentProducts}/>
-                <SliderCards title={"best selling"} products={mostSoldProducts}/>
+                <SliderCards title={"new arrival"} products={recentProducts} />
+                <SliderCards title={"best selling"} products={mostSoldProducts} />
             </section>
             <section>
                 <BannerSocialMedia />
@@ -56,5 +58,30 @@ export default function Home() {
         </div>
     )
 }
+
+export async function getServerSideProps(context) {
+    try {
+      const limit = 6;
+      const recentProducts = await getProducts(limit);
+      
+      const mostSoldProducts = await getMostSoldProducts();
+  
+      return {
+        props: {
+          recentProducts,
+          mostSoldProducts,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+  
+      return {
+        props: {
+          recentProducts: [],
+          mostSoldProducts: [],
+        },
+      };
+    }
+  }
 
 

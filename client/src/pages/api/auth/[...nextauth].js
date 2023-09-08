@@ -1,21 +1,12 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUser } from '../../../../utils/apiUsers';
 import dotenv from 'dotenv';
 import SequelizeAdapter from "@next-auth/sequelize-adapter";
-import { Sequelize } from "sequelize";
-import User from '../../../models/user'
-import bcrypt from 'bcrypt'
+import { login } from '../../../../utils/apiUsers';
+import { getUser } from '../../../../utils/apiUsers';
+import { sequelize } from '@/database';
 dotenv.config();
-export const sequelize = new Sequelize(process.env.NEXT_PUBLIC_DATABASE_URL, {
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
-})
 
 export const authOptions = {
     providers: [
@@ -26,36 +17,13 @@ export const authOptions = {
         CredentialsProvider({
             name: 'Credentials',
             async authorize(credentials, req) {
-
                 const { email, password } = credentials;
-
-                const user = await User.findOne({
-                    where: {
-                        email: email
-                    }
-                });
-
-                if (!user) {
-                    throw new Error("invalid email")
+                try {
+                    const response = await login(email, password);
+                    return response
+                } catch (error) {
+                    throw new Error('authentication error');
                 }
-
-                const isPasswordMatched = await bcrypt.compare(password, user.password)
-
-                if (!isPasswordMatched) {
-                    throw new Error("invalid password")
-                }
-                const userData = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    areaCode: user.areaCode,
-                    phoneNumber: user.phoneNumber,
-                    address: user.address,
-                    postalCode: user.postalCode,
-                    identificationNumber: user.identificationNumber,
-                    recipientName: user.recipientName
-                };
-                return userData;
             }
         })
     ],
@@ -110,4 +78,3 @@ export default NextAuth({
     ...authOptions,
     adapter: SequelizeAdapter(sequelize),
 });
-

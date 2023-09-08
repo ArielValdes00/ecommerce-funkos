@@ -34,7 +34,6 @@ export const handlePurchase = async (req, res) => {
 
 export const getUserPurchaseHistory = async (req, res) => {
     const { userId } = req.body;
-
     try {
         const user = await User.findByPk(userId, {
             include: {
@@ -48,14 +47,16 @@ export const getUserPurchaseHistory = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const purchaseHistory = user.Carts.map(cartItem => ({
-            productId: cartItem.product.id,
-            productName: cartItem.product.name,
-            productPrice: cartItem.product.price,
-            productCategory: cartItem.product.category,
-            productImage: cartItem.product.image,
-            quantity: cartItem.quantity
-        }));
+        const purchaseHistory = user.Carts
+            .filter(cartItem => cartItem.product !== null)
+            .map(cartItem => ({
+                productId: cartItem.product.id,
+                productName: cartItem.product.name,
+                productPrice: cartItem.product.price,
+                productCategory: cartItem.product.category,
+                productImage: cartItem.product.image,
+                quantity: cartItem.quantity
+            }));
 
         res.status(200).json({ purchaseHistory });
     } catch (error) {
@@ -97,7 +98,7 @@ export const getMostSoldProducts = async (req, res) => {
 
         res.status(200).json({ mostSoldProducts: last6MostSoldProducts });
     } catch (error) {
-        res.status(500).json({ error: 'Error retrieving most sold products' });
+        console.log(error)
     }
 };
 

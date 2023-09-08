@@ -35,7 +35,7 @@ const productName = ({ product }) => {
     return (
         <div>
             <Navbar session={session} />
-            {showModal && (
+            {showModal && selectedProductModal === product.id && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
                     quantity={'quantity: 1'}
@@ -52,7 +52,7 @@ const productName = ({ product }) => {
             {showModalWishlist && selectedProductModal === product.id && (
                 <ModalWishlist className={'fixed py-1 md:w-[25%] lg:w-[20%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'} />
             )}
-            <section className='md:px-28 py-5 sm:mx-4'>
+            <section className='md:px-28 px-4 py-5'>
                 {isLoading && selectedProductModal === product.id && (
                     <div className="fixed inset-0 transition-opacity z-40">
                         <div className="absolute inset-0 bg-neutral-800 opacity-75"></div>
@@ -66,7 +66,7 @@ const productName = ({ product }) => {
                         <Image
                             onClick={() => toggleWishlist(product.id)}
                             src={isInWishlist(product.id) ? RedHeart : Heart}
-                            height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer'>
+                            height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer z-40'>
                         </Image>
                         <div className='flex'>
                             <div className='mt-10 ms-3'>

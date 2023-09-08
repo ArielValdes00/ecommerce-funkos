@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import { ProductContext } from '@/context/ProductContext'
+import React, { useContext } from 'react';
+import { ProductContext } from '@/context/ProductContext';
 import CloseModalIcon from '/public/icons/close-modal.png';
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image';
+import Link from 'next/link';
 
 const ModalPurchase = ({ title, name, price, image, quantity, category, handleConfirmation, firstButton, secondButton, redirect }) => {
-    const { closeModal } = useContext(ProductContext)
+    const { closeModal } = useContext(ProductContext);
 
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full'>

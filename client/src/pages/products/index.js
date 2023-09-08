@@ -19,7 +19,7 @@ import Loader from '@/components/Loader';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
-    const [hover, setHover] = useState(false);
+    const [hoveredProductId, setHoveredProductId] = useState(null);
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
     const { updateProducts,
         filteredProducts,
@@ -138,7 +138,7 @@ const Products = ({ initialProducts }) => {
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-5">
                         {filteredProducts.map((product) => (
-                            <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center p-3 shadow relative`}>
+                            <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center py-3 md:px-3 px-2 shadow relative`}>
                                 {isLoading && selectedProductModal === product.id && (
                                     <Loader />
                                 )}
@@ -151,8 +151,16 @@ const Products = ({ initialProducts }) => {
                                     height={25} width={25} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
                                 </Image>
                                 <Link href={`/products/${product.name}`}>
-                                    <div className='relative' onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-                                        <img src={hover ? product.boxImage : product.image} alt={product.name} className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5' />
+                                    <div
+                                        className='relative'
+                                        onMouseEnter={() => setHoveredProductId(product.id)}
+                                        onMouseLeave={() => setHoveredProductId(null)}
+                                    >
+                                        <img
+                                            src={hoveredProductId === product.id ? product.boxImage : product.image}
+                                            alt={product.name}
+                                            className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5'
+                                        />
                                     </div>
                                 </Link>
                                 <p className="uppercase">{product.category}</p>

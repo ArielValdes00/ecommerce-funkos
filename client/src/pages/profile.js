@@ -15,7 +15,7 @@ import Logout from '/public/icons/logout.png';
 import Image from 'next/image';
 import { getUserPurchaseHistory } from '../../utils/apiPurchase';
 
-const profile = ({ session }) => {
+const profile = ({ session, purchaseHistory }) => {
     const { data: status } = useSession();
     const router = useRouter();
     const [editing, setEditing] = useState(false);
@@ -24,7 +24,7 @@ const profile = ({ session }) => {
     const user = session.user
 
     const groupedProducts = {};
-    data?.forEach((product) => {
+    purchaseHistory?.forEach((product) => {
         if (!groupedProducts[product.productId]) {
             groupedProducts[product.productId] = { ...product, totalQuantity: 0 };
         }
@@ -90,10 +90,10 @@ const profile = ({ session }) => {
                                 <Image src={Shopping} height={30} width={30} alt='Shopping' />
                                 <p className='font-extrabold text-2xl'>My Shopping</p>
                             </div>
-                            {data && <p className='font-bold'>Total Spent: ${data?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
+                            {data && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
                         </div>
                         <div className='pb-8 flex items-center justify-center h-full'>
-                            {data ?
+                            {purchaseHistory ?
                                 <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center'>
                                     {Object.values(groupedProducts).map((product) => (
                                         <Link href={`/products/${product.productName}`} key={product.productId} className='rounded-lg border shadow-md p-3 hover:scale-[1.02] transition-transform duration-200'>
@@ -150,7 +150,7 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="areaCode"
-                                        value={updatedUser.areaCode}
+                                        value={!updatedUser.areaCode ? '' : updatedUser.areaCode}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -164,7 +164,7 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="phoneNumber"
-                                        value={updatedUser.phoneNumber}
+                                        value={!updatedUser.phoneNumber ? '' : updatedUser.phoneNumber}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -191,7 +191,7 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="address"
-                                        value={updatedUser.address}
+                                        value={!updatedUser.adress ? '' : updatedUser.adress}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -205,7 +205,8 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="postalCode"
-                                        value={updatedUser.postalCode}
+                                        value={!updatedUser.postalCode ? '' : updatedUser.postalCode}
+
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -219,7 +220,7 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="identificationNumber"
-                                        value={updatedUser.identificationNumber}
+                                        value={!updatedUser.identificationNumber ? '' : updatedUser.identificationNumber}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -233,7 +234,7 @@ const profile = ({ session }) => {
                                     <input
                                         type="text"
                                         name="recipientName"
-                                        value={updatedUser.recipientName}
+                                        value={!updatedUser.recipientName ? '' : updatedUser.recipientName}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -266,18 +267,24 @@ const profile = ({ session }) => {
 
 export const getServerSideProps = async (context) => {
     const session = await getSession(context);
-    if (!session) return {
-        redirect: {
-            destination: '/',
-            permanent: false
-        }
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
     }
+
+    const userId = session.user.id;
+    const purchaseHistory = await getUserPurchaseHistory(userId);
 
     return {
         props: {
-            session
+            session,
+            purchaseHistory
         }
-    }
+    };
 }
 
 export default profile
