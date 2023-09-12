@@ -118,7 +118,7 @@ const AllProducts = () => {
 
     return (
         <div>
-            <div className='bg-white'>
+            <div className=''>
                 <div className="w-full max-w-md mx-auto text-center p-3">
                     <button onClick={handleOpenModal} className="bg-blue-500 text-white py-2 px-4 rounded">
                         Create Product

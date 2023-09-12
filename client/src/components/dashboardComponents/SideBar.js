@@ -1,64 +1,36 @@
 import React from 'react';
-import SalesIcon from '/public/icons/sales.png';
-import ProductsIcon from '/public/icons/products.png';
-import Image from 'next/image';
+import { RxSketchLogo, RxDashboard, RxPerson } from 'react-icons/rx';
+import { HiOutlineShoppingBag } from 'react-icons/hi';
 import { signOut } from 'next-auth/react';
+import { AiOutlinePoweroff } from 'react-icons/ai'
 
-const SideBar = ({ setSelectedSection, selectedSection }) => {
+const Sidebar = ({ children, setSelectedSection }) => {
+
     const handleSectionClick = (section) => {
         setSelectedSection(section);
     };
-
     return (
-            <div className='fixed flex flex-col justify-between font-semibold h-screen bg-black bg-color'>
-                <div className='text-start pb-5 pt-2'>
-                    <h2 className='text-3xl font-extrabold text-white text-center'>FUNKO</h2>
+        <div className='fixed h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between'>
+            <div className='flex flex-col items-center'>
+                <div className='bg-purple-800 text-white p-3 rounded-lg inline-block'>
+                    <RxSketchLogo size={20} />
                 </div>
-                <div className='flex flex-col gap-4 items-start mx-auto text-lg'>
-                    <div
-                        className={`cursor-pointer transition-colors duration-300 rounded-md px-5 w-full py-2 mx-auto ${selectedSection === 'profile'
-                            ? 'selected text-white bg-blue-600'
-                            : ''
-                        }`}
-                        onClick={() => handleSectionClick('profile')}
-                    >
-                        Profile
-                    </div>
-                    <div
-                        className={`cursor-pointer transition-colors duration-300 rounded-md px-5 w-full py-2 mx-auto ${selectedSection === 'users'
-                            ? 'selected text-white bg-blue-600'
-                            : ''
-                        }`}
-                        onClick={() => handleSectionClick('users')}
-                    >
-                        Users
-                    </div>
-                    <div
-                        className={`flex rounded-md items-center px-5 w-full cursor-pointer py-3 gap-4 transition-colors duration-300 ${selectedSection === 'products'
-                            ? 'selected text-white bg-blue-600'
-                            : ''
-                        }`}
-                        onClick={() => handleSectionClick('products')}
-                    >
-                        <Image src={ProductsIcon} height={25} width={25} alt='products' />
-                        <div>Products</div>
-                    </div>
-                    <div
-                        className={`flex rounded-md items-center px-5 w-full cursor-pointer py-3 gap-4 transition-colors duration-300 ${selectedSection === 'sales'
-                            ? 'selected text-white bg-blue-600'
-                            : ''
-                        }`}
-                        onClick={() => handleSectionClick('sales')}
-                    >
-                        <Image src={SalesIcon} height={25} width={25} alt='Sales' />
-                        <div>Sales</div>
-                    </div>
+                <span className='border-b-[1px] border-gray-200 w-full p-2'></span>
+                <div className='bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block' onClick={() => handleSectionClick('')} >
+                    <RxDashboard size={20} />
                 </div>
-                <button className='my-5 text-white' onClick={() => signOut()}>
-                    Logout
-                </button>
-            </div>
-    )
-}
+                <div className='bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block' onClick={() => handleSectionClick('users')} >
+                    <RxPerson size={20} />
+                </div>
+                <div className='bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block' onClick={() => handleSectionClick('products')} >
+                    <HiOutlineShoppingBag size={20} />
+                </div>
+            </div >
+            <button className='bg-red-700 hover:bg-red-800 text-white cursor-pointer p-3 rounded-lg inline-block mx-auto' onClick={() => signOut()}>
+                <AiOutlinePoweroff size={18}/>
+            </button>
+        </div >
+    );
+};
 
-export default SideBar
+export default Sidebar;

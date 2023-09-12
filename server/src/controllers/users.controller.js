@@ -37,12 +37,10 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ where: { email } });
-        console.log("user", user)
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(401).json({ message: "User not found" });
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log("password", isPasswordValid)
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid password" });
         }

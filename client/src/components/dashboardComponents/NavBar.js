@@ -1,13 +1,10 @@
 import React from 'react'
 
-const NavBar = ({ session, section }) => {
-
+const NavBar = ({ session }) => {
     return (
-        <div className='flex items-center justify-between p-2 px-3 bg-black'>
-            <p className='font-extrabold uppercase text-lg'>{section}</p>
-            <div>
-                <p className='text-white'>{session?.user.name}</p>
-            </div>
+        <div className='flex justify-between px-4 pt-4'>
+            <h2>Dashboard</h2>
+            <h2>Welcome Back, <span className='capitalize'>{session.user.name}</span></h2>
         </div>
     )
 }
