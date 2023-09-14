@@ -1,37 +1,78 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { getAllSales } from '../../../utils/apiPurchase';
+import { getUsers } from '../../../utils/apiUsers';
 
 const TopCards = () => {
-  return (
-    <div className='grid lg:grid-cols-5 gap-4 px-4 py-3 h-full'>
-        <div className='lg:col-span-2 col-span-1 bg-white flex justify-between border p-4 rounded-lg'>
-            <div className='flex flex-col'>
-                <p className='text-2xl font-bold'>$7,846</p>
-                <p className='text-gray-600'>Daily Revenue</p>
+    const [dailySales, setDailySales] = useState(0);
+    const [weeklySales, setWeeklySales] = useState(0);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalSales, setTotalSales] = useState(0);
+    console.log(totalSales)
+
+    useEffect(() => {
+        const getTotalSales = async () => {
+            const res = await getAllSales();
+            const users = await getUsers();
+            setTotalUsers(users.length);
+            setTotalSales(res.length);
+            
+            const currentDate = new Date();
+            const oneDay = 24 * 60 * 60 * 1000; 
+            const oneWeek = 7 * oneDay; 
+            
+            const dailySalesTotal = res.reduce((total, sale) => {
+                const saleDate = new Date(sale.createdAt);
+                if (currentDate - saleDate <= oneDay) {
+                    return total + sale.product.price * sale.quantity;
+                }
+                return total;
+            }, 0);
+
+            const weeklySalesTotal = res.reduce((total, sale) => {
+                const saleDate = new Date(sale.createdAt);
+                if (currentDate - saleDate <= oneWeek) {
+                    return total + sale.product.price * sale.quantity;
+                }
+                return total;
+            }, 0);
+
+
+            setDailySales(dailySalesTotal);
+            setWeeklySales(weeklySalesTotal);
+        };
+        getTotalSales();
+    }, []);
+
+    return (
+        <div className='grid lg:grid-cols-5 gap-4 px-4 py-3 h-full'>
+            <div className='lg:col-span-2 col-span-1 bg-white flex justify-between border p-4 rounded-lg'>
+                <div>
+                    <p className='text-2xl font-bold'>${dailySales.toFixed(2)}</p>
+                    <p className='text-gray-600'>Daily Sales</p>
+                </div>
+                <div>
+                    <p className='text-2xl font-bold'>{totalSales}</p>
+                    <p className='text-gray-600'>Total Daily Sales</p>
+                </div>
             </div>
-            <p className='bg-green-200 flex justify-center items-center p-2 rounded-lg'>
-                <span className='text-green-700 text-lg'>+18%</span>
-            </p>
-        </div>
-        <div className='lg:col-span-2 col-span-1 bg-white flex justify-between border p-4 rounded-lg'>
-            <div className='flex flex-col'>
-                <p className='text-2xl font-bold'>$1,437,876</p>
-                <p className='text-gray-600'>YTD Revenue</p>
+            <div className='lg:col-span-2 col-span-1 bg-white flex justify-between border p-4 rounded-lg'>
+                <div>
+                    <p className='text-2xl font-bold'>${weeklySales.toFixed(2)}</p>
+                    <p className='text-gray-600'>WeeklySales</p>
+                </div>
+                <div>
+                    <p className='text-2xl font-bold'>{totalSales}</p>
+                    <p className='text-gray-600'>Total Weekly Sales</p>
+                </div>
             </div>
-            <p className='bg-green-200 flex justify-center items-center p-2 rounded-lg'>
-                <span className='text-green-700 text-lg'>+11%</span>
-            </p>
-        </div>
-        <div className='bg-white flex justify-between border p-4 rounded-lg'>
-            <div className='flex flex-col'>
-                <p className='text-2xl font-bold'>11,437</p>
-                <p className='text-gray-600'>Customers</p>
+            <div className='bg-white flex justify-between border p-4 rounded-lg'>
+                <div>
+                    <p className='text-2xl font-bold'>{totalUsers}</p>
+                    <p className='text-gray-600'>Customers</p>
+                </div>
             </div>
-            <p className='bg-green-200 flex justify-center items-center p-2 rounded-lg'>
-                <span className='text-green-700 text-lg'>+17%</span>
-            </p>
         </div>
-    </div>
-  )
+    )
 }
 
 export default TopCards

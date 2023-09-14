@@ -24,7 +24,6 @@ export const handlePurchase = async (req, res) => {
             }
         }
 
-        console.log('Order processing completed');
         res.status(200).json({ message: 'Order processed successfully' });
     } catch (error) {
         console.error('Error processing order:', error);
@@ -101,6 +100,25 @@ export const getMostSoldProducts = async (req, res) => {
         console.log(error)
     }
 };
+
+export const getAllSales = async (req, res) => {
+    try {
+        const allSales = await Cart.findAll({
+            include: {
+                model: Product,
+            },
+        });
+
+        res.status(200).json({ allSales });
+    } catch (error) {
+        console.error('Error retrieving sales:', error);
+        res.status(500).json({ error: 'Error retrieving sales' });
+    }
+}
+
+
+
+
 
 
 

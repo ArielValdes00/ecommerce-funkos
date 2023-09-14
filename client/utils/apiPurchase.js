@@ -32,3 +32,12 @@ export const getMostSoldProducts = async () => {
     }
 };
 
+export const getAllSales = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/getAllSales`);
+        return response.data.allSales;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
