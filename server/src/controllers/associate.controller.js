@@ -68,7 +68,6 @@ export const getMostSoldProducts = async (req, res) => {
         const soldProducts = await Cart.findAll({
             include: {
                 model: Product,
-                attributes: ['id', 'name', 'price', 'category', 'image'],
             },
         });
 
@@ -101,18 +100,21 @@ export const getMostSoldProducts = async (req, res) => {
     }
 };
 
+
 export const getAllSales = async (req, res) => {
     try {
-        const allSales = await Cart.findAll({
+        const allSales = await User.findAll({
             include: {
-                model: Product,
-            },
+                model: Cart,
+                include: {
+                    model: Product
+                }
+            }
         });
 
         res.status(200).json({ allSales });
     } catch (error) {
-        console.error('Error retrieving sales:', error);
-        res.status(500).json({ error: 'Error retrieving sales' });
+        res.status(500).json({ error: 'Error retrieving purchase history' });
     }
 }
 

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllSales } from '../../../utils/apiPurchase';
 import { getSession } from 'next-auth/react';
 import SideBar from '@/components/dashboardComponents/SideBar';
 import Sales from '@/components/dashboardComponents/Sales';
@@ -11,15 +12,74 @@ import RecentOrders from '@/components/dashboardComponents/RecentOrders';
 
 export default function IndexPage({ session }) {
     const [selectedSection, setSelectedSection] = useState('');
+    const [dailySales, setDailySales] = useState(0);
+    const [weeklySales, setWeeklySales] = useState(0);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalDailyItemsSold, setTotalDailyItemsSold] = useState(0);
+    const [totalWeeklyItemsSold, setTotalWeeklyItemsSold] = useState(0);
+    const [dailySalesTotalByDay, setDailySalesTotalByDay] = useState([0, 0, 0, 0, 0, 0, 0]);
+
+    useEffect(() => {
+        const getTotalSales = async () => {
+            const sales = await getAllSales();
+
+            const currentDate = new Date();
+            const oneDay = 24 * 60 * 60 * 1000;
+            const oneWeek = 7 * oneDay;
+
+            let dailySalesTotal = 0;
+            let weeklySalesTotal = 0;
+            let totalDailyItemsSold = 0;
+            let totalWeeklyItemsSold = 0;
+
+            let dailySalesTotalByDayCopy = [...dailySalesTotalByDay];
+
+            sales.forEach((user) => {
+                user.Carts.forEach((cartItem) => {
+                    const saleDate = new Date(cartItem.createdAt);
+                    const price = cartItem.product.price;
+                    const dayOfWeek = saleDate.getDay();
+
+                    if (currentDate - saleDate <= oneWeek) {
+                        weeklySalesTotal += price * cartItem.quantity;
+                        totalWeeklyItemsSold += cartItem.quantity;
+                        dailySalesTotalByDayCopy[dayOfWeek] += price * cartItem.quantity;
+
+                        if (currentDate - saleDate <= oneDay) {
+                            dailySalesTotal += price * cartItem.quantity;
+                            totalDailyItemsSold += cartItem.quantity;
+                        }
+                    }
+                });
+            });
+
+            const totalUsers = sales.length;
+
+            setDailySales(dailySalesTotal);
+            setWeeklySales(weeklySalesTotal);
+            setTotalDailyItemsSold(totalDailyItemsSold);
+            setTotalWeeklyItemsSold(totalWeeklyItemsSold);
+            setTotalUsers(totalUsers);
+            setDailySalesTotalByDay(dailySalesTotalByDayCopy);
+        };
+
+        getTotalSales();
+    }, []);
 
     const renderSelectedSection = () => {
         switch (selectedSection) {
             case '':
                 return (
                     <div className='flex flex-col flex-grow'>
-                        <TopCards />
+                        <TopCards
+                            dailySales={dailySales}
+                            weeklySales={weeklySales}
+                            totalUsers={totalUsers}
+                            totalDailyItemsSold={totalDailyItemsSold}
+                            totalWeeklyItemsSold={totalWeeklyItemsSold}
+                        />
                         <div className='px-4 pb-4 grid md:grid-cols-3 grid-cols-1 gap-4'>
-                            <BarChart />
+                            <BarChart dailySalesTotalByDay={dailySalesTotalByDay} />
                             <RecentOrders />
                         </div>
                     </div>
