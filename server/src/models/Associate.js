@@ -23,6 +23,10 @@ export const Cart = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        orderNumber: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     },
     {
         tableName: "cart",
@@ -44,6 +48,10 @@ export const associateModels = () => {
     Product.hasMany(Cart, { foreignKey: 'productId' });
     Cart.belongsTo(Product, { foreignKey: 'productId' });
 };
+
+
+
+
 
 
 

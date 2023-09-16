@@ -10,7 +10,7 @@ import TopCards from '@/components/dashboardComponents/TopCards';
 import BarChart from '@/components/dashboardComponents/BarChats';
 import RecentOrders from '@/components/dashboardComponents/RecentOrders';
 
-export default function IndexPage({ session }) {
+export default function IndexPage({ session, initialSalesData }) {
     const [selectedSection, setSelectedSection] = useState('');
     const [dailySales, setDailySales] = useState(0);
     const [weeklySales, setWeeklySales] = useState(0);
@@ -18,10 +18,11 @@ export default function IndexPage({ session }) {
     const [totalDailyItemsSold, setTotalDailyItemsSold] = useState(0);
     const [totalWeeklyItemsSold, setTotalWeeklyItemsSold] = useState(0);
     const [dailySalesTotalByDay, setDailySalesTotalByDay] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [salesInfo, setSalesInfo] = useState([]);
 
     useEffect(() => {
         const getTotalSales = async () => {
-            const sales = await getAllSales();
+            const sales = initialSalesData;
 
             const currentDate = new Date();
             const oneDay = 24 * 60 * 60 * 1000;
@@ -34,7 +35,7 @@ export default function IndexPage({ session }) {
 
             let dailySalesTotalByDayCopy = [...dailySalesTotalByDay];
 
-            sales.forEach((user) => {
+            sales?.forEach((user) => {
                 user.Carts.forEach((cartItem) => {
                     const saleDate = new Date(cartItem.createdAt);
                     const price = cartItem.product.price;
@@ -61,6 +62,28 @@ export default function IndexPage({ session }) {
             setTotalWeeklyItemsSold(totalWeeklyItemsSold);
             setTotalUsers(totalUsers);
             setDailySalesTotalByDay(dailySalesTotalByDayCopy);
+
+            const processedSales = sales.map((sale) => {
+                const carts = sale.Carts;
+                if (carts.length === 0) return null;
+
+                const totalPrice = carts.reduce((total, cart) => {
+                    const productPrice = parseFloat(cart.product.price);
+                    return total + productPrice * cart.quantity;
+                }, 0);
+
+                const saleDate = new Date(carts[0].createdAt);
+                const minutesAgo = Math.floor((Date.now() - saleDate) / (1000 * 60));
+
+                return {
+                    userName: sale.name,
+                    totalPrice: totalPrice,
+                    minutesAgo: minutesAgo,
+                    orderNumber: carts[0].orderNumber,
+                };
+            }).filter(Boolean);
+
+            setSalesInfo(processedSales);
         };
 
         getTotalSales();
@@ -80,7 +103,7 @@ export default function IndexPage({ session }) {
                         />
                         <div className='px-4 pb-4 grid md:grid-cols-3 grid-cols-1 gap-4'>
                             <BarChart dailySalesTotalByDay={dailySalesTotalByDay} />
-                            <RecentOrders />
+                            <RecentOrders salesInfo={salesInfo} />
                         </div>
                     </div>
                 );
@@ -96,6 +119,7 @@ export default function IndexPage({ session }) {
                 return null;
         }
     };
+
     return (
         <main className='flex'>
             <SideBar selectedSection={selectedSection} setSelectedSection={setSelectedSection} />
@@ -116,11 +140,12 @@ export const getServerSideProps = async (context) => {
         }
     }
 
+    const sales = await getAllSales();
+
     return {
         props: {
-            session
+            session,
+            initialSalesData: sales
         }
     }
 }
-
-

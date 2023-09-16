@@ -6,6 +6,7 @@ export const handlePurchase = async (req, res) => {
     const { userId, order } = req.body;
 
     const products = order.purchase_units[0].items;
+    const orderNumber = order.id
 
     try {
         for (const product of products) {
@@ -19,7 +20,8 @@ export const handlePurchase = async (req, res) => {
                 await Cart.create({
                     userId: userId,
                     productId: productInstance.id,
-                    quantity: parsedQuantity
+                    quantity: parsedQuantity,
+                    orderNumber: orderNumber
                 });
             }
         }
