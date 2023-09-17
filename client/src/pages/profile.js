@@ -42,7 +42,6 @@ const profile = ({ session, purchaseHistory }) => {
     }
 
     const [updatedUser, setUpdatedUser] = useState(user);
-    const [userId, setUserId] = useState(session.user.id);
 
     const handleInputChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
@@ -62,16 +61,6 @@ const profile = ({ session, purchaseHistory }) => {
         setEditing(false);
         setEditingAddress(false);
     };
-
-    useEffect(() => {
-        if (userId) {
-            const getPurchase = async () => {
-                const res = await getUserPurchaseHistory(userId)
-                setData(res);
-            }
-            getPurchase()
-        }
-    }, [])
 
     return (
         <div className='bg-gray-100'>

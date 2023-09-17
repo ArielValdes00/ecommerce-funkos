@@ -9,8 +9,9 @@ import AllProducts from '@/components/dashboardComponents/AllProducts';
 import TopCards from '@/components/dashboardComponents/TopCards';
 import BarChart from '@/components/dashboardComponents/BarChats';
 import RecentOrders from '@/components/dashboardComponents/RecentOrders';
+import { getUsers } from '../../../utils/apiUsers';
 
-export default function IndexPage({ session, initialSalesData }) {
+export default function IndexPage({ session, initialSalesData, allUsers }) {
     const [selectedSection, setSelectedSection] = useState('');
     const [dailySales, setDailySales] = useState(0);
     const [weeklySales, setWeeklySales] = useState(0);
@@ -75,10 +76,22 @@ export default function IndexPage({ session, initialSalesData }) {
                 const saleDate = new Date(carts[0].createdAt);
                 const minutesAgo = Math.floor((Date.now() - saleDate) / (1000 * 60));
 
+                let timeAgo;
+
+                if (minutesAgo < 60) {
+                    timeAgo = `${minutesAgo} Minutes ago`;
+                } else if (minutesAgo < 1440) {
+                    const hoursAgo = Math.floor(minutesAgo / 60);
+                    timeAgo = `${hoursAgo} ${hoursAgo === 1 ? 'Hour ago' : 'Hours ago'}`;
+                } else {
+                    const daysAgo = Math.floor(minutesAgo / 1440);
+                    timeAgo = `${daysAgo} ${daysAgo === 1 ? 'Day ago' : 'Days ago'}`;
+                }
+
                 return {
                     userName: sale.name,
                     totalPrice: totalPrice,
-                    minutesAgo: minutesAgo,
+                    timeAgo: timeAgo,
                     orderNumber: carts[0].orderNumber,
                 };
             }).filter(Boolean);
@@ -93,7 +106,7 @@ export default function IndexPage({ session, initialSalesData }) {
         switch (selectedSection) {
             case '':
                 return (
-                    <div className='flex flex-col flex-grow'>
+                    <div className='flex flex-col m-2 flex-grow'>
                         <TopCards
                             dailySales={dailySales}
                             weeklySales={weeklySales}
@@ -101,7 +114,7 @@ export default function IndexPage({ session, initialSalesData }) {
                             totalDailyItemsSold={totalDailyItemsSold}
                             totalWeeklyItemsSold={totalWeeklyItemsSold}
                         />
-                        <div className='px-4 pb-4 grid md:grid-cols-3 grid-cols-1 gap-4'>
+                        <div className='mt-3 grid md:grid-cols-3 grid-cols-1 gap-4'>
                             <BarChart dailySalesTotalByDay={dailySalesTotalByDay} />
                             <RecentOrders salesInfo={salesInfo} />
                         </div>
@@ -114,7 +127,7 @@ export default function IndexPage({ session, initialSalesData }) {
             case 'profile':
                 return <Profile />;
             case 'users':
-                return <Users />;
+                return <Users allUsers={allUsers} />;
             default:
                 return null;
         }
@@ -123,7 +136,7 @@ export default function IndexPage({ session, initialSalesData }) {
     return (
         <main className='flex'>
             <SideBar selectedSection={selectedSection} setSelectedSection={setSelectedSection} />
-            <div className='w-full min-h-screen flex flex-col bg-gray-100 ml-[75px]'>
+            <div className='w-full h-full lg:h-screen bg-gray-100 flex flex-col overflow-y-auto ml-[77px]'>
                 <NavBar session={session} />
                 {renderSelectedSection()}
             </div>
@@ -141,11 +154,13 @@ export const getServerSideProps = async (context) => {
     }
 
     const sales = await getAllSales();
+    const allUsers = await getUsers();
 
     return {
         props: {
             session,
-            initialSalesData: sales
+            initialSalesData: sales,
+            allUsers
         }
     }
 }

@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { deleteUsers, getUsers } from '../../../utils/apiUsers';
+import React, { useState } from 'react'
+import { deleteUsers } from '../../../utils/apiUsers';
 
-const Users = () => {
-    const [users, setUsers] = useState([])
-
-    const fetchUsers = async () => {
-        const data = await getUsers();
-        setUsers(data);
-    }
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+const Users = ({ allUsers }) => {
+    const [users, setUsers] = useState(allUsers);
 
     const handleDelete = async (id) => {
         try {
@@ -22,35 +14,42 @@ const Users = () => {
         }
     }
 
+    const formatDate = (isoDate) => {
+        if (!isoDate) {
+          return "Google Account";
+        }
+        const date = new Date(isoDate);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      };
+
     return (
-        <div>
-            <div className='bg-gray-100'>
-                <div>
-                    <ul className='grid grid-cols-6 text-center gap-7 border-b border-black py-3 font-bold text-xl'>
-                        <p>Name</p>
-                        <p>Email</p>
-                        <p>Area Code</p>
-                        <p>Phone Number</p>
-                        <p>Created At</p>
-                        <p>Delete User</p>
-                    </ul>
-                    {users.map((user) => (
-                        <ul key={user.id} className='grid grid-cols-6 gap-7 py-4 text-center items-center border-black border-b text-lg '>
-                            <li>{user.name}</li>
-                            <li>{user.email}</li>
-                            <li>{user.areaCode}</li>
-                            <li>{user.phoneNumber}</li>
-                            <li>{user.createdAt}</li>
-                            <div>
-                                <button onClick={() => handleDelete(user.id)} className='rounded px-4 py-2 bg-red-600 text-white font-semibold'>Delete</button>
+        <div className='md:h-screen'>
+            <div className='grid md:grid-cols-2 lg:grid-cols-3'>
+                {users.map((user) => (
+                    <ol key={user.id} className='bg-white my-2 border px-3 flex justify-between px-1 py-4 mx-2 rounded-lg'>
+                        <ul className='flex flex-col gap-2 font-semibold'>
+                            <li>Name: </li>
+                            <li>Email: </li>
+                            <li>Area Code: </li>
+                            <li>Number: </li>
+                            <li>Created At: </li>
+                            <div className='mt-1'>
+                                <button onClick={() => handleDelete(user.id)} className='rounded px-3 py-1 bg-red-600 text-white font-semibold'>Delete</button>
                             </div>
                         </ul>
-                    ))}
-                </div>
+                        <ul className='flex flex-col gap-2 text-end'>
+                            <li className='capitalize'>{user.name}</li>
+                            <li>{user.email}</li>
+                            <li>{!user.areaCode ? 'Empty' : user.areaCode}</li>
+                            <li>{!user.phoneNumber ? 'Empty' : user.phoneNumber}</li>
+                            <li>{formatDate(user.createdAt)}</li>
+                        </ul>
+                    </ol>
+                ))}
             </div>
         </div>
     )
 }
-
 
 export default Users

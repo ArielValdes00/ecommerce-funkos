@@ -3,7 +3,7 @@ import React from 'react';
 const TopCards = ({dailySales, weeklySales, totalUsers, totalDailyItemsSold, totalWeeklyItemsSold }) => {
 
     return (
-        <div className='grid lg:grid-cols-5 gap-4 px-4 py-3 h-full'>
+        <div className='grid lg:grid-cols-5 gap-4'>
             <div className='lg:col-span-2 col-span-1 bg-white flex justify-between border p-4 rounded-lg'>
                 <div>
                     <p className='text-2xl font-bold'>${dailySales.toFixed(2)}</p>
