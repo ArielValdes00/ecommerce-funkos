@@ -3,17 +3,16 @@ import GoogleButton from '@/components/GoogleButton';
 import { signIn } from 'next-auth/react';
 import { ProductContext } from '@/context/ProductContext';
 import { isValidEmail, isValidPassword } from '../../utils/validations';
-import Eye from '../../public/icons/eye.png';
 import Loader from '../../public/icons/loader.gif';
-import EyeSlash from '../../public/icons/eye-slash.png';
 import Image from 'next/image';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Login = ({ onClick }) => {
     const { isLoading, setIsLoading } = useContext(ProductContext)
     const [emailError, setEmailError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
-    
+
     const [form, setForm] = useState({
         email: "",
         password: ""
@@ -84,14 +83,12 @@ const Login = ({ onClick }) => {
                             name={"password"}
                             className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                         />
-                        <Image
-                            src={!showPassword ? EyeSlash : Eye}
-                            height={20}
-                            width={20}
-                            alt='Show Password'
+                        <div
                             onClick={() => setShowPassword(!showPassword)}
                             className='absolute right-5 top-[37px]'
-                        />
+                        >
+                            {!showPassword ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
+                        </div>
                         {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                         <div className='text-end mt-2 me-2'>
                             <a className="font-bold text-sm text-black hover:text-gray-800 underline" href="#">

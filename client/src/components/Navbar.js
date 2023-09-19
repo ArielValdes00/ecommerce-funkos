@@ -1,20 +1,17 @@
 import React from 'react';
 import { useState, useContext, useEffect } from 'react';
-import User from '/public/icons/user.png';
-import Logout from '/public/icons/logout.png';
-import BlackHeart from '/public/icons/blackHeart.png';
-import RedHeart from '/public/icons/redHeart.png';
-import Cart from '/public/icons/shopping-cart.png';
-import Image from 'next/image';
 import Link from 'next/link';
 import { getSession, signOut } from 'next-auth/react';
 import { ProductContext } from '@/context/ProductContext';
 import { useRouter } from 'next/router';
+import { FaUserCircle } from 'react-icons/fa'
+import { AiOutlineHeart } from 'react-icons/ai';
+import { BsBag } from 'react-icons/bs';
+import { MdLogout } from 'react-icons/md';
 
 const navbar = ({ session }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMenuHamburguerOpen, setIsMenuHamburguerOpen] = useState(false);
-    const imagen = isMenuHamburguerOpen ? RedHeart : BlackHeart;
     const { cartState } = useContext(ProductContext);
     const router = useRouter();
     const cart = cartState.cart;
@@ -99,37 +96,37 @@ const navbar = ({ session }) => {
                                         </h3>
                                     </div>
                                     {isMenuOpen && (
-                                        <div className={'hidden lg:block absolute right-0 mt-2 border border-gray-100 bg-white text-lg text-black rounded-md shadow-md uppercase font-extrabold z-40'}>
-                                            <Link href={"/profile"} className='flex items-center justify-between gap-3 px-5 py-2 hover:bg-gray-100'>
-                                                <Image src={User} height={17} width={17} alt='User'></Image>
-                                                <span>Profile</span>
+                                        <div className={'hidden lg:block absolute right-[-20px] w-28 mt-2 border text-[18px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40'}>
+                                            <Link href={"/profile"} className='px-3 py-1 border-b text-center grid grid-cols-3 items-center justify-center hover:bg-gray-100'>
+                                                <FaUserCircle />
+                                                <span className='col-span-2'>Profile</span>
                                             </Link>
-                                            <div className='px-5 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-gray-100' onClick={signOut}>
-                                                <Image src={Logout} height={17} width={17} alt="Logout"></Image>
-                                                <span className='uppercase'>Logout</span>
+                                            <div className='px-3 py-1 grid grid-cols-3 items-center justify-center cursor-pointer hover:bg-gray-100' onClick={signOut}>
+                                                <MdLogout />
+                                                <span className='col-span-2 text-center'>Logout</span>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                <Link href={"/login"} className='lg:bg-white lg:p-2 lg:me-4 px-3 rounded-full flex items-center gap-3 cursor-pointer justify-center ml-auto'>
-                                    <Image src={User} alt='User' className='user'></Image>
-                                    <p className='lg:hidden'>PROFILE</p>
+                                <Link href={"/login"} className='xl:mr-3'>
+                                    <FaUserCircle size={37} className='hidden lg:block' />
+                                    <p className='lg:hidden text-center'>PROFILE</p>
                                 </Link>
                             )}
                         </li>
-                        <Link href={"/wishlist"} className='flex gap-3 mx-3 items-center lg:me-6 justify-center py-8 lg:p-0'>
-                            <Image src={imagen} alt='Wishlist' className='heart'></Image>
+                        <Link href={"/wishlist"} className='mx-3 lg:my-0 lg:mb-0 xl:mr-6 my-6 mb-7'>
+                            <AiOutlineHeart size={41} className='hidden lg:block' />
                             <p className='lg:hidden'>WISHLIST</p>
                         </Link>
                     </div>
                     <li className='flex justify-end items-center'>
                         <Link href={"/cart"} className='relative cursor-pointer block'>
-                            <Image src={Cart} height={44} width={44} alt='Cart' className='block'></Image>
+                            <BsBag size={33} />
                             {counterProduct < 1 ? (
                                 ""
                             ) : (
-                                <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-6'>{counterProduct}</span>
+                                <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-5'>{counterProduct}</span>
                             )
                             }
                         </Link>

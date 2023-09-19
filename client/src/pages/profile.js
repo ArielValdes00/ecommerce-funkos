@@ -6,21 +6,20 @@ import Link from 'next/link';
 import { updateUser } from '../../utils/apiUsers';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
-import Map from '/public/icons/map.png';
-import Pencil from '/public/icons/pencil.png';
-import Shopping from '/public/icons/shopping.png';
-import Info from '/public/icons/info.png';
-import Confirm from '/public/icons/confirm.png';
 import Logout from '/public/icons/logout.png';
 import Image from 'next/image';
 import { getUserPurchaseHistory } from '../../utils/apiPurchase';
+import { GiConfirmed, GiShoppingBag } from 'react-icons/gi';
+import { AiFillInfoCircle } from 'react-icons/ai';
+import { FaLocationDot } from 'react-icons/fa6';
+import { HiPencil } from 'react-icons/hi';
+import { MdLogout } from 'react-icons/md';
 
 const profile = ({ session, purchaseHistory }) => {
     const { data: status } = useSession();
     const router = useRouter();
     const [editing, setEditing] = useState(false);
     const [editingAddress, setEditingAddress] = useState(false);
-    const [data, setData] = useState([]);
     const user = session.user
 
     const groupedProducts = {};
@@ -75,11 +74,11 @@ const profile = ({ session, purchaseHistory }) => {
                 <div className='grid xl:grid-cols-3 gap-4'>
                     <div className='xl:col-span-2 bg-white p-4 rounded-lg border'>
                         <div className='flex items-center justify-between mb-4'>
-                            <div className='flex items-center gap-1 px-2'>
-                                <Image src={Shopping} height={30} width={30} alt='Shopping' />
+                            <div className='flex items-center gap-2 px-2'>
+                                <GiShoppingBag size={30} />
                                 <p className='font-extrabold text-2xl'>My Shopping</p>
                             </div>
-                            {data && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
+                            {purchaseHistory && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
                         </div>
                         <div className='pb-8 flex items-center justify-center h-full'>
                             {purchaseHistory ?
@@ -102,7 +101,7 @@ const profile = ({ session, purchaseHistory }) => {
                     <div>
                         <div className='bg-white p-4 rounded-lg border w-full'>
                             <div className='mb-5 flex items-center gap-3'>
-                                <Image src={Info} height={30} width={30} alt='Info' />
+                                <AiFillInfoCircle size={30} />
                                 <p className='font-extrabold text-2xl'>My Information</p>
                             </div>
                             <div>
@@ -164,14 +163,14 @@ const profile = ({ session, purchaseHistory }) => {
                             <div className='flex justify-center mt-5'>
                                 <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
                                     onClick={!editing ? handleEditClick : handleSaveClick}>
-                                    <Image src={!editing ? Pencil : Confirm} height={16} width={16} alt='Pencil' />
+                                    {!editing ? <HiPencil /> : <GiConfirmed />}
                                     {!editing ? 'Add or Change Address' : 'Save'}
                                 </button>
                             </div>
                         </div>
                         <div className='bg-white rounded-lg p-4 border w-full mt-4'>
-                            <div className='mb-5 flex gap-2'>
-                                <Image src={Map} height={30} width={30} alt='Map' />
+                            <div className='mb-5 flex items-center gap-2'>
+                                <FaLocationDot size={30}/>
                                 <p className='font-extrabold text-2xl'>My Address</p>
                             </div>
                             <div>
@@ -234,15 +233,15 @@ const profile = ({ session, purchaseHistory }) => {
                             <div className='flex justify-center mt-5'>
                                 <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
                                     onClick={!editingAddress ? handleEditAddress : handleSaveClick}>
-                                    <Image src={!editingAddress ? Pencil : Confirm} height={16} width={16} alt='Edit' />
-                                    {!editingAddress ? 'Add or Change Address' : 'Save'}
+                                    {!editing ? <HiPencil /> : <GiConfirmed />}
+                                    {!editing ? 'Add or Change Address' : 'Save'}
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div className='lg:hidden bg-white p-4 rounded-lg border'>
                         <div className='flex items-center justify-center w-1/2 md:w-1/3 mx-auto bg-gray-100 border-2 border-black rounded-full py-2 px-4 gap-2 cursor-pointer hover:bg-gray-200' onClick={signOut}>
-                            <Image src={Logout} height={20} width={20} alt='Logout' />
+                            <MdLogout />
                             <p className='font-semibold'>Logout</p>
                         </div>
                     </div>

@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import SelectQuantity from './SelectQuantity';
 
-const ButtonAdded = ({ buttonText, className, disabled, product }) => {
+const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition }) => {
+    const [isHovered, setIsHovered] = useState(false);
     const {
         addItemToCart,
         selectedQuantities,
@@ -16,15 +17,21 @@ const ButtonAdded = ({ buttonText, className, disabled, product }) => {
         setSelectedQuantity(product.id, newQuantity);
         addItemToCart(product.id, newQuantity)
         setShowModal(false)
-      };
+    };
 
     return (
-        <div className="group grid grid-cols-7 items-center rounded-full bg-black text-white w-full border-2 border-black mt-3 font-bold hover:bg-white hover:text-black">
+        <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="group grid grid-cols-7 items-center rounded-full bg-black text-white w-full border-2 border-black mt-3 font-bold hover:bg-white hover:text-black"
+        >
             <SelectQuantity
-                classNameContainer="select-container col-span-2"
+                classNameContainer="select-container col-span-2 relative"
                 selectedQuantity={selectedQuantity}
                 handleQuantityChange={handleQuantityChange}
                 className="text-center pl-5 rounded-l-full bg-black cursor-pointer h-full w-full border-r focus:outline-none group-hover:bg-white group-hover:border-black group-hover:border-black"
+                isHovered={isHovered}
+                arrowPosition={arrowPosition}
             />
             <button
                 disabled={disabled}

@@ -6,8 +6,7 @@ import { isValidName, isValidEmail, isValidAreaCode, isValidPhone, isValidPasswo
 import Image from 'next/image';
 import { ProductContext } from '@/context/ProductContext';
 import Loader from '../../public/icons/loader.gif';
-import Eye from '../../public/icons/eye.png';
-import EyeSlash from '../../public/icons/eye-slash.png';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Register = ({ onClick }) => {
     const { isLoading, setIsLoading } = useContext(ProductContext)
@@ -112,14 +111,12 @@ const Register = ({ onClick }) => {
                                 onChange={handleInputChange}
                                 formValue={form.password}
                             />
-                            <Image
-                                src={!showPassword1 ? EyeSlash : Eye}
-                                height={20}
-                                width={20}
-                                alt='Show Password'
+                            <div
                                 onClick={() => setShowPassword1(!showPassword1)}
                                 className='absolute right-5 top-[37px]'
-                            />
+                            >
+                                {!showPassword1 ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
+                            </div>
                         </div>
                         <div className="w-1/2 pl-2 relative">
                             <Input
@@ -130,14 +127,12 @@ const Register = ({ onClick }) => {
                                 onChange={handleInputChange}
                                 passwordValue={form.password}
                             />
-                            <Image
-                                src={!showPassword2 ? EyeSlash : Eye}
-                                height={20}
-                                width={20}
-                                alt='Hide Password'
+                            <div
                                 onClick={() => setShowPassword2(!showPassword2)}
                                 className='absolute right-3 top-[37px]'
-                            />
+                            >
+                                {!showPassword2 ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-between mt-6">

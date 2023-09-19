@@ -4,11 +4,6 @@ import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import Delete from '../../public/icons/delete.png';
-import Security from '../../public/icons/security.png';
-import SecurityDark from '../../public/icons/security-dark.png';
-import EmptyCart from '../../public/icons/empty-cart.png';
-import Image from 'next/image';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
@@ -19,8 +14,10 @@ import SliderCards from '@/components/SliderCard';
 import ProgressBar from '@/components/ProgressBar';
 import { useRouter } from 'next/router';
 import { getProducts } from '../../utils/apiProducts';
+import { BsFillTrash3Fill } from 'react-icons/bs';
+import { BiSolidCheckShield } from 'react-icons/bi';
 
-const Cart = ({recentProducts, mostSoldProducts}) => {
+const Cart = ({ recentProducts, mostSoldProducts }) => {
     const { cartState, removeAllItemsFromCart, removeItemFromCart,
         setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal,
         addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
@@ -127,7 +124,7 @@ const Cart = ({recentProducts, mostSoldProducts}) => {
                                             </div>
                                             <div className="grid grid-cols-3 py-3 items-center md:col-span-1">
                                                 <button onClick={() => openDeleteModal(item.id)} className='md:mx-auto'>
-                                                    <Image src={Delete} height={28} width={28} alt="Delete" />
+                                                    <BsFillTrash3Fill size={27} />
                                                 </button>
                                                 <div className="mx-auto w-1/2">
                                                     <SelectQuantity
@@ -135,6 +132,7 @@ const Cart = ({recentProducts, mostSoldProducts}) => {
                                                         handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                                                         classNameContainer="w-full select-container focus:outline-none font-bold"
                                                         className="bg-gray-100 rounded-full w-full h-full text-center pl-5"
+                                                        arrowPosition={'text-black left-2 lg:left-1'}
                                                     />
                                                 </div>
                                                 <p className="ml-auto font-extrabold text-lg me-2">${(item.price * item.quantity).toFixed(2)}</p>
@@ -167,13 +165,8 @@ const Cart = ({recentProducts, mostSoldProducts}) => {
                                             onMouseLeave={() => setIsHovered(false)}
                                             onClick={handlePurchase}
                                             className='flex justify-center items-center gap-3 text-lg border-2 uppercase rounded-full px-3 py-2 mt-3 w-full font-extrabold border-black hover:bg-white hover:text-black bg-black text-white'>
-                                            <Image
-                                                src={isHovered ? SecurityDark : Security}
-                                                height={22}
-                                                width={22}
-                                                alt='Checkout'
-                                            />
-                                            <span>SECURE CHECKOUT</span>
+                                            {<BiSolidCheckShield size={26} className={`${isHovered ? '' : 'text-white'}`} />}
+                                            SECURE CHECKOUT
                                         </button>
                                         <div>
                                             {checkoutProcess &&
@@ -243,7 +236,7 @@ const Cart = ({recentProducts, mostSoldProducts}) => {
                             <div className="py-3 pb-5">
                                 <Link href={"/products"} className="px-10 py-3 bg-black text-white rounded-full text-center font-bold text-xl hover:bg-white hover:text-black border-2 border-black"> CONTINUE SHOPPING</Link>
                             </div>
-                            <Image src={EmptyCart} height={315} width={315} alt="Wall-e" />
+                            <img src={'/icons/empty-cart.png'} height={315} width={315} alt="Wall-e" />
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="check these out!" products={recentProducts} />
@@ -259,27 +252,27 @@ const Cart = ({recentProducts, mostSoldProducts}) => {
 
 export async function getServerSideProps(context) {
     try {
-      const limit = 6;
-      const recentProducts = await getProducts(limit);
-      
-      const mostSoldProducts = await getMostSoldProducts();
-  
-      return {
-        props: {
-          recentProducts,
-          mostSoldProducts,
-        },
-      };
+        const limit = 6;
+        const recentProducts = await getProducts(limit);
+
+        const mostSoldProducts = await getMostSoldProducts();
+
+        return {
+            props: {
+                recentProducts,
+                mostSoldProducts,
+            },
+        };
     } catch (error) {
-      console.error(error);
-  
-      return {
-        props: {
-          recentProducts: [],
-          mostSoldProducts: [],
-        },
-      };
+        console.error(error);
+
+        return {
+            props: {
+                recentProducts: [],
+                mostSoldProducts: [],
+            },
+        };
     }
-  }
+}
 
 export default Cart;

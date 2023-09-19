@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia";
-import FondoFunko from "/public/fondo-funko.png";
 import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
-import Image from "next/image";
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
 import Footer from "@/components/Footer";
 import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
-import { getProducts} from '../../utils/apiProducts';
+import { getProducts } from '../../utils/apiProducts';
 import { getMostSoldProducts } from '../../utils/apiPurchase';
 
 export default function Home({ recentProducts, mostSoldProducts }) {
@@ -41,7 +39,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
                         </Link>
                     </div>
                     <div className="mx-auto">
-                        <Image src={FondoFunko} height={450} width={450} alt="fondo"></Image>
+                        <img src={'/fondo-funko.png'} height={450} width={450} alt="background-image" />
                     </div>
                 </div>
             </section>
@@ -61,27 +59,27 @@ export default function Home({ recentProducts, mostSoldProducts }) {
 
 export async function getServerSideProps(context) {
     try {
-      const limit = 6;
-      const recentProducts = await getProducts(limit);
-      
-      const mostSoldProducts = await getMostSoldProducts();
-  
-      return {
-        props: {
-          recentProducts,
-          mostSoldProducts,
-        },
-      };
+        const limit = 6;
+        const recentProducts = await getProducts(limit);
+
+        const mostSoldProducts = await getMostSoldProducts();
+
+        return {
+            props: {
+                recentProducts,
+                mostSoldProducts,
+            },
+        };
     } catch (error) {
-      console.error(error);
-  
-      return {
-        props: {
-          recentProducts: [],
-          mostSoldProducts: [],
-        },
-      };
+        console.error(error);
+
+        return {
+            props: {
+                recentProducts: [],
+                mostSoldProducts: [],
+            },
+        };
     }
-  }
+}
 
 

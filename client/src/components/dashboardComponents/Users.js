@@ -16,12 +16,12 @@ const Users = ({ allUsers }) => {
 
     const formatDate = (isoDate) => {
         if (!isoDate) {
-          return "Google Account";
+            return "Google Account";
         }
         const date = new Date(isoDate);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
-      };
+    };
 
     return (
         <div className='md:h-screen'>
@@ -35,7 +35,10 @@ const Users = ({ allUsers }) => {
                             <li>Number: </li>
                             <li>Created At: </li>
                             <div className='mt-1'>
-                                <button onClick={() => handleDelete(user.id)} className='rounded px-3 py-1 bg-red-600 text-white font-semibold'>Delete</button>
+                                <button
+                                    onClick={() => handleDelete(user.id)}
+                                    className='rounded px-3 py-1 bg-red-600 text-white font-semibold'>Delete
+                                </button>
                             </div>
                         </ul>
                         <ul className='flex flex-col gap-2 text-end'>

@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
-import CloseModalIcon from '/public/icons/close-modal.png';
-import Image from 'next/image';
 import Link from 'next/link';
+import { AiFillCloseCircle } from 'react-icons/ai';
 
 const ModalPurchase = ({ title, name, price, image, quantity, category, handleConfirmation, firstButton, secondButton, redirect }) => {
     const { closeModal } = useContext(ProductContext);
@@ -10,9 +9,13 @@ const ModalPurchase = ({ title, name, price, image, quantity, category, handleCo
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full'>
             <div className='absolute bg-white w-[320px] md:w-2/3 lg:w-1/2 p-4 rounded-xl shadow-lg z-10 relative animate__animated animate__fadeInDown'>
-                <div className='lg:flex lg:me-20'>
+                <div className='lg:flex lg:me-20 mb-2'>
                     <p className='font-bold text-lg uppercase text-center pt-8 lg:p-0 lg:text-start'>{title}</p>
-                    <Image onClick={closeModal} src={CloseModalIcon} height={28} width={28} alt='Close' className='cursor-pointer absolute right-3 top-3' />
+                    <AiFillCloseCircle
+                        onClick={closeModal}
+                        size={26}
+                        className='cursor-pointer absolute right-3 top-3'
+                    />
                 </div>
                 <div className='grid md:grid-cols-2 items-center'>
                     <img src={image} width={230} height={230} className='mx-auto'></img>

@@ -88,6 +88,7 @@ const productName = ({ product }) => {
                                 product={product}
                                 className={'text-2xl'}
                                 disabled={isInCart(product.id)}
+                                arrowPosition={'left-6 lg:left-4'}
                             />
                         </div>
                         <p className='font-semibold mt-2 max-w-md lg:text-sm break-words'>{product.description}</p>

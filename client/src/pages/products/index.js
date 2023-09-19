@@ -2,9 +2,6 @@ import React from 'react';
 import BannerSocialMedia from "@/components/BannerSocialMedia"
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
-import Heart from "../../../public/icons/heart.png"
-import RedHeart from "../../../public/icons/redHeart.png"
-import Filter from "../../../public/icons/filter.png"
 import { getProducts } from '../../../utils/apiProducts';
 import Image from "next/image"
 import Link from "next/link"
@@ -16,6 +13,8 @@ import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import ButtonAdded from '@/components/ButtonProductAdded';
 import ModalWishlist from '@/components/miscellaneous/ModalWishlist';
 import Loader from '@/components/Loader';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { BsFilterLeft } from 'react-icons/bs';
 
 const Products = ({ initialProducts }) => {
     const { data: session } = useSession();
@@ -84,18 +83,18 @@ const Products = ({ initialProducts }) => {
                 <div className="bg-gray-100 p-4 mb-8">
                     <div className="flex items-center gap-8">
                         <div className='flex items-center justify-between w-full lg:hidden'>
-                            <button onClick={showFilters} className='flex gap-3 font-extrabold'>
-                                <Image src={Filter} height={20} width={20} alt='Filter'></Image>
+                            <button onClick={showFilters} className='flex items-center gap-3 font-extrabold'>
+                                <BsFilterLeft size={25} className='text-black'/>
                                 FILTER AND SORT
                             </button>
-                            <div className="">
+                            <div>
                                 <p className='font-semibold text-lg'>{`(${totalProducts}) Results`}</p>
                             </div>
                         </div>
                         <div className={`${isFilterMenuOpen ? "block fixed bg-gray-100 text-black top-0 min-h-screen right-0 z-50" : "hidden"} flex flex-col lg:p-0 lg:grid gap-5 lg:grid-cols-4 items-center lg:w-full w-full  lg:col-span-4`}>
                             <div className='lg:hidden flex justify-between w-full px-5 py-3'>
                                 <div className='flex items-center gap-2 font-extrabold text-lg'>
-                                    <Image src={Filter} height={20} width={20} alt='Filter' />
+                                    <BsFilterLeft size={25}/>
                                     ALL FILTERS
                                 </div>
                                 <div className='flex items-center'>
@@ -145,11 +144,14 @@ const Products = ({ initialProducts }) => {
                                 {showModalWishlist && selectedProductModal === product.id && (
                                     <ModalWishlist className={'w-3/4 absolute'} />
                                 )}
-                                <Image
+                                <div
                                     onClick={() => toggleWishlist(product.id)}
-                                    src={isInWishlist(product.id) ? RedHeart : Heart}
-                                    height={25} width={25} alt='Wishlist' className='right-3 top-3 absolute cursor-pointer z-30'>
-                                </Image>
+                                    className='absolute right-3 z-40 cursor-pointer'>
+                                    {isInWishlist(product.id)
+                                        ? <AiFillHeart size={32} className='text-red-700' />
+                                        : <AiOutlineHeart size={32} />
+                                    }
+                                </div>
                                 <Link href={`/products/${product.name}`}>
                                     <div
                                         className='relative'
@@ -179,6 +181,7 @@ const Products = ({ initialProducts }) => {
                                         buttonText={'in cart'}
                                         disabled={true}
                                         product={product}
+                                        arrowPosition={'lg:left-1'}
                                     />
                                 )}
                             </div>

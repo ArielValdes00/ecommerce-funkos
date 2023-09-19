@@ -7,13 +7,11 @@ import 'swiper/css/pagination';
 import { useContext, useRef, useState } from 'react';
 import { ProductContext } from "../context/ProductContext.js"
 import Link from 'next/link.js';
-import Heart from '../../public/icons/heart.png'
-import RedHeart from '../../public/icons/redHeart.png'
-import Image from 'next/image.js';
 import AddToCartButton from './AddToCartButton.js';
 import ButtonAdded from './ButtonProductAdded.js';
 import ModalWishlist from './miscellaneous/ModalWishlist.js';
 import Loader from './Loader.js';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 const SliderCards = ({ title, products }) => {
     const { toggleWishlist, isInWishlist, isInCart, showModalWishlist, selectedProductModal, isLoading } = useContext(ProductContext);
@@ -76,11 +74,14 @@ const SliderCards = ({ title, products }) => {
                             {showModalWishlist && selectedProductModal === product.id && (
                                 <ModalWishlist className={'w-3/4 absolute'} />
                             )}
-                            <Image
+                            <div
                                 onClick={() => toggleWishlist(product.id)}
-                                src={isInWishlist(product.id) ? RedHeart : Heart}
-                                height={35} width={35} alt='Wishlist' className='absolute right-6 z-50 cursor-pointer'>
-                            </Image>
+                                className='absolute right-6 z-50 cursor-pointer'>
+                                {isInWishlist(product.id)
+                                    ? <AiFillHeart size={34} className='text-red-700'/>
+                                    : <AiOutlineHeart size={34}/>
+                                }
+                            </div>
                             <Link href={`/products/${product.name}`}>
                                 <div
                                     className='relative'
@@ -108,6 +109,7 @@ const SliderCards = ({ title, products }) => {
                                     buttonText={'in cart'}
                                     disabled={true}
                                     product={product}
+                                    arrowPosition={'left-3'}
                                 />
                             )}
                         </SwiperSlide>
