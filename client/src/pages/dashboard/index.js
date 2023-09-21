@@ -10,8 +10,9 @@ import TopCards from '@/components/dashboardComponents/TopCards';
 import BarChart from '@/components/dashboardComponents/BarChats';
 import RecentOrders from '@/components/dashboardComponents/RecentOrders';
 import { getUsers } from '../../../utils/apiUsers';
+import { getProducts } from '../../../utils/apiProducts';
 
-export default function IndexPage({ session, initialSalesData, allUsers }) {
+export default function IndexPage({ session, initialSalesData, allUsers, initialProducts }) {
     const [selectedSection, setSelectedSection] = useState('');
     const [dailySales, setDailySales] = useState(0);
     const [weeklySales, setWeeklySales] = useState(0);
@@ -121,7 +122,7 @@ export default function IndexPage({ session, initialSalesData, allUsers }) {
                     </div>
                 );
             case 'products':
-                return <AllProducts />;
+                return <AllProducts initialProducts={initialProducts} />;
             case 'sales':
                 return <Sales />;
             case 'profile':
@@ -155,12 +156,14 @@ export const getServerSideProps = async (context) => {
 
     const sales = await getAllSales();
     const allUsers = await getUsers();
+    const initialProducts = await getProducts();
 
     return {
         props: {
             session,
             initialSalesData: sales,
-            allUsers
+            allUsers,
+            initialProducts
         }
     }
 }

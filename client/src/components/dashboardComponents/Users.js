@@ -44,8 +44,8 @@ const Users = ({ allUsers }) => {
                         <ul className='flex flex-col gap-2 text-end'>
                             <li className='capitalize'>{user.name}</li>
                             <li>{user.email}</li>
-                            <li>{!user.areaCode ? 'Empty' : user.areaCode}</li>
-                            <li>{!user.phoneNumber ? 'Empty' : user.phoneNumber}</li>
+                            <li>{!user.areaCode ? '-' : user.areaCode}</li>
+                            <li>{!user.phoneNumber ? '-' : user.phoneNumber}</li>
                             <li>{formatDate(user.createdAt)}</li>
                         </ul>
                     </ol>
