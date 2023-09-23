@@ -36,12 +36,13 @@ export const deleteProducts = async (id) => {
 };
 
 
-export const updateProducts = async (id, productData) => {
+export const updateProduct = async (id, productData) => {
     try {
         const { image, ...data } = productData;
         const updatedProductData = { ...data };
         const response = await axios.put(`${API_URL}/${id}`, updatedProductData);
-        return response.data;
+        
+        return response.data.product;
     } catch (error) {
         console.log(error);
     }

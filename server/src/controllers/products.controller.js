@@ -11,8 +11,15 @@ cloudinary.config({
 export const createProducts = async (req, res) => {
     try {
         const { name, price, description, category, stock } = req.body;
-        const imageUrl = await uploadImageToCloudinary(req.files['image'][0]);
-        const boxImageUrl = await uploadImageToCloudinary(req.files['boxImage'][0]);
+        let imageUrl, boxImageUrl;
+
+        if (req.files['image']) {
+            imageUrl = await uploadImageToCloudinary(req.files['image'][0]);
+        }
+
+        if (req.files['boxImage']) {
+            boxImageUrl = await uploadImageToCloudinary(req.files['boxImage'][0]);
+        }
 
         const product = await Product.create({
             name,
@@ -29,6 +36,7 @@ export const createProducts = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 export const getProduct = async (req, res) => {
     try {
@@ -94,8 +102,12 @@ export const updateProducts = async (req, res) => {
         await Product.update(updateData, {
             where: { id },
         });
-        res.status(200).json({ message: 'Product updated successfully' });
+        
+        const updatedProduct = await Product.findOne({ where: { id } });
+
+        res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+

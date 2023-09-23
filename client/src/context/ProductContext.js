@@ -204,6 +204,7 @@ export const ProductProvider = ({ children }) => {
         <ProductContext.Provider
             value={{
                 filteredProducts,
+                setFilteredProducts,
                 totalProducts,
                 updateProducts,
                 handleCategoryChange,
