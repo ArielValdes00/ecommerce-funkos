@@ -124,7 +124,7 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
             case 'products':
                 return <AllProducts initialProducts={initialProducts} />;
             case 'sales':
-                return <Sales />;
+                return <Sales initialSalesData={initialSalesData}/>;
             case 'profile':
                 return <Profile />;
             case 'users':

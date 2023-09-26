@@ -6,14 +6,14 @@ const SelectQuantity = ({ selectedQuantity, handleQuantityChange, className, isH
         <div className={classNameContainer}>
             <RxTriangleDown
                     size={30}
-                    className={`z-40 absolute ${arrowPosition} top-1 cursor-pointer ${
+                    className={`absolute ${arrowPosition} top-1 cursor-pointer ${
                         isHovered ? 'text-black' : ''
                     }`}
                 />
             <select
                 value={selectedQuantity}
                 onChange={handleQuantityChange}
-                className={className}>
+                className={`${className} border`}>
                 <option value={1}>1</option>
                 <option value={2}>2</option>
                 <option value={3}>3</option>

@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getProduct, getProducts } from '../../../utils/apiProducts';
 import Navbar from '@/components/Navbar';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import Heart from '../../../public/icons/heart.png';
-import RedHeart from '../../../public/icons/redHeart.png';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
@@ -15,6 +13,7 @@ import ButtonAdded from '@/components/ButtonProductAdded';
 import ModalWishlist from '@/components/miscellaneous/ModalWishlist';
 import SliderCards from '@/components/SliderCard';
 import 'animate.css';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
@@ -63,11 +62,14 @@ const productName = ({ product }) => {
                 </div>
                 <div className='grid lg:grid-cols-2 mt-5 lg:gap-5'>
                     <div className='border bg-gray-200 relative '>
-                        <Image
+                        <div
                             onClick={() => toggleWishlist(product.id)}
-                            src={isInWishlist(product.id) ? RedHeart : Heart}
-                            height={35} width={35} alt='Wishlist' className='right-6 top-6 absolute cursor-pointer z-40'>
-                        </Image>
+                            className='absolute right-6 z-50 cursor-pointer'>
+                            {isInWishlist(product.id)
+                                ? <AiFillHeart size={34} className='text-red-700' />
+                                : <AiOutlineHeart size={34} />
+                            }
+                        </div>
                         <div className='flex'>
                             <div className='mt-10 ms-3'>
                                 <img src={product.image} width={70} height={70} alt={product.name} onClick={() => changeImageAnimateOff()} className={`${!changeImage && 'bg-white'} cursor-pointer border border-white mb-3 rounded-md`} />

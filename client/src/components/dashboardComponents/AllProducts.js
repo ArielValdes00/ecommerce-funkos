@@ -249,7 +249,7 @@ const AllProducts = ({ initialProducts }) => {
             </div>
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 m-2 mt-3 gap-2'>
                 {filteredProducts?.map((product) => (
-                    <div key={product.id} className="flex flex-col gap-1 py-1 bg-white border rounded text-lg text-center rounded-lg border-gray-200 border-b">
+                    <div key={product.id} className="flex flex-col gap-1 py-1 bg-white border rounded text-lg text-center rounded-lg border-gray-200">
                         <img src={product.image} width={105} alt={product.name} className='mx-auto p-1 py-2' />
                         <p className='capitalize text-sm'>{product.category}</p>
                         <h3 className='capitalize font-semibold text-sm whitespace-normal'>{product.name}</h3>
