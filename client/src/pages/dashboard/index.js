@@ -25,83 +25,83 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
     useEffect(() => {
         const getTotalSales = async () => {
             const sales = initialSalesData;
-
+    
             const currentDate = new Date();
             const oneDay = 24 * 60 * 60 * 1000;
             const oneWeek = 7 * oneDay;
-
+    
+            const salesMap = {};
+    
             let dailySalesTotal = 0;
             let weeklySalesTotal = 0;
             let totalDailyItemsSold = 0;
             let totalWeeklyItemsSold = 0;
-
+    
             let dailySalesTotalByDayCopy = [...dailySalesTotalByDay];
-
+    
             sales?.forEach((user) => {
                 user.Carts.forEach((cartItem) => {
                     const saleDate = new Date(cartItem.createdAt);
                     const price = cartItem.product.price;
                     const dayOfWeek = saleDate.getDay();
-
+    
                     if (currentDate - saleDate <= oneWeek) {
                         weeklySalesTotal += price * cartItem.quantity;
                         totalWeeklyItemsSold += cartItem.quantity;
                         dailySalesTotalByDayCopy[dayOfWeek] += price * cartItem.quantity;
-
+    
                         if (currentDate - saleDate <= oneDay) {
                             dailySalesTotal += price * cartItem.quantity;
                             totalDailyItemsSold += cartItem.quantity;
                         }
                     }
+    
+                    const saleId = cartItem.orderNumber;
+    
+                    if (!salesMap[saleId]) {
+                        salesMap[saleId] = {
+                            userName: user.name,
+                            totalPrice: price * cartItem.quantity,
+                            timeAgo: calculateTimeAgo(saleDate),
+                            orderNumber: saleId,
+                        };
+                    } else {
+                        salesMap[saleId].totalPrice += price * cartItem.quantity;
+                    }
                 });
             });
-
+    
             const totalUsers = sales.length;
-
+    
             setDailySales(dailySalesTotal);
             setWeeklySales(weeklySalesTotal);
             setTotalDailyItemsSold(totalDailyItemsSold);
             setTotalWeeklyItemsSold(totalWeeklyItemsSold);
             setTotalUsers(totalUsers);
             setDailySalesTotalByDay(dailySalesTotalByDayCopy);
-
-            const processedSales = sales.map((sale) => {
-                const carts = sale.Carts;
-                if (carts.length === 0) return null;
-
-                const totalPrice = carts.reduce((total, cart) => {
-                    const productPrice = parseFloat(cart.product.price);
-                    return total + productPrice * cart.quantity;
-                }, 0);
-
-                const saleDate = new Date(carts[0].createdAt);
-                const minutesAgo = Math.floor((Date.now() - saleDate) / (1000 * 60));
-
-                let timeAgo;
-
-                if (minutesAgo < 60) {
-                    timeAgo = `${minutesAgo} Minutes ago`;
-                } else if (minutesAgo < 1440) {
-                    const hoursAgo = Math.floor(minutesAgo / 60);
-                    timeAgo = `${hoursAgo} ${hoursAgo === 1 ? 'Hour ago' : 'Hours ago'}`;
-                } else {
-                    const daysAgo = Math.floor(minutesAgo / 1440);
-                    timeAgo = `${daysAgo} ${daysAgo === 1 ? 'Day ago' : 'Days ago'}`;
-                }
-
-                return {
-                    userName: sale.name,
-                    totalPrice: totalPrice,
-                    timeAgo: timeAgo,
-                    orderNumber: carts[0].orderNumber,
-                };
-            }).filter(Boolean);
-
+    
+            const processedSales = Object.values(salesMap);
+    
             setSalesInfo(processedSales);
         };
-
+    
         getTotalSales();
     }, []);
+    
+    const calculateTimeAgo = (saleDate) => {
+        const currentDate = new Date();
+        const minutesAgo = Math.floor((currentDate - saleDate) / (1000 * 60));
+    
+        if (minutesAgo < 60) {
+            return `${minutesAgo} Minutes ago`;
+        } else if (minutesAgo < 1440) {
+            const hoursAgo = Math.floor(minutesAgo / 60);
+            return `${hoursAgo} ${hoursAgo === 1 ? 'Hour ago' : 'Hours ago'}`;
+        } else {
+            const daysAgo = Math.floor(minutesAgo / 1440);
+            return `${daysAgo} ${daysAgo === 1 ? 'Day ago' : 'Days ago'}`;
+        }
+    };    
 
     const renderSelectedSection = () => {
         switch (selectedSection) {
@@ -124,7 +124,7 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
             case 'products':
                 return <AllProducts initialProducts={initialProducts} />;
             case 'sales':
-                return <Sales initialSalesData={initialSalesData}/>;
+                return <Sales initialSalesData={initialSalesData} />;
             case 'profile':
                 return <Profile />;
             case 'users':

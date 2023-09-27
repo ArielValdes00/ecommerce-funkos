@@ -126,7 +126,7 @@ const navbar = ({ session }) => {
                             {counterProduct < 1 ? (
                                 ""
                             ) : (
-                                <span className='bg-red-600 rounded-full h-5 text-lg p-3 flex justify-center items-center w-5 absolute top-0 left-5'>{counterProduct}</span>
+                                <span className='bg-red-600 rounded-full h-5 font-semibold p-3 flex justify-center items-center w-5 absolute top-0 left-5'>{counterProduct}</span>
                             )
                             }
                         </Link>

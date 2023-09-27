@@ -180,7 +180,7 @@ const Products = ({ initialProducts }) => {
                                         buttonText={'in cart'}
                                         disabled={true}
                                         product={product}
-                                        arrowPosition={'lg:left-1'}
+                                        arrowPosition={'left-4'}
                                     />
                                 )}
                             </div>

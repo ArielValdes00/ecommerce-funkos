@@ -1,19 +1,20 @@
 import React from 'react';
-import { RxTriangleDown } from 'react-icons/rx';
+import Image from 'next/image';
+import ArrowQuantity from '/public/icons/arrow-quantity.svg';
 
 const SelectQuantity = ({ selectedQuantity, handleQuantityChange, className, isHovered, classNameContainer, arrowPosition }) => {
     return (
         <div className={classNameContainer}>
-            <RxTriangleDown
-                    size={30}
-                    className={`absolute ${arrowPosition} top-1 cursor-pointer ${
-                        isHovered ? 'text-black' : ''
+            <Image
+                src={ArrowQuantity}
+                alt='Arrow'
+                className={`${arrowPosition} absolute top-1 cursor-pointer arrow ${isHovered ? '' : 'invert-[1]'
                     }`}
-                />
+            />
             <select
                 value={selectedQuantity}
                 onChange={handleQuantityChange}
-                className={`${className} border`}>
+                className={className}>
                 <option value={1}>1</option>
                 <option value={2}>2</option>
                 <option value={3}>3</option>

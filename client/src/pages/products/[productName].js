@@ -64,7 +64,7 @@ const productName = ({ product }) => {
                     <div className='border bg-gray-200 relative '>
                         <div
                             onClick={() => toggleWishlist(product.id)}
-                            className='absolute right-6 z-50 cursor-pointer'>
+                            className='absolute right-3 top-3 z-50 cursor-pointer'>
                             {isInWishlist(product.id)
                                 ? <AiFillHeart size={34} className='text-red-700' />
                                 : <AiOutlineHeart size={34} />
@@ -75,7 +75,7 @@ const productName = ({ product }) => {
                                 <img src={product.image} width={70} height={70} alt={product.name} onClick={() => changeImageAnimateOff()} className={`${!changeImage && 'bg-white'} cursor-pointer border border-white mb-3 rounded-md`} />
                                 <img src={product.boxImage} width={70} height={70} alt={product.name} onClick={() => changeImageAnimateOn()} className={`${changeImage && 'bg-white'} cursor-pointer border border-white rounded-md z-50`} />
                             </div>
-                            <div className='overflow-hidden lg:mt-10 xl:mt-0 mx-auto'>
+                            <div className='overflow-hidden lg:mt-12 xl:mt-0 mx-auto'>
                                 <img src={changeImage ? product.boxImage : product.image} alt={product.name} height={500} width={500} className={`${animate === 'right' ? 'animate__fadeInRight' : animate === 'left' ? 'animate__fadeInLeft' : ''} animate__animated`} />
                             </div>
                         </div>
@@ -90,10 +90,10 @@ const productName = ({ product }) => {
                                 product={product}
                                 className={'text-2xl'}
                                 disabled={isInCart(product.id)}
-                                arrowPosition={'left-6 lg:left-4'}
+                                arrowPosition={'left-10 lg:left-6'}
                             />
                         </div>
-                        <p className='font-semibold mt-2 max-w-md lg:text-sm break-words'>{product.description}</p>
+                        <p className='font-semibold mt-2 lg:max-w-md lg:text-sm break-words'>{product.description}</p>
                     </div>
                 </div>
             </section>

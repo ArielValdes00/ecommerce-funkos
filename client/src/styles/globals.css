@@ -62,6 +62,13 @@
     width: 192px;
 }
 
+.arrow {
+    height: 0.5625rem;
+    width: 0.5625rem;
+    transform: rotate(90deg);
+    top: calc(50% - 4px);
+}
+
 .menu-open {
     animation: slide-in 0.3s ease;
   }

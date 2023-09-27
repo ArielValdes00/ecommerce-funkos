@@ -109,7 +109,7 @@ const SliderCards = ({ title, products }) => {
                                     buttonText={'in cart'}
                                     disabled={true}
                                     product={product}
-                                    arrowPosition={'left-3'}
+                                    arrowPosition={'left-5'}
                                 />
                             )}
                         </SwiperSlide>

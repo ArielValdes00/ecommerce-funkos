@@ -6,8 +6,6 @@ import Link from 'next/link';
 import { updateUser } from '../../utils/apiUsers';
 import BannerSocialMedia from '@/components/BannerSocialMedia';
 import Footer from '@/components/Footer';
-import Logout from '/public/icons/logout.png';
-import Image from 'next/image';
 import { getUserPurchaseHistory } from '../../utils/apiPurchase';
 import { GiConfirmed, GiShoppingBag } from 'react-icons/gi';
 import { AiFillInfoCircle } from 'react-icons/ai';

@@ -126,13 +126,13 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                                 <button onClick={() => openDeleteModal(item.id)} className='md:mx-auto'>
                                                     <BsFillTrash3Fill size={27} />
                                                 </button>
-                                                <div className="">
+                                                <div className="w-1/2 mx-auto">
                                                     <SelectQuantity
                                                         selectedQuantity={selectedQuantities[item.id] || 1}
                                                         handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                                                         classNameContainer="select-container relative"
-                                                        className="bg-gray-100 rounded-full w-full h-full"
-                                                        arrowPosition={'text-black left-2 lg:left-1'}
+                                                        className="bg-gray-100 rounded-full w-full h-full pl-10 md:pl-6 lg:pl-7 text-start sm:text-center xl:text-start font-semibold border border-black"
+                                                        arrowPosition={'left-5 sm:left-7 md:left-3 lg:left-4 xl:left-3 invert-0'}
                                                     />
                                                 </div>
                                                 <p className="ml-auto font-extrabold text-lg me-2">${(item.price * item.quantity).toFixed(2)}</p>
