@@ -3,6 +3,7 @@ import { deleteProducts, updateProduct } from "../../../utils/apiProducts";
 import { createProducts } from "../../../utils/apiProducts"
 import { BsFilterLeft } from 'react-icons/bs';
 import { ProductContext } from '@/context/ProductContext';
+import ProductModal from './ProductModal';
 
 const AllProducts = ({ initialProducts }) => {
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
@@ -15,6 +16,7 @@ const AllProducts = ({ initialProducts }) => {
     } = useContext(ProductContext);
     const imageInputRef = useRef(null);
     const boxImageInputRef = useRef(null);
+
     const [form, setForm] = useState({
         name: "",
         price: "",
@@ -140,53 +142,19 @@ const AllProducts = ({ initialProducts }) => {
         <div className='h-full'>
             <div className="w-full max-w-md mx-auto text-center p-3">
                 {showModal && (
-                    <div className="fixed z-50 inset-0 overflow-y-auto">
-                        <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                            <div className="fixed inset-0 transition-opacity" aria-hidden="true" onClick={handleCloseModal}>
-                                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-                            </div>
-                            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                    <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Formulario</h2>
-                                    <form className="grid grid-cols-2 gap-4" encType="multipart/form-data" onSubmit={handleSubmit}>
-                                        <div>
-                                            <label htmlFor="name" className="block mb-1">Name:</label>
-                                            <input type="text" name="name" className="border rounded-md p-1" value={form.name} onChange={handleChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="price" className="block mb-1">Price:</label>
-                                            <input type="number" step="0.01" name="price" className="border rounded-md p-1" value={form.price} onChange={handleChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="description" className="block mb-1">Description:</label>
-                                            <input type="text" name="description" className="border rounded-md p-1" value={form.description} onChange={handleChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="category" className="block mb-1">Category:</label>
-                                            <input type="text" name="category" className="border rounded-md p-1" value={form.category} onChange={handleChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="stock" className="block mb-1">Stock:</label>
-                                            <input type="text" name="stock" className="border rounded-md p-1" value={form.stock} onChange={handleChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="image" className="block mb-1">Image:</label>
-                                            <input type="file" ref={imageInputRef} name="image" onChange={handleImageChange} />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="boxImage" className="block mb-1">Image with Box:</label>
-                                            <input type="file" ref={boxImageInputRef} name="boxImage" onChange={handleBoxImageChange} />
-                                        </div>
-                                        <div className="col-span-2 mt-4">
-                                            <button type="submit" className="bg-blue-500 text-white rounded-md px-4 py-2 mr-2">Create product</button>
-                                            <button type="button" onClick={handleCloseModal} className="border rounded-md px-4 py-2">Close</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ProductModal
+                        showModal={showModal}
+                        handleCloseModal={handleCloseModal}
+                        handleSubmit={handleSubmit}
+                        form={form}
+                        handleChange={handleChange}
+                        handleImageChange={handleImageChange}
+                        handleBoxImageChange={handleBoxImageChange}
+                        imageInputRef={imageInputRef}
+                        boxImageInputRef={boxImageInputRef}
+                        selectedFile={selectedFile}
+                        boxImage={boxImage}
+                    />
                 )}
             </div>
             <div className="flex items-center mx-3">
