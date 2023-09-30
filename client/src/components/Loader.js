@@ -1,6 +1,6 @@
-import React from 'react'
-import Image from 'next/image'
-import LoaderGif from '../../public/icons/loader.gif'
+import React from 'react';
+import Image from 'next/image';
+import LoaderGif from '../../public/icons/loader.gif';
 
 const Loader = () => {
   return (

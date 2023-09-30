@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import SelectQuantity from './SelectQuantity';
 
-const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition }) => {
+const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition, invert }) => {
     const [isHovered, setIsHovered] = useState(false);
     const {
         addItemToCart,
@@ -32,6 +32,7 @@ const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition }
                 className="text-center pl-5 rounded-l-full bg-black cursor-pointer h-full w-full border-r focus:outline-none group-hover:bg-white group-hover:border-black group-hover:border-black"
                 isHovered={isHovered}
                 arrowPosition={arrowPosition}
+                invert={invert}
             />
             <button
                 disabled={disabled}

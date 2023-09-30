@@ -12,12 +12,13 @@ import { AiFillInfoCircle } from 'react-icons/ai';
 import { FaLocationDot } from 'react-icons/fa6';
 import { HiPencil } from 'react-icons/hi';
 import { MdLogout } from 'react-icons/md';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const profile = ({ session, purchaseHistory }) => {
     const { data: status } = useSession();
     const router = useRouter();
-    const [editing, setEditing] = useState(false);
-    const [editingAddress, setEditingAddress] = useState(false);
+    const [editing, toggleEditing] = useBooleanState(false);
+    const [editingAddress, toggleEditingAddress] = useBooleanState(false);
     const user = session.user
 
     const groupedProducts = {};
@@ -43,20 +44,13 @@ const profile = ({ session, purchaseHistory }) => {
     const handleInputChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
     };
-    const handleEditAddress = () => {
-        setEditingAddress(true);
-    };
-
-    const handleEditClick = () => {
-        setEditing(true);
-    };
 
     const handleSaveClick = async () => {
         await updateUser(user.id, updatedUser);
         const updatedSession = await getSession();
         setUpdatedUser(updatedSession.user);
-        setEditing(false);
-        setEditingAddress(false);
+        toggleEditing();
+        toggleEditingAddress();
     };
 
     return (
@@ -78,11 +72,14 @@ const profile = ({ session, purchaseHistory }) => {
                             </div>
                             {purchaseHistory && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
                         </div>
-                        <div className='pb-8 flex items-center justify-center h-full'>
+                        <div className='pb-8 flex justify-center'>
                             {purchaseHistory ?
                                 <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center'>
                                     {Object.values(groupedProducts).map((product) => (
-                                        <Link href={`/products/${product.productName}`} key={product.productId} className='rounded-lg border shadow-md p-3 hover:scale-[1.02] transition-transform duration-200'>
+                                        <Link href={`/products/${product.productName}`}
+                                            key={product.productId}
+                                            className='flex flex-col rounded-lg border shadow-md p-3 hover:scale-[1.02] transition-transform duration-200'
+                                        >
                                             <img src={product.productImage} height={170} width={170} alt={product.productName}></img>
                                             <p className='font-normal'>{product.productCategory}</p>
                                             <p className='font-extrabold'>{product.productName}</p>
@@ -110,7 +107,7 @@ const profile = ({ session, purchaseHistory }) => {
                                         name="name"
                                         value={updatedUser.name}
                                         onChange={handleInputChange}
-                                        className='border py-1 ps-2 w-full rounded-md border-black'
+                                        className='border py-1 ps-2 w-full rounded-md border-black capitalize'
                                     />
                                 ) : (
                                     <span>{updatedUser.name}</span>
@@ -160,7 +157,7 @@ const profile = ({ session, purchaseHistory }) => {
                             </div>
                             <div className='flex justify-center mt-5'>
                                 <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
-                                    onClick={!editing ? handleEditClick : handleSaveClick}>
+                                    onClick={!editing ? toggleEditing : handleSaveClick}>
                                     {!editing ? <HiPencil /> : <GiConfirmed />}
                                     {!editing ? 'Add or Change Address' : 'Save'}
                                 </button>
@@ -168,7 +165,7 @@ const profile = ({ session, purchaseHistory }) => {
                         </div>
                         <div className='bg-white rounded-lg p-4 border w-full mt-4'>
                             <div className='mb-5 flex items-center gap-2'>
-                                <FaLocationDot size={30}/>
+                                <FaLocationDot size={30} />
                                 <p className='font-extrabold text-2xl'>My Address</p>
                             </div>
                             <div>
@@ -177,7 +174,7 @@ const profile = ({ session, purchaseHistory }) => {
                                     <input
                                         type="text"
                                         name="address"
-                                        value={!updatedUser.adress ? '' : updatedUser.adress}
+                                        value={!updatedUser.address ? '' : updatedUser.address}
                                         onChange={handleInputChange}
                                         className='border py-1 ps-2 w-full rounded-md border-black'
                                     />
@@ -230,9 +227,9 @@ const profile = ({ session, purchaseHistory }) => {
                             </div>
                             <div className='flex justify-center mt-5'>
                                 <button className='w-full flex gap-2 items-center justify-center bg-gray-100 font-semibold rounded-full px-5 py-2 border-2 border-black hover:bg-gray-200'
-                                    onClick={!editingAddress ? handleEditAddress : handleSaveClick}>
-                                    {!editing ? <HiPencil /> : <GiConfirmed />}
-                                    {!editing ? 'Add or Change Address' : 'Save'}
+                                    onClick={!editingAddress ? toggleEditingAddress : handleSaveClick}>
+                                    {!editingAddress ? <HiPencil /> : <GiConfirmed />}
+                                    {!editingAddress ? 'Add or Change Address' : 'Save'}
                                 </button>
                             </div>
                         </div>

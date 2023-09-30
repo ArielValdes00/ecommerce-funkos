@@ -1,18 +1,16 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from "next-auth/providers/credentials";
-import dotenv from 'dotenv';
 import SequelizeAdapter from "@next-auth/sequelize-adapter";
 import { login } from '../../../../utils/apiUsers';
 import { getUser } from '../../../../utils/apiUsers';
 import { sequelize } from '@/database';
-dotenv.config();
 
 export const authOptions = {
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
             authorization: {
                 params: {
                     prompt: "consent",

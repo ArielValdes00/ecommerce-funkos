@@ -1,6 +1,6 @@
 import React, { createContext, useState, useReducer, useEffect } from 'react';
-import { getProducts } from '../../utils/apiProducts';
 import { cartReducer } from '../reducer/cartReducer';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const initialState = {
     cart: [],
@@ -18,11 +18,11 @@ export const ProductProvider = ({ children }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [selectedProductModal, setSelectedProductModal] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, toggleShowModal] = useBooleanState(false);
     const [selectedQuantities, setSelectedQuantities] = useState({});
-    const [showModalWishlist, setShowModalWishlist] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [removeModalClicked, setRemoveModalClicked] = useState(false);
+    const [showModalWishlist, toggleShowModalWishlist] = useBooleanState(false);
+    const [isLoading, toggleIsLoading] = useBooleanState(false);
+    const [removeModalClicked, toggleRemoveModalClicked] = useBooleanState(false);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
@@ -53,37 +53,32 @@ export const ProductProvider = ({ children }) => {
     };
 
     const toggleWishlist = (productId) => {
-        setShowModal(false)
-        setIsLoading(true);
+        toggleIsLoading();
         if (isInWishlist(productId)) {
             setSelectedProductModal(productId);
             removeFromWishlist(productId);
             setTimeout(() => {
-                setIsLoading(false);
+                toggleIsLoading();
             }, 500);
         } else {
             addToWishlist(productId);
             setSelectedProductModal(productId);
             setTimeout(() => {
-                setShowModalWishlist(true);
-                setIsLoading(false);
+                toggleShowModalWishlist();
+                toggleIsLoading();
             }, 500);
             setTimeout(() => {
-                setShowModalWishlist(false);
+                toggleShowModalWishlist();
             }, 3000);
         }
     };
-
-    const closeModal = () => {
-        setShowModal(false);
-    }
 
     const addItemToCart = (id, quantity = 1) => {
         const productToAdd = products.find(product => product.id === id);
         setSelectedProductModal(productToAdd);
         const { cart } = cartState;
-        setShowModal(true);
-        setRemoveModalClicked(false)
+        toggleShowModal();
+        toggleRemoveModalClicked();
         if (productToAdd) {
             const itemInCart = cart.find(item => item.id === id);
 
@@ -98,7 +93,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     const removeItemFromCart = (id) => {
-        setShowModal(false);
+        toggleShowModal();
         const { cart } = cartState;
 
         const updatedCart = cart.filter(item => item.id !== id);
@@ -116,7 +111,7 @@ export const ProductProvider = ({ children }) => {
 
     const removeAllItemsFromCart = () => {
         cartDispatch({ type: 'REMOVE_ALL_ITEMS' });
-        setSelectedQuantities({})
+        setSelectedQuantities({});
     };
 
     useEffect(() => {
@@ -136,7 +131,7 @@ export const ProductProvider = ({ children }) => {
                 setWishlist(parsedWishlist);
             }
         }
-        getItems()
+        getItems();
     }, []);
 
     const updateProducts = (newProducts) => {
@@ -188,17 +183,6 @@ export const ProductProvider = ({ children }) => {
         const sorted = [...filteredProducts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setFilteredProducts(sorted);
     };
-    
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            const products = await getProducts();
-            setProducts(products);
-            cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
-        }
-
-        fetchProducts();
-    }, []);
 
     return (
         <ProductContext.Provider
@@ -211,8 +195,6 @@ export const ProductProvider = ({ children }) => {
                 handleSortChange,
                 handleSearchChange,
                 cartState,
-                closeModal,
-                closeModal,
                 cartDispatch,
                 addItemToCart,
                 removeItemFromCart,
@@ -224,16 +206,16 @@ export const ProductProvider = ({ children }) => {
                 isInWishlist,
                 toggleWishlist,
                 showModal,
-                setShowModal,
+                toggleShowModal,
                 isInCart,
                 selectedQuantities,
                 setSelectedQuantities,
                 setSelectedQuantity,
-                setShowModalWishlist,
+                toggleShowModalWishlist,
                 showModalWishlist,
                 isLoading,
-                setIsLoading,
-                setRemoveModalClicked,
+                toggleIsLoading,
+                toggleRemoveModalClicked,
                 removeModalClicked,
             }}
         >

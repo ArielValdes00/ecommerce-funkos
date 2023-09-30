@@ -9,7 +9,7 @@ import Loader from '../../public/icons/loader.gif';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Register = ({ onClick }) => {
-    const { isLoading, setIsLoading } = useContext(ProductContext)
+    const { isLoading, toggleIsLoading } = useContext(ProductContext)
     const [showPassword1, setShowPassword1] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [form, setForm] = useState({
@@ -39,12 +39,12 @@ const Register = ({ onClick }) => {
             isValidPassword(form.password) &&
             form.password === form.confirmPassword
         ) {
-            setIsLoading(true);
+            toggleIsLoading();
             try {
                 const res = await axios.post('http://localhost:5000/api/users', form);
                 if (res.status === 201) {
                     setTimeout(() => {
-                        setIsLoading(false);
+                        toggleIsLoading();
                         window.location.reload();
                     }, 2000);
                 }

@@ -71,7 +71,7 @@ const SliderCards = ({ title, products }) => {
                             {isLoading && selectedProductModal === product.id && (
                                 <Loader />
                             )}
-                            {showModalWishlist && selectedProductModal === product.id && (
+                            {showModalWishlist && (
                                 <ModalWishlist className={'w-3/4 absolute'} />
                             )}
                             <div
@@ -110,6 +110,7 @@ const SliderCards = ({ title, products }) => {
                                     disabled={true}
                                     product={product}
                                     arrowPosition={'left-5'}
+                                    invert={'invert-[1]'}
                                 />
                             )}
                         </SwiperSlide>

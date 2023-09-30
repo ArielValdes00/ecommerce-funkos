@@ -1,8 +1,7 @@
-import React from 'react'
-import Image from 'next/image'
-import Google from '../../public/icons/google.png'
+import React from 'react';
+import Image from 'next/image';
+import Google from '../../public/icons/google.png';
 import { signIn } from 'next-auth/react';
-
 
 const GoogleButton = () => {
     return (

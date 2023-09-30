@@ -6,8 +6,6 @@ import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
-import AccountHeader from "/public/icons/account-header.png"
-import Image from 'next/image';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
@@ -15,26 +13,24 @@ import ButtonAdded from '@/components/ButtonProductAdded';
 import ContactForm from '@/components/miscellaneous/ContactForm';
 import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const Wishlist = () => {
     const { data: session, status } = useSession();
     const { wishlist, toggleWishlist, isInWishlist,
-        setShowModal, showModal, selectedProductModal,
-        setSelectedProductModal, isInCart, closeModal,
-        setRemoveModalClicked, removeModalClicked
+        toggleShowModalWishlist,
+        showModal, selectedProductModal,
+        setSelectedProductModal, isInCart,
+        toggleRemoveModalClicked, removeModalClicked
     } = useContext(ProductContext);
 
-    const [isLogin, setIsLogin] = useState(true);
-
-    const toggleForm = () => {
-        setIsLogin(!isLogin);
-    };
+    const [isLogin, toggleIsLogin] = useBooleanState(true);
 
     const handleOpenModal = (id) => {
         const findProduct = wishlist.find(product => product.id === id);
         setSelectedProductModal(findProduct);
-        setRemoveModalClicked(true);
-        setShowModal(true);
+        toggleRemoveModalClicked();
+        toggleShowModal();
     }
 
     return (
@@ -60,7 +56,7 @@ const Wishlist = () => {
                     handleConfirmation={
                         removeModalClicked
                             ? () => toggleWishlist(selectedProductModal.id)
-                            : closeModal
+                            : toggleShowModalWishlist
                     }
                     category={selectedProductModal.category}
                     image={selectedProductModal.image}
@@ -90,16 +86,19 @@ const Wishlist = () => {
                             wishlist.map((product) => (
                                 <div key={product.id} className='bg-white grid grid-cols-2 items-center py-5 gap-8 md:gap-14 border-b px-4'>
                                     <div className='relative mx-auto '>
-                                    <div
-                                    onClick={() => handleOpenModal(product.id)}
-                                    className='absolute right-[-17px] z-40 cursor-pointer'>
-                                    {isInWishlist(product.id)
-                                        ? <AiFillHeart size={30} className='text-red-700' />
-                                        : <AiOutlineHeart size={30} />
-                                    }
-                                </div>
+                                        <div
+                                            onClick={() => handleOpenModal(product.id)}
+                                            className='absolute right-[-17px] z-40 cursor-pointer'>
+                                            {isInWishlist(product.id)
+                                                ? <AiFillHeart size={30} className='text-red-700' />
+                                                : <AiOutlineHeart size={30} />
+                                            }
+                                        </div>
                                         <Link href={`/products/${product.name}`}>
-                                            <img src={product.image} width={120} height={120} alt={product.name} className='mt-3' />
+                                            <img src={product.image}
+                                                width={120} height={120}
+                                                alt={product.name} className='mt-3'
+                                            />
                                         </Link>
                                     </div>
                                     <div>
@@ -120,7 +119,8 @@ const Wishlist = () => {
                                                     buttonText={'in cart'}
                                                     disabled={true}
                                                     product={product}
-                                                    arrowPosition={'lg:left-1'}
+                                                    arrowPosition={'left-3'}
+                                                    invert={'invert'}
                                                 />
                                             )}
                                         </div>
@@ -138,13 +138,17 @@ const Wishlist = () => {
                     ) : (
                         <div className='relative z-40'>
                             <div className='hidden xl:grid'>
-                                <img src={'/icons/account-header.png'} height={160} width={160} alt='Welcome!'
-                                    className='absolute top-[-34px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700' />
+                                <img src={'/icons/account-header.png'}
+                                    height={160}
+                                    width={160}
+                                    alt='Welcome!'
+                                    className='absolute top-[-34px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700'
+                                />
                             </div>
                             {isLogin ? (
-                                <Login onClick={toggleForm} />
+                                <Login onClick={toggleIsLogin} />
                             ) : (
-                                <Register onClick={toggleForm} />
+                                <Register onClick={toggleIsLogin} />
                             )}
                         </div>
                     )}

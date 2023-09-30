@@ -2,13 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import ArrowQuantity from '/public/icons/arrow-quantity.svg';
 
-const SelectQuantity = ({ selectedQuantity, handleQuantityChange, className, isHovered, classNameContainer, arrowPosition }) => {
+const SelectQuantity = ({ selectedQuantity, handleQuantityChange, className, isHovered, classNameContainer, arrowPosition,invert }) => {
     return (
         <div className={classNameContainer}>
             <Image
                 src={ArrowQuantity}
                 alt='Arrow'
-                className={`${arrowPosition} absolute top-1 cursor-pointer arrow ${isHovered ? '' : 'invert-[1]'
+                className={`${arrowPosition} absolute top-1 cursor-pointer arrow ${isHovered ? '' : `${invert}`
                     }`}
             />
             <select

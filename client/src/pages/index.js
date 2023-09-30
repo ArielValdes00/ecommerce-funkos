@@ -12,7 +12,7 @@ import { getMostSoldProducts } from '../../utils/apiPurchase';
 
 export default function Home({ recentProducts, mostSoldProducts }) {
     const { data: session } = useSession();
-    const { showModal, selectedProductModal, closeModal } = useContext(ProductContext);
+    const { showModal, selectedProductModal, toggleShowModal } = useContext(ProductContext);
     return (
         <div>
             <Navbar session={session} />
@@ -25,7 +25,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
                     quantity={'quantity: 1'}
                     firstButton={'view cart'}
                     secondButton={'continue shopping'}
-                    handleConfirmation={closeModal}
+                    handleConfirmation={toggleShowModal}
                     redirect={'/cart'}
                 />
             )}

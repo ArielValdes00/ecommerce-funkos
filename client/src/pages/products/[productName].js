@@ -17,7 +17,8 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const productName = ({ product }) => {
     const { data: session } = useSession();
-    const { mostSoldProducts, toggleWishlist, isInWishlist, showModal, isInCart, selectedProductModal, showModalWishlist, isLoading, closeModal } = useContext(ProductContext)
+    const { mostSoldProducts, toggleWishlist, isInWishlist, showModal,
+        isInCart, selectedProductModal, showModalWishlist, isLoading, toggleShowModal } = useContext(ProductContext)
     const [changeImage, setChangeImage] = useState(false);
     const [animate, setAnimate] = useState(null);
 
@@ -34,7 +35,7 @@ const productName = ({ product }) => {
     return (
         <div>
             <Navbar session={session} />
-            {showModal && selectedProductModal === product.id && (
+            {showModal && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
                     quantity={'quantity: 1'}
@@ -44,12 +45,14 @@ const productName = ({ product }) => {
                     name={selectedProductModal.name}
                     image={selectedProductModal.image}
                     price={selectedProductModal.price}
-                    handleConfirmation={closeModal}
+                    handleConfirmation={toggleShowModal}
                     redirect={'/cart'}
                 />
             )}
             {showModalWishlist && selectedProductModal === product.id && (
-                <ModalWishlist className={'fixed py-1 md:w-[25%] lg:w-[20%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'} />
+                <ModalWishlist
+                    className={'fixed py-1 md:w-[25%] lg:w-[20%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'}
+                />
             )}
             <section className='md:px-28 px-4 py-5'>
                 {isLoading && selectedProductModal === product.id && (
@@ -58,7 +61,9 @@ const productName = ({ product }) => {
                     </div>
                 )}
                 <div className='text-xs text-gray-600'>
-                    <Link href={"/"}>Funko</Link> / <Link href={"/products"}>Products</Link> / <span className='capitalize'>{product.category}</span>
+                    <Link href={"/"}>Funko</Link> /
+                    <Link href={"/products"}>Products</Link> /
+                    <span className='capitalize'>{product.category}</span>
                 </div>
                 <div className='grid lg:grid-cols-2 mt-5 lg:gap-5'>
                     <div className='border bg-gray-200 relative '>
@@ -72,11 +77,29 @@ const productName = ({ product }) => {
                         </div>
                         <div className='flex'>
                             <div className='mt-10 ms-3'>
-                                <img src={product.image} width={70} height={70} alt={product.name} onClick={() => changeImageAnimateOff()} className={`${!changeImage && 'bg-white'} cursor-pointer border border-white mb-3 rounded-md`} />
-                                <img src={product.boxImage} width={70} height={70} alt={product.name} onClick={() => changeImageAnimateOn()} className={`${changeImage && 'bg-white'} cursor-pointer border border-white rounded-md z-50`} />
+                                <img src={product.image}
+                                    width={70}
+                                    height={70}
+                                    alt={product.name}
+                                    onClick={() => changeImageAnimateOff()}
+                                    className={`${!changeImage && 'bg-white'} cursor-pointer border border-white mb-3 rounded-md`}
+                                />
+                                <img src={product.boxImage}
+                                    width={70}
+                                    height={70}
+                                    alt={product.name}
+                                    onClick={() => changeImageAnimateOn()}
+                                    className={`${changeImage && 'bg-white'} cursor-pointer border border-white rounded-md z-50`}
+                                />
                             </div>
                             <div className='overflow-hidden lg:mt-12 xl:mt-0 mx-auto'>
-                                <img src={changeImage ? product.boxImage : product.image} alt={product.name} height={500} width={500} className={`${animate === 'right' ? 'animate__fadeInRight' : animate === 'left' ? 'animate__fadeInLeft' : ''} animate__animated`} />
+                                <img src={changeImage ? product.boxImage : product.image}
+                                    alt={product.name}
+                                    height={500} width={500}
+                                    className={`${animate === 'right'
+                                        ? 'animate__fadeInRight'
+                                        : animate === 'left' ? 'animate__fadeInLeft' : ''} animate__animated`}
+                                />
                             </div>
                         </div>
                     </div>
@@ -91,6 +114,7 @@ const productName = ({ product }) => {
                                 className={'text-2xl'}
                                 disabled={isInCart(product.id)}
                                 arrowPosition={'left-10 lg:left-6'}
+                                invert={'invert'}
                             />
                         </div>
                         <p className='font-semibold mt-2 lg:max-w-md lg:text-sm break-words'>{product.description}</p>

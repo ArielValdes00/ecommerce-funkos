@@ -19,7 +19,7 @@ import { BiSolidCheckShield } from 'react-icons/bi';
 
 const Cart = ({ recentProducts, mostSoldProducts }) => {
     const { cartState, removeAllItemsFromCart, removeItemFromCart,
-        setSelectedQuantities, setSelectedProductModal, selectedProductModal, setShowModal,
+        setSelectedQuantities, setSelectedProductModal, selectedProductModal, toggleShowModal,
         addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null);
@@ -53,7 +53,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
         setSelectedQuantity(productId, newQuantity)
-        setShowModal(false);
+        toggleShowModal();
     };
 
     useEffect(() => {
@@ -65,7 +65,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
     const openDeleteModal = (id) => {
         const { cart } = cartState;
         const productToFind = cart.find(product => product.id === id);
-        setShowModal(true);
+        toggleShowModal();
         setSelectedProductId(id);
         setSelectedProductModal(productToFind);
     };
@@ -132,7 +132,8 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                                         handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                                                         classNameContainer="select-container relative"
                                                         className="bg-gray-100 rounded-full w-full h-full pl-10 md:pl-6 lg:pl-7 text-start sm:text-center xl:text-start font-semibold border border-black"
-                                                        arrowPosition={'left-5 sm:left-7 md:left-3 lg:left-4 xl:left-3 invert-0'}
+                                                        arrowPosition={'left-5 sm:left-7 md:left-3 lg:left-4 xl:left-3 invert-1'}
+                                                        invert={'invert-0'}
                                                     />
                                                 </div>
                                                 <p className="ml-auto font-extrabold text-lg me-2">${(item.price * item.quantity).toFixed(2)}</p>

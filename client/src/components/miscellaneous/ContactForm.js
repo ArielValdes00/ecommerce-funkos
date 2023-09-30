@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const ContactForm = ({ toast, title }) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, toggleIsLoading] = useBooleanState(false);
     const [form, setForm] = useState({
         user_email: "",
         user_name: "",
@@ -16,11 +17,11 @@ const ContactForm = ({ toast, title }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setIsLoading(true)
+        toggleIsLoading();
         emailjs.sendForm(process.env.NEXT_PUBLIC_SERVICE_ID, process.env.NEXT_PUBLIC_TEMPLATE_ID, formRef.current, process.env.NEXT_PUBLIC_PUBLIC_KEY)
             .then(() => {
                 formRef.current.reset();
-                setIsLoading(false)
+                toggleIsLoading();
                 toast.success("Message sent successfully");
             }, (error) => {
                 console.log(error);

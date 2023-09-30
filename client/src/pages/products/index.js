@@ -30,7 +30,7 @@ const Products = ({ initialProducts }) => {
         isInWishlist,
         showModal,
         isInCart,
-        closeModal,
+        toggleShowModal,
         selectedProductModal,
         showModalWishlist,
         isLoading
@@ -71,7 +71,7 @@ const Products = ({ initialProducts }) => {
                     name={selectedProductModal.name}
                     image={selectedProductModal.image}
                     price={selectedProductModal.price}
-                    handleConfirmation={closeModal}
+                    handleConfirmation={toggleShowModal}
                     redirect={'/cart'}
                 />
             )}
@@ -181,6 +181,7 @@ const Products = ({ initialProducts }) => {
                                         disabled={true}
                                         product={product}
                                         arrowPosition={'left-4'}
+                                        invert={'invert'}
                                     />
                                 )}
                             </div>

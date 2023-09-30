@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Login = ({ onClick }) => {
-    const { isLoading, setIsLoading } = useContext(ProductContext)
+    const { isLoading, toggleIsLoading } = useContext(ProductContext)
     const [emailError, setEmailError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
@@ -29,7 +29,7 @@ const Login = ({ onClick }) => {
             return;
         }
         try {
-            setIsLoading(true);
+            toggleIsLoading();
             const res = await signIn('credentials', {
                 email: form.email,
                 password: form.password,
@@ -47,13 +47,13 @@ const Login = ({ onClick }) => {
             }
         } catch (error) {
             console.error(error)
-        }
+     }
     }
-
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
+
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-lg">
