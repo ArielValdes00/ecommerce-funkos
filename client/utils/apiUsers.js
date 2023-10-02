@@ -7,9 +7,14 @@ export const login = async (email, password) => {
         const response = await axios.post(`${API_URL}/login`, { email, password });
         return response.data;
     } catch (error) {
-        throw new Error('Authentication error');
+        if (error.response) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error('Authentication error');
+        }
     }
 }
+
 
 export const getUsers = async () => {
     try {

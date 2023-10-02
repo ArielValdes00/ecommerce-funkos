@@ -1,13 +1,9 @@
 import React from 'react';
-import BannerSocialMedia from "@/components/BannerSocialMedia"
-import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
 import { getProducts } from '../../../utils/apiProducts';
-import Image from "next/image"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 import { ProductContext } from '../../context/ProductContext';
-import { useSession } from 'next-auth/react';
 import AddToCartButton from '@/components/AddToCartButton';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import ButtonAdded from '@/components/ButtonProductAdded';
@@ -16,8 +12,7 @@ import Loader from '@/components/Loader';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { BsFilterLeft } from 'react-icons/bs';
 
-const Products = ({ initialProducts }) => {
-    const { data: session } = useSession();
+const Products = ({ initialProducts, session }) => {
     const [hoveredProductId, setHoveredProductId] = useState(null);
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
     const { updateProducts,
@@ -60,7 +55,6 @@ const Products = ({ initialProducts }) => {
 
     return (
         <>
-            <Navbar session={session} />
             {showModal && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
@@ -189,8 +183,6 @@ const Products = ({ initialProducts }) => {
                     </div>
                 </div>
             </section>
-            <BannerSocialMedia />
-            <Footer />
         </>
     )
 }

@@ -3,9 +3,6 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import BannerSocialMedia from '@/components/BannerSocialMedia';
-import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import { getMostSoldProducts, purchase } from '../../utils/apiPurchase';
 import SelectQuantity from '@/components/SelectQuantity';
@@ -80,7 +77,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
 
     return (
         <>
-            <Navbar session={session} />
             {showModal && (
                 <ModalPurchase
                     title={'are you sure you want to remove the following product from the cart?'}
@@ -245,8 +241,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                     </>
                 )}
             </section>
-            <BannerSocialMedia />
-            <Footer />
         </>
     );
 };

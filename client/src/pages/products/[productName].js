@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { getProduct, getProducts } from '../../../utils/apiProducts';
-import Navbar from '@/components/Navbar';
-import BannerSocialMedia from '@/components/BannerSocialMedia';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
@@ -16,7 +11,6 @@ import 'animate.css';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const productName = ({ product }) => {
-    const { data: session } = useSession();
     const { mostSoldProducts, toggleWishlist, isInWishlist, showModal,
         isInCart, selectedProductModal, showModalWishlist, isLoading, toggleShowModal } = useContext(ProductContext)
     const [changeImage, setChangeImage] = useState(false);
@@ -34,7 +28,6 @@ const productName = ({ product }) => {
 
     return (
         <div>
-            <Navbar session={session} />
             {showModal && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
@@ -124,8 +117,6 @@ const productName = ({ product }) => {
             <div className="py-5 text-center bg-white">
                 <SliderCards title="you might also like" products={mostSoldProducts} />
             </div>
-            <BannerSocialMedia />
-            <Footer />
         </div>
     )
 }

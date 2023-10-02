@@ -25,10 +25,11 @@ export const authOptions = {
             async authorize(credentials, req) {
                 const { email, password } = credentials;
                 try {
-                    const response = await login(email, password);
-                    return response
+                    const user = await login(email, password);
+                    return user;
                 } catch (error) {
-                    throw new Error('authentication error');
+                    throw new Error(error.message);
+
                 }
             }
         })

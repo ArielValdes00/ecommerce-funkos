@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar';
-import { useSession, getSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { getSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { updateUser } from '../../utils/apiUsers';
-import BannerSocialMedia from '@/components/BannerSocialMedia';
-import Footer from '@/components/Footer';
 import { getUserPurchaseHistory } from '../../utils/apiPurchase';
 import { GiConfirmed, GiShoppingBag } from 'react-icons/gi';
 import { AiFillInfoCircle } from 'react-icons/ai';
@@ -15,8 +11,6 @@ import { MdLogout } from 'react-icons/md';
 import useBooleanState from '@/hooks/useBooleanState';
 
 const profile = ({ session, purchaseHistory }) => {
-    const { data: status } = useSession();
-    const router = useRouter();
     const [editing, toggleEditing] = useBooleanState(false);
     const [editingAddress, toggleEditingAddress] = useBooleanState(false);
     const user = session.user
@@ -28,16 +22,6 @@ const profile = ({ session, purchaseHistory }) => {
         }
         groupedProducts[product.productId].totalQuantity += product.quantity;
     });
-
-    useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
-        }
-    }, [status, router]);
-
-    if (status === 'loading') {
-        return <div>Loading...</div>;
-    }
 
     const [updatedUser, setUpdatedUser] = useState(user);
 
@@ -55,7 +39,6 @@ const profile = ({ session, purchaseHistory }) => {
 
     return (
         <div className='bg-gray-100'>
-            <Navbar session={session} />
             <section className="py-5 md:px-28 mx-4">
                 <div className="mb-7">
                     <div className="text-xs text-gray-500 mb-7">
@@ -242,8 +225,6 @@ const profile = ({ session, purchaseHistory }) => {
                     </div>
                 </div>
             </section>
-            <BannerSocialMedia />
-            <Footer />
         </div>
     )
 }

@@ -1,9 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
-import Navbar from '@/components/Navbar';
-import BannerSocialMedia from '@/components/BannerSocialMedia';
-import Footer from '@/components/Footer';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
@@ -16,7 +12,6 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 
 const Wishlist = () => {
-    const { data: session, status } = useSession();
     const { wishlist, toggleWishlist, isInWishlist,
         toggleShowModalWishlist,
         showModal, selectedProductModal,
@@ -35,7 +30,6 @@ const Wishlist = () => {
 
     return (
         <div>
-            <Navbar session={session} />
             {showModal && (
                 <ModalPurchase
                     title={
@@ -154,8 +148,6 @@ const Wishlist = () => {
                     )}
                 </div>
             </section>
-            <BannerSocialMedia />
-            <Footer />
             <ToastContainer
                 position="bottom-right"
                 autoClose={3000}

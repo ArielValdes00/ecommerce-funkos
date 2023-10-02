@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useContext, useEffect } from 'react';
 import Link from 'next/link';
-import { getSession, signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { ProductContext } from '@/context/ProductContext';
 import { useRouter } from 'next/router';
 import { FaUserCircle } from 'react-icons/fa'
@@ -9,7 +9,8 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { BsBag } from 'react-icons/bs';
 import { MdLogout } from 'react-icons/md';
 
-const navbar = ({ session }) => {
+const navbar = () => {
+    const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMenuHamburguerOpen, setIsMenuHamburguerOpen] = useState(false);
     const { cartState } = useContext(ProductContext);
@@ -97,7 +98,10 @@ const navbar = ({ session }) => {
                                     </div>
                                     {isMenuOpen && (
                                         <div className={'hidden lg:block absolute right-[-20px] w-28 mt-2 border text-[18px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40'}>
-                                            <Link href={"/profile"} className='px-3 py-1 border-b text-center grid grid-cols-3 items-center justify-center hover:bg-gray-100'>
+                                            <Link 
+                                            href={"/profile"} 
+                                            className='px-3 py-1 border-b text-center grid grid-cols-3 items-center justify-center hover:bg-gray-100' 
+                                            >
                                                 <FaUserCircle />
                                                 <span className='col-span-2'>Profile</span>
                                             </Link>
@@ -137,12 +141,4 @@ const navbar = ({ session }) => {
     )
 }
 
-export const getServerSideProps = async (context) => {
-    const session = await getSession(context);
-    return {
-        props: {
-            session,
-        },
-    };
-};
 export default navbar

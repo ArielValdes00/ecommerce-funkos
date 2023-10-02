@@ -36,18 +36,21 @@ const Login = ({ onClick }) => {
                 callbackUrl: "/",
                 redirect: false
             });
+            if (res.status === 200) {
+                window.location.href = res.url;
+            }
             setEmailError("");
             setPasswordError("");
-            if (res.error === "invalid email") {
+            if (res.error === "User not found") {
                 setEmailError("Invalid email. Please check your email address.");
                 setTimeout(() => setEmailError(""), 4000);
-            } else if (res.error === "invalid password") {
+            } else if (res.error === "Invalid password") {
                 setPasswordError("Invalid password. Please check your password.");
                 setTimeout(() => setPasswordError(""), 4000);
             }
         } catch (error) {
             console.error(error)
-     }
+        }
     }
 
     const handleChange = (e) => {

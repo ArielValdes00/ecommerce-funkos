@@ -1,28 +1,15 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import Login from '@/components/Login';
-import Navbar from '@/components/Navbar';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import Link from 'next/link';
-import BannerSocialMedia from '@/components/BannerSocialMedia';
-import Footer from '@/components/Footer';
 import Register from '@/components/Register';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const login = () => {
-    const { data: session,status } = useSession();
-    const router = useRouter()
-    const [isLogin, setIsLogin] = useState(true);
-    if (status !== 'loading' && status === "authenticated") {
-        router.push("/")
-    }
-
-    const toggleForm = () => {
-        setIsLogin(!isLogin);
-    };
+    const [isLogin, toggleIsLogin] = useBooleanState(true);
 
     return (
         <div>
-            <Navbar session={session} />
             <section className='bg-gray-100 md:px-28 py-5'>
                 <div className='mx-4'>
                     <div className="text-xs text-gray-500 mb-5">
@@ -31,16 +18,27 @@ const login = () => {
                 </div>
                 <div className='py-5 mx-4'>
                     {isLogin ? (
-                        <Login onClick={toggleForm} />
+                        <Login onClick={toggleIsLogin} />
                     ) : (
-                        <Register onClick={toggleForm} />
+                        <Register onClick={toggleIsLogin} />
                     )}
                 </div>
             </section>
-            <BannerSocialMedia />
-            <Footer />
         </div>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    const session = await getSession(context);
+    if (session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
+    return { props: {} };
 }
 
 export default login

@@ -1,21 +1,15 @@
 import React, { useContext } from 'react';
-import BannerSocialMedia from "@/components/BannerSocialMedia";
-import Navbar from "@/components/Navbar";
 import SliderCards from "@/components/SliderCard";
 import Link from "next/link";
-import { useSession } from 'next-auth/react';
-import Footer from "@/components/Footer";
 import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import { getProducts } from '../../utils/apiProducts';
 import { getMostSoldProducts } from '../../utils/apiPurchase';
 
 export default function Home({ recentProducts, mostSoldProducts }) {
-    const { data: session } = useSession();
     const { showModal, selectedProductModal, toggleShowModal } = useContext(ProductContext);
     return (
         <div>
-            <Navbar session={session} />
             {showModal && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
@@ -46,12 +40,6 @@ export default function Home({ recentProducts, mostSoldProducts }) {
             <section className='bg-gray-100'>
                 <SliderCards title={"new arrival"} products={recentProducts} />
                 <SliderCards title={"best selling"} products={mostSoldProducts} />
-            </section>
-            <section>
-                <BannerSocialMedia />
-            </section>
-            <section>
-                <Footer />
             </section>
         </div>
     )
