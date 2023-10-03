@@ -22,4 +22,14 @@ export const isValidName = (name) => {
     const passwordRegex = /^[a-zA-Z0-9]{8,16}$/;
     return passwordRegex.test(password);
   };
+
+  export const isValidTextArea = (text) => {
+    const disallowedCharsRegex = /[<>&]/;
+  
+    if (disallowedCharsRegex.test(text)) {
+      return false;  
+    }
+    return true;
+  };
+  
   

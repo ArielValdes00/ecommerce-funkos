@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { getMostSoldProducts, purchase } from '../../utils/apiPurchase';
+import { getMostSoldProducts } from '../../utils/apiPurchase';
 import SelectQuantity from '@/components/SelectQuantity';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import SliderCards from '@/components/SliderCard';
@@ -13,11 +12,22 @@ import { useRouter } from 'next/router';
 import { getProducts } from '../../utils/apiProducts';
 import { BsFillTrash3Fill } from 'react-icons/bs';
 import { BiSolidCheckShield } from 'react-icons/bi';
+import { ToastContainer, toast } from 'react-toastify';
+import PayPalCheckoutButton from '@/components/PayPalCheckoutButton';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = ({ recentProducts, mostSoldProducts }) => {
-    const { cartState, removeAllItemsFromCart, removeItemFromCart,
-        setSelectedQuantities, setSelectedProductModal, selectedProductModal, toggleShowModal,
-        addItemToCart, setSelectedQuantity, selectedQuantities, showModal } = useContext(ProductContext);
+    const { cartState,
+        removeAllItemsFromCart,
+        removeItemFromCart,
+        setSelectedQuantities,
+        setSelectedProductModal,
+        selectedProductModal,
+        toggleShowModal,
+        addItemToCart,
+        setSelectedQuantity,
+        selectedQuantities,
+        showModal } = useContext(ProductContext);
     const cart = cartState.cart;
     const [userId, setUserId] = useState(null);
     const { data: session, status } = useSession();
@@ -138,7 +148,10 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                     ))}
                                 </div>
                                 <div className='xl:col-span-2 mt-3'>
-                                    <ProgressBar totalPrice={cartState.totalPrice} freeShippingThreshold={freeShippingThreshold} />
+                                    <ProgressBar
+                                        totalPrice={cartState.totalPrice}
+                                        freeShippingThreshold={freeShippingThreshold}
+                                    />
                                     <div className='bg-gray-100 rounded-lg pt-6 pb-2 px-6 flex flex-col gap-5 text-lg'>
                                         <div className='grid grid-cols-2 border-b-2 pb-3'>
                                             <p className='font-extrabold text-3xl'>SUMMARY</p>
@@ -167,55 +180,15 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                         </button>
                                         <div>
                                             {checkoutProcess &&
-                                                <PayPalScriptProvider
-                                                    options={{
-                                                        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-                                                    }}
-                                                >
-                                                    <PayPalButtons
-                                                        style={{
-                                                            shape: 'pill'
-                                                        }}
-                                                        createOrder={(data, actions) => {
-                                                            const itemTotal = cart.reduce((total, product) => total + (product.price * product.quantity), 0);
-                                                            return actions.order.create({
-                                                                purchase_units: [{
-                                                                    amount: {
-                                                                        value: estimatedTotal,
-                                                                        breakdown: {
-                                                                            item_total: {
-                                                                                currency_code: 'USD',
-                                                                                value: itemTotal
-                                                                            },
-                                                                            shipping: {
-                                                                                currency_code: 'USD',
-                                                                                value: shippingCost
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    items: cart.map(product => ({
-                                                                        sku: product.id,
-                                                                        name: product.name,
-                                                                        quantity: product.quantity,
-                                                                        category: 'PHYSICAL_GOODS',
-                                                                        unit_amount: {
-                                                                            currency_code: 'USD',
-                                                                            value: product.price
-                                                                        }
-                                                                    }))
-                                                                }]
-                                                            });
-                                                        }}
-                                                        onApprove={async (data, actions) => {
-                                                            const order = await actions.order.capture();
-                                                            await purchase(userId, order);
-                                                            removeAllItemsFromCart();
-                                                        }}
-                                                        onCancel={() => {
-                                                            setCheckoutProcess(false);
-                                                        }}
-                                                    />
-                                                </PayPalScriptProvider>
+                                                <PayPalCheckoutButton
+                                                    cart={cart}
+                                                    userId={userId}
+                                                    estimatedTotal={estimatedTotal}
+                                                    shippingCost={shippingCost}
+                                                    setCheckoutProcess={setCheckoutProcess}
+                                                    removeAllItemsFromCart={removeAllItemsFromCart}
+                                                    toast={toast}
+                                                />
                                             }
                                         </div>
                                     </div>
@@ -241,6 +214,16 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                     </>
                 )}
             </section>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                draggable
+                theme="light"
+            />
         </>
     );
 };
