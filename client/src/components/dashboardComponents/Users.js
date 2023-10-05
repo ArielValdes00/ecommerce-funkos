@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { deleteUsers } from '../../../utils/apiUsers';
+import { assignAdminRole, deleteUsers } from '../../../utils/apiUsers';
 
 const Users = ({ allUsers }) => {
     const [users, setUsers] = useState(allUsers);
@@ -13,6 +13,23 @@ const Users = ({ allUsers }) => {
             console.error(error)
         }
     }
+
+    const handleAssignAdminRole = async (id) => {
+        try {
+            await assignAdminRole(id); 
+
+            const updatedUsers = users.map((user) => {
+                if (user.id === id) {
+                    return { ...user, role: 'admin' };
+                }
+                return user;
+            });
+
+            setUsers(updatedUsers);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const formatDate = (isoDate) => {
         if (!isoDate) {
@@ -33,6 +50,7 @@ const Users = ({ allUsers }) => {
                             <li>Email: </li>
                             <li>Area Code: </li>
                             <li>Number: </li>
+                            <li>Role: </li>
                             <li>Created At: </li>
                             <div className='mt-1'>
                                 <button
@@ -46,7 +64,12 @@ const Users = ({ allUsers }) => {
                             <li>{user.email}</li>
                             <li>{!user.areaCode ? '-' : user.areaCode}</li>
                             <li>{!user.phoneNumber ? '-' : user.phoneNumber}</li>
+                            <li className='capitalize'>{user.role}</li>
                             <li>{formatDate(user.createdAt)}</li>
+                            <button
+                                onClick={() => handleAssignAdminRole(user.id)}
+                                className='rounded px-3 py-1 bg-blue-600 text-white font-semibold mt-2'>Assign Admin Role
+                            </button>
                         </ul>
                     </ol>
                 ))}

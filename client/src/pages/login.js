@@ -4,9 +4,11 @@ import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 import Register from '@/components/Register';
 import useBooleanState from '@/hooks/useBooleanState';
+import ForgotPassword from '@/components/ForgotPassword';
 
 const login = () => {
     const [isLogin, toggleIsLogin] = useBooleanState(true);
+    const [showForgotPassword, toggleShowForgotPassword] = useBooleanState(false);
 
     return (
         <div>
@@ -17,11 +19,16 @@ const login = () => {
                     </div>
                 </div>
                 <div className='py-5 mx-4'>
-                    {isLogin ? (
-                        <Login onClick={toggleIsLogin} />
+                    {showForgotPassword ? (
+                        <ForgotPassword toggleShowForgotPassword={toggleShowForgotPassword} />
                     ) : (
-                        <Register onClick={toggleIsLogin} />
+                        isLogin ? (
+                            <Login onClick={toggleIsLogin} toggleShowForgotPassword={toggleShowForgotPassword}/>
+                        ) : (
+                            <Register onClick={toggleIsLogin} />
+                        )
                     )}
+
                 </div>
             </section>
         </div>

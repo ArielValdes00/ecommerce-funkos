@@ -15,7 +15,6 @@ export const login = async (email, password) => {
     }
 }
 
-
 export const getUsers = async () => {
     try {
         const response = await axios.get(`${API_URL}`);
@@ -57,3 +56,33 @@ export const updateUser = async (id, updatedUserData) => {
         console.error(error);
     }
 };
+
+export const assignAdminRole = async (id) => {
+    try {
+        const response = await axios.post(`${API_URL}/assign-admin-role/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const resetPasswordRequest = async (email) => {
+    try {
+        const response = await axios.post(`${API_URL}/request-password-reset`, {
+            email: email
+        });
+
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+export const resetPassword = async (token, password) => {
+    try {
+        const response = await axios.post(`${API_URL}/reset-password`, { token, newPassword: password });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}

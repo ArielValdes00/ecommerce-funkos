@@ -49,6 +49,7 @@ export const authOptions = {
                 token.postalCode = user.postalCode;
                 token.identificationNumber = user.identificationNumber;
                 token.recipientName = user.recipientName;
+                token.role = user.role;
 
             } else {
                 const updatedUser = await getUser(token.id);
@@ -73,7 +74,8 @@ export const authOptions = {
                 address: token.address,
                 postalCode: token.postalCode,
                 identificationNumber: token.identificationNumber,
-                recipientName: token.recipientName
+                recipientName: token.recipientName,
+                role: token.role
             };
             return session;
         },

@@ -154,6 +154,17 @@ export const getServerSideProps = async (context) => {
         }
     }
 
+    const userRole = session.user.role; 
+
+    if (userRole !== 'admin') {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
+
     const sales = await getAllSales();
     const allUsers = await getUsers();
     const initialProducts = await getProducts();

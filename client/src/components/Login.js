@@ -1,17 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import GoogleButton from '@/components/GoogleButton';
 import { signIn } from 'next-auth/react';
-import { ProductContext } from '@/context/ProductContext';
 import { isValidEmail, isValidPassword } from '../../utils/validations';
 import Loader from '../../public/icons/loader.gif';
 import Image from 'next/image';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import useBooleanState from '@/hooks/useBooleanState';
 
-const Login = ({ onClick }) => {
-    const { isLoading, toggleIsLoading } = useContext(ProductContext)
+const Login = ({ onClick, toggleShowForgotPassword }) => {
     const [emailError, setEmailError] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, toggleShowPassword] = useBooleanState(false);
     const [passwordError, setPasswordError] = useState("");
+    const [isLoading, toggleIsLoading] = useBooleanState(false);
 
     const [form, setForm] = useState({
         email: "",
@@ -44,9 +44,11 @@ const Login = ({ onClick }) => {
             if (res.error === "User not found") {
                 setEmailError("Invalid email. Please check your email address.");
                 setTimeout(() => setEmailError(""), 4000);
+                toggleIsLoading();
             } else if (res.error === "Invalid password") {
                 setPasswordError("Invalid password. Please check your password.");
                 setTimeout(() => setPasswordError(""), 4000);
+                toggleIsLoading();
             }
         } catch (error) {
             console.error(error)
@@ -87,16 +89,14 @@ const Login = ({ onClick }) => {
                             className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                         />
                         <div
-                            onClick={() => setShowPassword(!showPassword)}
+                            onClick={() => toggleShowPassword()}
                             className='absolute right-5 top-[37px]'
                         >
                             {!showPassword ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
                         </div>
                         {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
-                        <div className='text-end mt-2 me-2'>
-                            <a className="font-bold text-sm text-black hover:text-gray-800 underline" href="#">
-                                Forgot Password?
-                            </a>
+                        <div className='text-end mt-2 me-2 cursor-pointer' onClick={toggleShowForgotPassword}>
+                            <span className='text-[14px] underline font-bold'>Forgot Password?</span>
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-between">
