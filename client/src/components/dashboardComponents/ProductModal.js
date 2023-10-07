@@ -2,7 +2,19 @@ import React from 'react';
 import InputFile from './InputFile';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
-const ProductModal = ({ handleCloseModal, handleSubmit, form, handleChange, handleImageChange, handleBoxImageChange, imageInputRef, boxImageInputRef, selectedFile, boxImage }) => {
+const ProductModal = ({
+    handleCloseModal,
+    handleSubmit,
+    form,
+    handleChange,
+    handleImageChange,
+    handleBoxImageChange,
+    imageInputRef,
+    boxImageInputRef,
+    selectedFile,
+    boxImage,
+    buttonName,
+    title }) => {
     return (
         <div className="fixed z-50 inset-0 overflow-y-auto">
             <div className="fixed z-50 inset-0 overflow-y-auto">
@@ -14,7 +26,7 @@ const ProductModal = ({ handleCloseModal, handleSubmit, form, handleChange, hand
                     <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate__animated animate__fadeInDown">
                         <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                             <div className='flex justify-between'>
-                                <h2 className="text-lg leading-6 font-semibold text-gray-900 mb-6">Create Product</h2>
+                                <h2 className="text-lg leading-6 font-semibold text-gray-900 mb-6">{title}</h2>
                                 <AiFillCloseCircle
                                     onClick={handleCloseModal}
                                     size={26}
@@ -93,7 +105,7 @@ const ProductModal = ({ handleCloseModal, handleSubmit, form, handleChange, hand
                                 <div className="flex justify-center items-center mt-5">
                                     <button
                                         type="submit"
-                                        className="bg-blue-500 text-white rounded-full px-4 py-2">Create</button>
+                                        className="bg-blue-500 text-white rounded-full px-4 py-1 hover:bg-blue-600">{buttonName}</button>
                                 </div>
                             </form>
                         </div>

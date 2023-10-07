@@ -11,6 +11,8 @@ import BarChart from '@/components/dashboardComponents/BarChats';
 import RecentOrders from '@/components/dashboardComponents/RecentOrders';
 import { getUsers } from '../../../utils/apiUsers';
 import { getProducts } from '../../../utils/apiProducts';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function IndexPage({ session, initialSalesData, allUsers, initialProducts }) {
     const [selectedSection, setSelectedSection] = useState('');
@@ -122,13 +124,13 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
                     </div>
                 );
             case 'products':
-                return <AllProducts initialProducts={initialProducts} />;
+                return <AllProducts initialProducts={initialProducts} session={session} toast={toast}/>;
             case 'sales':
                 return <Sales initialSalesData={initialSalesData} />;
             case 'profile':
                 return <Profile />;
             case 'users':
-                return <Users allUsers={allUsers} />;
+                return <Users allUsers={allUsers} toast={toast} session={session}/>;
             default:
                 return null;
         }
@@ -141,6 +143,15 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
                 <NavBar session={session} />
                 {renderSelectedSection()}
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                theme="light"
+            />
         </main>
     );
 }
@@ -156,7 +167,7 @@ export const getServerSideProps = async (context) => {
 
     const userRole = session.user.role; 
 
-    if (userRole !== 'admin') {
+    if (userRole !== 'admin' && userRole !== 'superAdmin') {
         return {
             redirect: {
                 destination: '/',

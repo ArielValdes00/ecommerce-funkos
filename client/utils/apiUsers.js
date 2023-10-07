@@ -15,6 +15,19 @@ export const login = async (email, password) => {
     }
 }
 
+export const register = async (formData) => {
+    try {
+        const response = await axios.post(`${API_URL}`, formData);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error('Authentication error');
+        }
+    }
+}
+
 export const getUsers = async () => {
     try {
         const response = await axios.get(`${API_URL}`);
@@ -74,7 +87,11 @@ export const resetPasswordRequest = async (email) => {
 
         return response.data;
     } catch (error) {
-        console.log(error)
+        if (error.response) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error('Authentication error');
+        }
     }
 };
 
@@ -83,6 +100,10 @@ export const resetPassword = async (token, password) => {
         const response = await axios.post(`${API_URL}/reset-password`, { token, newPassword: password });
         return response.data;
     } catch (error) {
-        console.log(error);
+        if (error.response) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error('Authentication error');
+        }
     }
 }

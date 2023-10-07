@@ -5,11 +5,13 @@ import Loader from '/public/icons/loader.gif';
 import { resetPasswordRequest } from '../../utils/apiUsers';
 import { isValidEmail } from '../../utils/validations';
 import { FaArrowLeft } from 'react-icons/fa';
+import { isRedirectError } from 'next/dist/client/components/redirect';
 
 const ForgotPassword = ({ toggleShowForgotPassword }) => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, toggleIsLoading] = useBooleanState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,14 +23,24 @@ const ForgotPassword = ({ toggleShowForgotPassword }) => {
         } else {
             try {
                 const response = await resetPasswordRequest(email);
-                setMessage(response.message);
+                setMessage(response?.message);
             } catch (error) {
-                setMessage("An error occurred. Please try again later.");
+                setMessage(error.message);
+                setTimeout(() => setMessage(""), 4000);
             } finally {
                 toggleIsLoading();
             }
         }
     };
+
+    const handleChangeForm = (e) => {
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+
+        const isFilled = newEmail.length > 0;
+        setIsFormValid(isFilled);
+    };
+
 
     return (
         <div className="px-5">
@@ -46,15 +58,15 @@ const ForgotPassword = ({ toggleShowForgotPassword }) => {
                         placeholder="Your Email"
                         id='email'
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => handleChangeForm(e)}
                         className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                     />
                     {message && <p className={`ms-1 mt-1 text-sm ${message.includes("success") ? "text-green-500" : "text-red-500"}`}>{message}</p>}
                 </div>
                 <button
                     type="submit"
-                    className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded"
-                    disabled={isLoading}
+                    className={`${!isFormValid ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ' hover:bg-gray-800 bg-black'} font-bold py-2 px-4 text-white rounded w-full`}
+                    disabled={!isFormValid}
                 >
                     {isLoading ? (
                         <div className='flex items-center gap-1 justify-center'>

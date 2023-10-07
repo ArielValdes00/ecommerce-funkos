@@ -10,7 +10,10 @@ cloudinary.config({
 
 export const createProducts = async (req, res) => {
     try {
-        const { name, price, description, category, stock } = req.body;
+        const { name, price, description, category, stock, userRole } = req.body;
+        if (userRole !== 'superAdmin') {
+            return res.status(403).json({ message: 'Forbidden: You do not have permission to perform this action.' });
+        }
         let imageUrl, boxImageUrl;
 
         if (req.files['image']) {
@@ -73,8 +76,12 @@ export const getProducts = async (req, res) => {
 
 export const deleteProducts = async (req, res) => {
     try {
+        if (req.body.user !== 'superAdmin') {
+            return res.status(403).json({ message: 'Forbidden: You do not have permission to perform this action.' });
+        }
+
         const { id } = req.params;
-        const product = await Product.findOne({ where: { id } });
+        await Product.findOne({ where: { id } });
 
         await Product.destroy({
             where: {
@@ -89,8 +96,11 @@ export const deleteProducts = async (req, res) => {
 
 export const updateProducts = async (req, res) => {
     try {
+        const { name, description, price, category, stock, userRole } = req.body;
+        if (userRole !== 'superAdmin') {
+            return res.status(403).json({ message: 'Forbidden: You do not have permission to perform this action.' });
+        }
         const { id } = req.params;
-        const { name, description, price, category, stock } = req.body;
         const decimalPrice = parseFloat(price);
         const updateData = {
             name,

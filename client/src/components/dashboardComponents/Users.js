@@ -1,33 +1,42 @@
 import React, { useState } from 'react'
 import { assignAdminRole, deleteUsers } from '../../../utils/apiUsers';
 
-const Users = ({ allUsers }) => {
+const Users = ({ allUsers, session, toast }) => {
     const [users, setUsers] = useState(allUsers);
+    const userRole = session.user.role;
 
     const handleDelete = async (id) => {
-        try {
-            await deleteUsers(id)
-            const updateUsers = users.filter(user => user.id !== id)
-            setUsers(updateUsers)
-        } catch (error) {
-            console.error(error)
+        if (userRole === 'superAdmin') {
+            try {
+                await deleteUsers(id)
+                const updateUsers = users.filter(user => user.id !== id)
+                setUsers(updateUsers)
+            } catch (error) {
+                console.error(error)
+            }
+        } else {
+            toast.error('Forbidden: You do not have permission to perform this action.')
         }
     }
 
     const handleAssignAdminRole = async (id) => {
-        try {
-            await assignAdminRole(id); 
+        if (userRole === 'superAdmin') {
+            try {
+                await assignAdminRole(id);
 
-            const updatedUsers = users.map((user) => {
-                if (user.id === id) {
-                    return { ...user, role: 'admin' };
-                }
-                return user;
-            });
+                const updatedUsers = users.map((user) => {
+                    if (user.id === id) {
+                        return { ...user, role: 'admin' };
+                    }
+                    return user;
+                });
 
-            setUsers(updatedUsers);
-        } catch (error) {
-            console.error(error);
+                setUsers(updatedUsers);
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            toast.error('Forbidden: You do not have permission to perform this action.')
         }
     };
 
@@ -44,37 +53,47 @@ const Users = ({ allUsers }) => {
         <div className='md:h-screen'>
             <div className='grid md:grid-cols-2 lg:grid-cols-3'>
                 {users.map((user) => (
-                    <ol key={user.id} className='bg-white my-2 border px-3 flex justify-between px-1 py-4 mx-2 rounded-lg'>
-                        <ul className='flex flex-col gap-2 font-semibold'>
-                            <li>Name: </li>
-                            <li>Email: </li>
-                            <li>Area Code: </li>
-                            <li>Number: </li>
-                            <li>Role: </li>
-                            <li>Created At: </li>
-                            <div className='mt-1'>
+                    <ol key={user.id} className='bg-white p-3 mx-2 rounded-lg'>
+                        <ul className='flex flex-col gap-2 font-semibold capitalize'>
+                            <li className='flex justify-between'>
+                                <p>Name:</p>
+                                <p className='font-normal'>{user.name}</p>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>Email:</p>
+                                <p className='normal-case font-normal'>{user.email}</p>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>areaCode:</p>
+                                <p className='font-normal'>{!user.areaCode ? '-' : user.areaCode}</p>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>phone number:</p>
+                                <p className='font-normal'>{!user.phoneNumber ? '-' : user.phoneNumber}</p>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>role:</p>
+                                <p className='font-normal'>{user.role === 'superAdmin' ? 'super admin' : user.role}</p>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>created at:</p>
+                                <p className='font-normal'>{formatDate(user.createdAt)}</p>
+                            </li>
+                            <li className='flex justify-between mt-2'>
                                 <button
                                     onClick={() => handleDelete(user.id)}
-                                    className='rounded px-3 py-1 bg-red-600 text-white font-semibold'>Delete
+                                    className='rounded px-3 py-1 bg-red-600 text-white font-semibold hover:bg-red-700'>Delete
                                 </button>
-                            </div>
-                        </ul>
-                        <ul className='flex flex-col gap-2 text-end'>
-                            <li className='capitalize'>{user.name}</li>
-                            <li>{user.email}</li>
-                            <li>{!user.areaCode ? '-' : user.areaCode}</li>
-                            <li>{!user.phoneNumber ? '-' : user.phoneNumber}</li>
-                            <li className='capitalize'>{user.role}</li>
-                            <li>{formatDate(user.createdAt)}</li>
-                            <button
-                                onClick={() => handleAssignAdminRole(user.id)}
-                                className='rounded px-3 py-1 bg-blue-600 text-white font-semibold mt-2'>Assign Admin Role
-                            </button>
+                                <button
+                                    onClick={() => handleAssignAdminRole(user.id)}
+                                    className='rounded px-3 py-1 bg-blue-600 text-white font-semibold hover:bg-blue-700'>Assign Admin Role
+                                </button>
+                            </li>
                         </ul>
                     </ol>
                 ))}
             </div>
-        </div>
+        </div >
     )
 }
 

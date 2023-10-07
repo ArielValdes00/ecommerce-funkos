@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from "@/components/Navbar"
 import { getProducts } from '../../../utils/apiProducts';
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
@@ -12,7 +11,7 @@ import Loader from '@/components/Loader';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { BsFilterLeft } from 'react-icons/bs';
 
-const Products = ({ initialProducts, session }) => {
+const Products = ({ initialProducts }) => {
     const [hoveredProductId, setHoveredProductId] = useState(null);
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
     const { updateProducts,

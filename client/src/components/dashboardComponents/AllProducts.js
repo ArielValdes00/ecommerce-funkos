@@ -4,9 +4,11 @@ import { createProducts } from "../../../utils/apiProducts"
 import { BsFilterLeft } from 'react-icons/bs';
 import { ProductContext } from '@/context/ProductContext';
 import ProductModal from './ProductModal';
+import useBooleanState from '@/hooks/useBooleanState';
 
-const AllProducts = ({ initialProducts }) => {
-    const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false)
+const AllProducts = ({ initialProducts, session, toast }) => {
+    const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false);
+    const [hoveredProductId, setHoveredProductId] = useState(null);
     const {
         handleCategoryChange,
         handleSortChange,
@@ -27,9 +29,11 @@ const AllProducts = ({ initialProducts }) => {
         boxImage: "",
     })
     const [currentProduct, setCurrentProduct] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, toggleShowModal] = useBooleanState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [boxImage, setBoxImage] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const userRole = session?.user.role
 
     const showFilters = () => {
         setIsFilterModalOpen(!isFilterMenuOpen)
@@ -69,13 +73,17 @@ const AllProducts = ({ initialProducts }) => {
         e.preventDefault();
         try {
             if (currentProduct) {
-                const response = await updateProduct(currentProduct.id, form);
-                setFilteredProducts(
-                    filteredProducts.map((product) =>
-                        product.id === currentProduct.id ? { ...product, ...response } : product
-                    )
-                );
-                setCurrentProduct(null);
+                if (userRole === 'superAdmin') {
+                    const response = await updateProduct(currentProduct.id, form);
+                    setFilteredProducts(
+                        filteredProducts.map((product) =>
+                            product.id === currentProduct.id ? { ...product, ...response } : product
+                        )
+                    );
+                    setCurrentProduct(null);
+                } else {
+                    toast.error('Forbidden: You do not have permission to perform this action.')
+                }
             } else {
                 const formData = new FormData();
                 formData.append("name", form.name);
@@ -92,21 +100,25 @@ const AllProducts = ({ initialProducts }) => {
                     formData.append('boxImage', boxImage);
                 }
 
-                const response = await createProducts(formData);
-                imageInputRef.current.value = "";
-                boxImageInputRef.current.value = "";
+                if (userRole === 'superAdmin') {
+                    const response = await createProducts(formData, userRole);
+                    imageInputRef.current.value = "";
+                    boxImageInputRef.current.value = "";
 
-                setSelectedFile(null);
-                setForm({
-                    name: "",
-                    price: "",
-                    description: "",
-                    category: "",
-                    stock: "",
-                    image: "",
-                    boxImage: ""
-                });
-                setFilteredProducts([...filteredProducts, response]);
+                    setSelectedFile(null);
+                    setForm({
+                        name: "",
+                        price: "",
+                        description: "",
+                        category: "",
+                        stock: "",
+                        image: "",
+                        boxImage: ""
+                    });
+                    setFilteredProducts([...filteredProducts, response]);
+                } else {
+                    toast.error('Forbidden: You do not have permission to perform this action.')
+                }
             }
         } catch (error) {
             console.error(error)
@@ -114,28 +126,34 @@ const AllProducts = ({ initialProducts }) => {
     };
 
     const handleDelete = async (id) => {
-        try {
-            await deleteProducts(id);
-            const updatedProducts = filteredProducts.filter(product => product.id !== id);
-            setFilteredProducts(updatedProducts);
-        } catch (error) {
-            console.log(error);
+        if (userRole === 'superAdmin') {
+            try {
+                await deleteProducts(id);
+                const updatedProducts = filteredProducts.filter(product => product.id !== id);
+                setFilteredProducts(updatedProducts);
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            toast.error('Forbidden: You do not have permission to perform this action.')
         }
     }
 
-    const handleOpenModal = () => {
-        setShowModal(true)
-    }
-
     const handleCloseModal = () => {
-        setShowModal(false)
-        setCurrentProduct(null)
+        toggleShowModal();
+        setCurrentProduct(null);
     }
 
     const handleEdit = (product) => {
         setCurrentProduct(product);
         setForm(product);
-        setShowModal(true)
+        setIsEditing(true);
+        toggleShowModal();
+    }
+
+    const toggleShowModalProduct = () => {
+        setIsEditing(false);
+        toggleShowModal();
     }
 
     return (
@@ -143,6 +161,7 @@ const AllProducts = ({ initialProducts }) => {
             <div className="w-full max-w-md mx-auto text-center p-3">
                 {showModal && (
                     <ProductModal
+                        title={isEditing ? 'Edit Product' : 'Create Product'}
                         showModal={showModal}
                         handleCloseModal={handleCloseModal}
                         handleSubmit={handleSubmit}
@@ -154,6 +173,7 @@ const AllProducts = ({ initialProducts }) => {
                         boxImageInputRef={boxImageInputRef}
                         selectedFile={selectedFile}
                         boxImage={boxImage}
+                        buttonName={isEditing ? 'Update' : 'Create'}
                     />
                 )}
             </div>
@@ -164,7 +184,7 @@ const AllProducts = ({ initialProducts }) => {
                         <span className="hidden md:block">FILTER AND SORT</span>
                     </button>
                     <p className="font-semibold text-center">{`(${filteredProducts.length}) Results`}</p>
-                    <button onClick={handleOpenModal} className="bg-blue-600 text-sm text-white ml-auto py-1 px-4 rounded-full">
+                    <button onClick={toggleShowModalProduct} className="bg-blue-600 text-sm text-white ml-auto py-1 px-4 rounded-full">
                         Add+
                     </button>
                 </div>
@@ -207,7 +227,7 @@ const AllProducts = ({ initialProducts }) => {
                             <option value="recent">Latest</option>
                         </select>
                     </div>
-                    <button onClick={handleOpenModal} className="bg-blue-600 font-semibold lg:order-3 text-white py-1 px-4 rounded-full">
+                    <button onClick={toggleShowModalProduct} className="bg-blue-600 font-semibold lg:order-3 text-white py-1 px-4 rounded-full">
                         Add+
                     </button>
                     <div className={`${isFilterMenuOpen ? "hidden" : "block"} ml-auto lg:order-4`}>
@@ -218,13 +238,24 @@ const AllProducts = ({ initialProducts }) => {
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 m-2 mt-3 gap-2'>
                 {filteredProducts?.map((product) => (
                     <div key={product.id} className="flex flex-col gap-1 py-1 bg-white border rounded text-lg text-center rounded-lg border-gray-200">
-                        <img src={product.image} width={105} alt={product.name} className='mx-auto p-1 py-2' />
+                        <div
+                            onMouseEnter={() => setHoveredProductId(product.id)}
+                            onMouseLeave={() => setHoveredProductId(null)}
+                        >
+                            <img
+                                src={hoveredProductId === product.id ? product.boxImage : product.image}
+                                alt={product.name}
+                                width={115}
+                                height={115}
+                                className='mx-auto transition-all duration-300 ease-in-out transform hover:scale-110 m-1'
+                            />
+                        </div>
                         <p className='capitalize text-sm'>{product.category}</p>
                         <h3 className='capitalize font-semibold text-sm whitespace-normal'>{product.name}</h3>
                         <p className='text-sm'>${product.price}</p>
                         <div className='flex flex-col gap-2 mt-1 items-center text-white mb-2'>
-                            <button onClick={() => handleDelete(product.id)} className="rounded-full py-1 w-2/3 text-sm bg-red-700 hover:bg-red-800">Remove</button>
-                            <button onClick={() => handleEdit(product)} className="rounded-full py-1 w-2/3 text-sm bg-blue-600 hover:bg-blue-700">Edit</button>
+                            <button onClick={() => handleDelete(product.id, userRole)} className="rounded-full py-1 w-2/3 text-sm bg-red-700 hover:bg-red-800">Remove</button>
+                            <button onClick={() => handleEdit(product, userRole)} className="rounded-full py-1 w-2/3 text-sm bg-blue-600 hover:bg-blue-700">Edit</button>
                         </div>
                     </div>
                 ))}

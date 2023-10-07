@@ -1,8 +1,8 @@
 import React from 'react';
 import { RxSketchLogo, RxDashboard, RxPerson } from 'react-icons/rx';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
-import { signOut } from 'next-auth/react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
+import Link from 'next/link';
 import { BsBoxSeam } from 'react-icons/bs';
 
 const Sidebar = ({ setSelectedSection }) => {
@@ -38,11 +38,12 @@ const Sidebar = ({ setSelectedSection }) => {
                     <HiOutlineShoppingBag size={20} />
                 </div>
             </div >
-            <button className='bg-red-700 hover:bg-red-800 text-white cursor-pointer p-3 rounded-lg inline-block mx-auto'
-                onClick={() => signOut()}
+            <Link
+                href={"/"}
+                className='bg-red-700 hover:bg-red-800 text-white cursor-pointer p-3 rounded-lg inline-block mx-auto'
             >
                 <AiOutlinePoweroff size={18} />
-            </button>
+            </Link>
         </aside>
     );
 };

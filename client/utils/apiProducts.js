@@ -17,18 +17,18 @@ export const getProducts = async (limit) => {
     }
 };
 
-export const createProducts = async (formData) => {
+export const createProducts = async (formData, userRole) => {
     try {
-        const response = await axios.post(`${API_URL}`, formData);
+        const response = await axios.post(`${API_URL}`, formData, userRole);
         return response.data;
     } catch (error) {
         console.error(error);
     }
 }
 
-export const deleteProducts = async (id) => {
+export const deleteProducts = async (id, userRole) => {
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`, userRole);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -36,11 +36,11 @@ export const deleteProducts = async (id) => {
 };
 
 
-export const updateProduct = async (id, productData) => {
+export const updateProduct = async (id, productData, userRole) => {
     try {
         const { image, ...data } = productData;
         const updatedProductData = { ...data };
-        const response = await axios.put(`${API_URL}/${id}`, updatedProductData);
+        const response = await axios.put(`${API_URL}/${id}`, updatedProductData, userRole);
         
         return response.data.product;
     } catch (error) {

@@ -12,6 +12,7 @@ const Login = ({ onClick, toggleShowForgotPassword }) => {
     const [showPassword, toggleShowPassword] = useBooleanState(false);
     const [passwordError, setPasswordError] = useState("");
     const [isLoading, toggleIsLoading] = useBooleanState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const [form, setForm] = useState({
         email: "",
@@ -24,7 +25,7 @@ const Login = ({ onClick, toggleShowForgotPassword }) => {
             setTimeout(() => setEmailError(""), 4000);
             return;
         } else if (!isValidPassword(form.password)) {
-            setPasswordError("Invalid Format")
+            setPasswordError("The password must be between 8 and 16 characters.")
             setTimeout(() => setPasswordError(""), 4000);
             return;
         }
@@ -56,8 +57,16 @@ const Login = ({ onClick, toggleShowForgotPassword }) => {
     }
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
+        const newFormState = { ...form, [e.target.name]: e.target.value };
+        setForm(newFormState);
+    
+        const isFilled =
+            newFormState.email.length > 0 &&
+            newFormState.password.length > 0;
+    
+        setIsFormValid(isFilled);
+    };
+    
 
     return (
         <div className="flex items-center justify-center">
@@ -101,8 +110,9 @@ const Login = ({ onClick, toggleShowForgotPassword }) => {
                     </div>
                     <div className="flex flex-col items-center justify-between">
                         <button
-                            className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded"
+                            className={`${!isFormValid ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ' hover:bg-gray-800 bg-black'} font-bold py-2 px-4 text-white rounded w-full`}
                             type="submit"
+                            disabled={!isFormValid}
                         >
                             {isLoading ? (
                                 <div className='flex items-center justify-center'>

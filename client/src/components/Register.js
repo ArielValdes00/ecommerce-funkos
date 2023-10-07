@@ -1,15 +1,17 @@
 import React, { useContext, useState } from 'react';
 import GoogleButton from '@/components/GoogleButton';
 import Input from '@/components/Inputs';
-import axios from 'axios';
 import { isValidName, isValidEmail, isValidAreaCode, isValidPhone, isValidPassword } from '../../utils/validations';
 import Image from 'next/image';
 import { ProductContext } from '@/context/ProductContext';
 import Loader from '../../public/icons/loader.gif';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { register } from '../../utils/apiUsers';
 
 const Register = ({ onClick }) => {
-    const { isLoading, toggleIsLoading } = useContext(ProductContext)
+    const { isLoading, toggleIsLoading } = useContext(ProductContext);
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [emailError, setEmailError] = useState("");
     const [showPassword1, setShowPassword1] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [form, setForm] = useState({
@@ -23,34 +25,49 @@ const Register = ({ onClick }) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setForm((prevState) => ({
-            ...prevState, [name]: value
-        }));
+        const newFormState = {
+            ...form,
+            [name]: value
+        };
+        setForm(newFormState);
+    
+        const isFilled =
+            newFormState.name.length > 0 &&
+            newFormState.email.length > 0 &&
+            newFormState.areaCode.length > 0 &&
+            newFormState.phoneNumber.length > 0 &&
+            newFormState.password.length > 0 &&
+            newFormState.confirmPassword.length > 0;
+    
+        setIsFormValid(isFilled);
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (
             isValidName(form.name) &&
             isValidEmail(form.email) &&
             isValidAreaCode(form.areaCode) &&
             isValidPhone(form.phoneNumber) &&
             isValidPassword(form.password) &&
-            form.password === form.confirmPassword
+            form.confirmPassword === form.password 
         ) {
             toggleIsLoading();
             try {
-                const res = await axios.post('http://localhost:5000/api/users', form);
+                const res = await register(form);
                 if (res.status === 201) {
                     setTimeout(() => {
                         toggleIsLoading();
                         window.location.reload();
                     }, 2000);
                 }
-                console.log(res);
             } catch (error) {
-                console.error(error);
+                if (error.message === "User already exists") {
+                    setEmailError("Invalid email. Please check your email address.");
+                    setTimeout(() => setEmailError(""), 4000);
+                    toggleIsLoading();
+                }
             }
         }
     };
@@ -80,6 +97,7 @@ const Register = ({ onClick }) => {
                             onChange={handleInputChange}
                             formValue={form.email}
                         />
+                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                     </div>
                     <div className="mb-6">
                         <div className="grid grid-cols-2 gap-4">
@@ -137,8 +155,9 @@ const Register = ({ onClick }) => {
                     </div>
                     <div className="flex flex-col items-center justify-between mt-6">
                         <button
-                            className="bg-black hover:bg-gray-800 w-full text-white font-bold py-2 px-4 rounded "
+                            className={`${!isFormValid ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ' hover:bg-gray-800 bg-black'} font-bold py-2 px-4 text-white rounded w-full`}
                             type="submit"
+                            disabled={!isFormValid}
                         >
                             {isLoading ? (
                                 <div className='flex items-center justify-center'>

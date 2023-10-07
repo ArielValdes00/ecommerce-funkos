@@ -8,6 +8,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsBag } from 'react-icons/bs';
 import { MdLogout } from 'react-icons/md';
+import { RxDashboard } from 'react-icons/rx';
 
 const navbar = () => {
     const { data: session } = useSession();
@@ -97,15 +98,23 @@ const navbar = () => {
                                         </h3>
                                     </div>
                                     {isMenuOpen && (
-                                        <div className={'hidden lg:block absolute right-[-20px] w-28 mt-2 border text-[18px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40'}>
-                                            <Link 
-                                            href={"/profile"} 
-                                            className='px-3 py-1 border-b text-center grid grid-cols-3 items-center justify-center hover:bg-gray-100' 
+                                        <div className={`hidden ${session.user.role === 'admin' || session.user.role === 'superAdmindmin' ? 'w-36' : ''} lg:block absolute right-[-20px] w-28 mt-2 border text-[17px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40`}>
+                                            <Link
+                                                href={"/profile"}
+                                                className='px-3 py-1 border-b flex items-center justify-start gap-3 hover:bg-gray-100'
                                             >
                                                 <FaUserCircle />
                                                 <span className='col-span-2'>Profile</span>
                                             </Link>
-                                            <div className='px-3 py-1 grid grid-cols-3 items-center justify-center cursor-pointer hover:bg-gray-100' onClick={signOut}>
+                                            {session.user.role === 'superAdmin' || session.user.role === 'admin' && (
+                                                <Link
+                                                    href={"/dashboard"}
+                                                    className='px-3 py-1 border-b flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100'>
+                                                    <RxDashboard />
+                                                    <span className='col-span-2 text-center'>Dashboard</span>
+                                                </Link>
+                                            )}
+                                            <div className='px-3 py-1 flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100' onClick={signOut}>
                                                 <MdLogout />
                                                 <span className='col-span-2 text-center'>Logout</span>
                                             </div>
