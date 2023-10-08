@@ -8,7 +8,7 @@ const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition, 
         addItemToCart,
         selectedQuantities,
         setSelectedQuantity,
-        setShowModal,
+        toggleShowModal,
     } = useContext(ProductContext);
     const selectedQuantity = selectedQuantities[product.id] || 1;
 
@@ -16,7 +16,7 @@ const ButtonAdded = ({ buttonText, className, disabled, product, arrowPosition, 
         const newQuantity = parseInt(e.target.value, 10);
         setSelectedQuantity(product.id, newQuantity);
         addItemToCart(product.id, newQuantity)
-        setShowModal(false)
+        toggleShowModal();
     };
 
     return (

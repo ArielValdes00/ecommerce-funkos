@@ -13,9 +13,9 @@ export default function Home({ recentProducts, mostSoldProducts }) {
             {showModal && (
                 <ModalPurchase
                     title={'item(s) added to cart'}
-                    name={selectedProductModal.name}
-                    image={selectedProductModal.image}
-                    price={selectedProductModal.price}
+                    name={selectedProductModal?.name}
+                    image={selectedProductModal?.image}
+                    price={selectedProductModal?.price}
                     quantity={'quantity: 1'}
                     firstButton={'view cart'}
                     secondButton={'continue shopping'}

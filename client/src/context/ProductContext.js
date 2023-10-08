@@ -1,6 +1,7 @@
 import React, { createContext, useState, useReducer, useEffect } from 'react';
 import { cartReducer } from '../reducer/cartReducer';
 import useBooleanState from '@/hooks/useBooleanState';
+import { getProducts } from '../../utils/apiProducts';
 
 const initialState = {
     cart: [],
@@ -184,6 +185,14 @@ export const ProductProvider = ({ children }) => {
         setFilteredProducts(sorted);
     };
 
+    useEffect(() => {
+        const getAllProduct = async () => {
+            const res = await getProducts();
+            setProducts(res);
+        }
+        getAllProduct();
+    }, [])
+
     return (
         <ProductContext.Provider
             value={{
@@ -199,7 +208,6 @@ export const ProductProvider = ({ children }) => {
                 addItemToCart,
                 removeItemFromCart,
                 removeAllItemsFromCart,
-                setSelectedProductModal,
                 setSelectedProductModal,
                 selectedProductModal,
                 wishlist,
