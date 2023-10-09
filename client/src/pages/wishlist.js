@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
@@ -10,22 +10,35 @@ import ContactForm from '@/components/miscellaneous/ContactForm';
 import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
+import { useSession } from 'next-auth/react';
 
 const Wishlist = () => {
-    const { wishlist, toggleWishlist, isInWishlist,
-        toggleShowModalWishlist,
-        showModal, selectedProductModal,
-        setSelectedProductModal, isInCart,
-        toggleRemoveModalClicked, removeModalClicked
+    const { wishlist,
+        toggleWishlist,
+        isInWishlist,
+        toggleShowModal,
+        showModal,
+        selectedProductModal,
+        setSelectedProductModal,
+        isInCart,
+        setRemoveModalClicked,
+        removeModalClicked
     } = useContext(ProductContext);
+    const { data: status } = useSession();
 
     const [isLogin, toggleIsLogin] = useBooleanState(true);
 
     const handleOpenModal = (id) => {
         const findProduct = wishlist.find(product => product.id === id);
         setSelectedProductModal(findProduct);
-        toggleRemoveModalClicked();
+        setRemoveModalClicked(true);
         toggleShowModal();
+    }
+
+    const closeModalnWishlist = (selectedProductModal) => {
+        toggleWishlist(selectedProductModal.id)
+        toggleShowModal();
+        setRemoveModalClicked(false);
     }
 
     return (
@@ -49,8 +62,8 @@ const Wishlist = () => {
                     }
                     handleConfirmation={
                         removeModalClicked
-                            ? () => toggleWishlist(selectedProductModal.id)
-                            : toggleShowModalWishlist
+                            ? () => closeModalnWishlist(selectedProductModal)
+                            : toggleShowModal
                     }
                     category={selectedProductModal.category}
                     image={selectedProductModal.image}

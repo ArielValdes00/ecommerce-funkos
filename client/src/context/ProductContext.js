@@ -23,7 +23,7 @@ export const ProductProvider = ({ children }) => {
     const [selectedQuantities, setSelectedQuantities] = useState({});
     const [showModalWishlist, toggleShowModalWishlist] = useBooleanState(false);
     const [isLoading, toggleIsLoading] = useBooleanState(false);
-    const [removeModalClicked, toggleRemoveModalClicked] = useBooleanState(false);
+    const [removeModalClicked, setRemoveModalClicked] = useBooleanState(false);
 
     const setSelectedQuantity = (productId, quantity) => {
         setSelectedQuantities((prevSelectedQuantities) => ({
@@ -79,7 +79,6 @@ export const ProductProvider = ({ children }) => {
         setSelectedProductModal(productToAdd);
         const { cart } = cartState;
         toggleShowModal();
-        toggleRemoveModalClicked();
         if (productToAdd) {
             const itemInCart = cart.find(item => item.id === id);
 
@@ -188,7 +187,7 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
         const getAllProduct = async () => {
             const res = await getProducts();
-            setProducts(res);
+            setProducts(res)
         }
         getAllProduct();
     }, [])
@@ -223,7 +222,7 @@ export const ProductProvider = ({ children }) => {
                 showModalWishlist,
                 isLoading,
                 toggleIsLoading,
-                toggleRemoveModalClicked,
+                setRemoveModalClicked,
                 removeModalClicked,
             }}
         >

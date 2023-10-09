@@ -53,7 +53,7 @@ const Users = ({ allUsers, session, toast }) => {
         <div className='md:h-screen'>
             <div className='grid md:grid-cols-2 lg:grid-cols-3'>
                 {users.map((user) => (
-                    <ol key={user.id} className='bg-white p-3 mx-2 rounded-lg'>
+                    <ol key={user.id} className='bg-white p-3 m-2 rounded-lg'>
                         <ul className='flex flex-col gap-2 font-semibold capitalize'>
                             <li className='flex justify-between'>
                                 <p>Name:</p>

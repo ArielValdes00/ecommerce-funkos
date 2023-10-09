@@ -1,14 +1,13 @@
 import React from 'react';
-import Image from 'next/image';
+import { BsCloudArrowUp } from 'react-icons/bs';
 
 const InputFile = ({ imageRef, handleImageChange, labelName, selectedImage }) => {
     const inputId = labelName.replace(/\s/g, '');
 
     return (
-        <div className="mt-2 text-center border-dashed border-2 border-gray-300 py-3 pt-4">
+        <div className="text-center border-dashed border-2 border-gray-400 p-3">
             <label htmlFor={inputId} className="block cursor-pointer">
-                <Image src={'/public/icons/upload-image.png'} height={60} width={60} alt='Upload Image'
-                    className='mx-auto mb-2' />
+                <BsCloudArrowUp size={60} className='mx-auto mb-1 text-gray-700' />
                 <input
                     type="file"
                     id={inputId}

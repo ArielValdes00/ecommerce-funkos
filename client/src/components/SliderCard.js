@@ -71,7 +71,7 @@ const SliderCards = ({ title, products }) => {
                             {isLoading && selectedProductModal === product.id && (
                                 <Loader />
                             )}
-                            {showModalWishlist && (
+                                {showModalWishlist && selectedProductModal === product.id && (
                                 <ModalWishlist className={'w-3/4 absolute'} />
                             )}
                             <div

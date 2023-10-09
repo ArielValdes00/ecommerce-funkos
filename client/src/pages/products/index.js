@@ -173,7 +173,7 @@ const Products = ({ initialProducts }) => {
                                         buttonText={'in cart'}
                                         disabled={true}
                                         product={product}
-                                        arrowPosition={'left-4'}
+                                        arrowPosition={'left-3'}
                                         invert={'invert'}
                                     />
                                 )}

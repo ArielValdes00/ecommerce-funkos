@@ -139,7 +139,7 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
     return (
         <main className='flex'>
             <SideBar selectedSection={selectedSection} setSelectedSection={setSelectedSection} />
-            <div className='w-full h-full lg:h-screen bg-gray-100 flex flex-col overflow-y-auto ml-[77px]'>
+            <div className='w-full h-full lg:screen bg-gray-100 overflow-auto ml-[77px]'>
                 <NavBar session={session} />
                 {renderSelectedSection()}
             </div>

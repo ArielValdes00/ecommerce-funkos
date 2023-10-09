@@ -58,6 +58,10 @@ const navbar = () => {
         }
     };
 
+    const handleMenuLinkClick = () => {
+        setIsMenuHamburguerOpen(false);
+    };
+
     useEffect(() => {
         document.addEventListener("mousedown", handleOutsideClick);
 
@@ -85,9 +89,15 @@ const navbar = () => {
                         : "hidden"
                         } lg:flex flex-col lg:flex-row justify-center lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
                         <div className='flex flex-col gap-14 lg:gap-0 items-center lg:flex-row lg:w-full lg:justify-evenly px-3 py-2 lg:p-0'>
-                            <Link href={"/"}>HOME</Link>
-                            <Link href={"/products"}>PRODUCTS</Link>
-                            <Link href={"/contact"}>CONTACT</Link>
+                            <Link href={"/"} onClick={handleMenuLinkClick}>HOME</Link>
+                            {session?.user.role === 'admin' || session?.user.role === 'superAdmindmin'
+                                ? <Link href={"/dashboard"} className='lg:hidden'>
+                                    DASHBOARD
+                                </Link>
+                                : ''
+                            }
+                            <Link href={"/products"} onClick={handleMenuLinkClick}>PRODUCTS</Link>
+                            <Link href={"/contact"} onClick={handleMenuLinkClick}>CONTACT</Link>
                         </div>
                         <li className='lg:flex w-80 justify-center lg:justify-end mx-auto py-7 mt-5 lg:p-0 lg:m-0'>
                             {session ? (
@@ -122,19 +132,19 @@ const navbar = () => {
                                     )}
                                 </div>
                             ) : (
-                                <Link href={"/login"} className='xl:mr-3'>
+                                <Link href={`${session?.user ? "/profile" : "/login"}`} onClick={handleMenuLinkClick} className='xl:mr-3'>
                                     <FaUserCircle size={37} className='hidden lg:block' />
                                     <p className='lg:hidden text-center'>PROFILE</p>
                                 </Link>
                             )}
                         </li>
-                        <Link href={"/wishlist"} className='mx-3 lg:my-0 lg:mb-0 xl:mr-6 my-6 mb-7'>
+                        <Link href={"/wishlist"} onClick={handleMenuLinkClick} className='mx-3 lg:my-0 lg:mb-0 xl:mr-6 my-6 mb-7'>
                             <AiOutlineHeart size={41} className='hidden lg:block' />
                             <p className='lg:hidden'>WISHLIST</p>
                         </Link>
                     </div>
                     <li className='flex justify-end items-center'>
-                        <Link href={"/cart"} className='relative cursor-pointer block'>
+                        <Link href={"/cart"} onClick={handleMenuLinkClick} className='relative cursor-pointer block'>
                             <BsBag size={33} />
                             {counterProduct < 1 ? (
                                 ""

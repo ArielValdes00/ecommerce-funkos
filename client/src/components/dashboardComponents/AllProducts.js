@@ -189,8 +189,8 @@ const AllProducts = ({ initialProducts, session, toast }) => {
                     </button>
                 </div>
                 <div className={`${isFilterMenuOpen ? "block fixed bg-gray-100 text-black top-0 min-h-screen right-0 z-50" : "hidden lg:flex"}
-                 flex flex-col lg:p-0 gap-5 xl:gap-7 lg:flex-row items-center w-full`}>
-                    <div className="lg:hidden flex justify-between w-full px-5 py-3">
+                 flex flex-col px-4 lg:p-0 gap-5 xl:gap-7 lg:flex-row items-center w-full`}>
+                    <div className="lg:hidden flex justify-between w-full px-3 py-3">
                         <div className="flex items-center gap-2 font-extrabold text-lg">
                             <BsFilterLeft size={25} />
                             ALL FILTERS
@@ -199,19 +199,19 @@ const AllProducts = ({ initialProducts, session, toast }) => {
                             <button onClick={showFilters} className="lg:hidden rounded-full bg-black text-white lg:font-base font-extrabold text-lg px-4 py-1">DONE</button>
                         </div>
                     </div>
-                    <div className="flex lg:m-0 lg:order-2 items-center rounded-lg mt-14 py-5 lg:p-0 lg:m-0">
-                        <label htmlFor="search" className="mr-2 lg:font-bold text-sm font-extrabold">SEARCH:</label>
+                    <div className="flex flex-col lg:flex-row gap-2 lg:m-0 lg:order-2 items-center rounded-lg mt-14 py-5 lg:p-0 lg:m-0">
+                        <label htmlFor="search" className="mr-2 lg:font-bold text-[16px] font-extrabold">SEARCH:</label>
                         <input
                             id="search"
                             name="search"
                             type="text"
                             onChange={handleSearchChange}
-                            className="py-1 px-2 rounded-lg lg:w-full w-80 border border-gray-300 outline-none lg:font-base lg:font-semibold font-extrabold focus:border-black"
+                            className="py-1 pl-3 w-60 rounded-lg lg:w-full border border-gray-300 outline-none lg:font-base lg:font-semibold font-normal focus:border-black"
                         />
                     </div>
-                    <div className="flex lg:order-1 items-center py-5 lg:p-0">
-                        <label htmlFor="category" className="mr-3 lg:font-bold text-sm font-extrabold">CATEGORY:</label>
-                        <select id="category" name="category" onChange={handleCategoryChange} className="rounded-lg py-1 px-2 lg:font-semibold font-extrabold border w-80 lg:w-min border-gray-300">
+                    <div className="flex flex-col lg:flex-row lg:order-1 items-center gap-2 py-6 lg:p-0">
+                        <label htmlFor="category" className="mr-3 lg:font-bold text-sm font-extrabold text-[16px]">CATEGORY:</label>
+                        <select id="category" name="category" onChange={handleCategoryChange} className="w-60 rounded-lg py-1 px-2 lg:font-semibold font-normal bg-white border lg:w-min border-gray-300">
                             <option value="all">All</option>
                             <option value="marvel">Marvel</option>
                             <option value="disney">Disney</option>
@@ -219,15 +219,15 @@ const AllProducts = ({ initialProducts, session, toast }) => {
                             <option value="dc comics">DC Comics</option>
                         </select>
                     </div>
-                    <div className="flex lg:order-0 items-center py-6 lg:p-0">
-                        <label htmlFor="sort" className="mr-3 font-extrabold text-sm lg:font-bold">SORT BY:</label>
-                        <select id="sort" name="sort" onChange={handleSortChange} className="rounded-lg font-extrabold lg:font-semibold py-1 px-2 w-80 lg:w-min border border-gray-300">
+                    <div className="flex flex-col lg:flex-row lg:order-0 items-center gap-2 py-6 lg:p-0">
+                        <label htmlFor="sort" className="mr-3 font-extrabold text-sm lg:font-bold text-[16px]">SORT BY:</label>
+                        <select id="sort" name="sort" onChange={handleSortChange} className="w-60 rounded-lg font-normal lg:font-semibold py-1 px-2 lg:w-min bg-white border border-gray-300">
                             <option value="asc">Low To High</option>
                             <option value="desc">High To Low</option>
                             <option value="recent">Latest</option>
                         </select>
                     </div>
-                    <button onClick={toggleShowModalProduct} className="bg-blue-600 font-semibold lg:order-3 text-white py-1 px-4 rounded-full">
+                    <button onClick={toggleShowModalProduct} className={`${isFilterMenuOpen ? 'hidden' : 'block'} bg-blue-600 font-semibold lg:order-3 text-white py-1 px-4 rounded-full`}>
                         Add+
                     </button>
                     <div className={`${isFilterMenuOpen ? "hidden" : "block"} ml-auto lg:order-4`}>

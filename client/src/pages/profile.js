@@ -49,7 +49,7 @@ const profile = ({ session, purchaseHistory }) => {
                 <div className='grid xl:grid-cols-3 gap-4'>
                     <div className='xl:col-span-2 bg-white p-4 rounded-lg border'>
                         <div className='flex items-center justify-between mb-4'>
-                            <div className='flex items-center gap-2 px-2'>
+                            <div className='flex items-center gap-2'>
                                 <GiShoppingBag size={30} />
                                 <p className='font-extrabold text-2xl'>My Shopping</p>
                             </div>
