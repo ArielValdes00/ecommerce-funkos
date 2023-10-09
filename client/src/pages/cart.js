@@ -206,7 +206,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                             <div className="py-3 pb-5">
                                 <Link href={"/products"} className="px-10 py-3 bg-black text-white rounded-full text-center font-bold text-xl hover:bg-white hover:text-black border-2 border-black"> CONTINUE SHOPPING</Link>
                             </div>
-                            <img src={'/icons/empty-cart.png'} height={315} width={315} alt="Wall-e" />
+                            <Image src={'/icons/empty-cart.png'} height={315} width={315} alt="Wall-e" />
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="check these out!" products={recentProducts} />

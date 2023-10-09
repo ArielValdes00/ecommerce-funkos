@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
@@ -11,6 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 const Wishlist = () => {
     const { wishlist,
@@ -145,7 +146,7 @@ const Wishlist = () => {
                     ) : (
                         <div className='relative z-40'>
                             <div className='hidden xl:grid'>
-                                <img src={'/icons/account-header.png'}
+                                <Image src={'/icons/account-header.png'}
                                     height={160}
                                     width={160}
                                     alt='Welcome!'
