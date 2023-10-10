@@ -17,7 +17,7 @@ import PayPalCheckoutButton from '@/components/PayPalCheckoutButton';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = ({ recentProducts, mostSoldProducts }) => {
-    const { cartState,
+    const { cartState, cartDispatch,
         removeAllItemsFromCart,
         removeItemFromCart,
         setSelectedQuantities,
@@ -36,7 +36,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
     const [isHovered, setIsHovered] = useState(false);
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
     const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95));
-    const freeShippingThreshold = 50;
     const [checkoutProcess, setCheckoutProcess] = useState(false);
     const router = useRouter();
 
@@ -53,15 +52,16 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                 setSelectedQuantities(parsedLocal);
             }
         };
-
+        cartDispatch({ type: 'UPDATE_TOTAL_PRICE' });
         calculateTotalItems();
     }, []);
 
     const handleQuantityChange = (productId, newQuantity) => {
         addItemToCart(productId, newQuantity);
-        setSelectedQuantity(productId, newQuantity)
+        setSelectedQuantity(productId, newQuantity);
         toggleShowModal();
     };
+    
 
     useEffect(() => {
         if (status === 'authenticated' && session.user.id) {
@@ -84,6 +84,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
             setCheckoutProcess(true);
         }
     }
+    console.log(cartState)
 
     return (
         <>
@@ -150,7 +151,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                 <div className='xl:col-span-2 mt-3'>
                                     <ProgressBar
                                         totalPrice={cartState.totalPrice}
-                                        freeShippingThreshold={freeShippingThreshold}
                                     />
                                     <div className='bg-gray-100 rounded-lg pt-6 pb-2 px-6 flex flex-col gap-5 text-lg'>
                                         <div className='grid grid-cols-2 border-b-2 pb-3'>
@@ -206,7 +206,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                             <div className="py-3 pb-5">
                                 <Link href={"/products"} className="px-10 py-3 bg-black text-white rounded-full text-center font-bold text-xl hover:bg-white hover:text-black border-2 border-black"> CONTINUE SHOPPING</Link>
                             </div>
-                            <Image src={'/icons/empty-cart.png'} height={315} width={315} alt="Wall-e" />
+                            <img src={'/icons/empty-cart.png'} alt="Wall-e" className='bg-empty-cart'/>
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="check these out!" products={recentProducts} />

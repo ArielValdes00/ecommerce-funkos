@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Icon from '../../public/icons/indicator-icon.svg'
 import React, { useState, useEffect } from 'react';
 
-const ProgressBar = ({ totalPrice, freeShippingThreshold }) => {
+const ProgressBar = ({ totalPrice }) => {
     const [progressPercentage, setProgressPercentage] = useState(0);
+    const freeShippingThreshold = 50;
 
     useEffect(() => {
         const calculateProgressPercentage = () => {

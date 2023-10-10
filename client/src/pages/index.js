@@ -5,7 +5,6 @@ import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import { getProducts } from '../../utils/apiProducts';
 import { getMostSoldProducts } from '../../utils/apiPurchase';
-import Image from 'next/image';
 
 export default function Home({ recentProducts, mostSoldProducts }) {
     const { showModal, selectedProductModal, toggleShowModal } = useContext(ProductContext);
@@ -34,7 +33,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
                         </Link>
                     </div>
                     <div className="mx-auto">
-                        <Image src={'/fondo-funko.png'} height={450} width={450} alt="background-image" />
+                        <img src={'/fondo-funko.png'} alt="background-image" className='bg-image'/>
                     </div>
                 </div>
             </section>

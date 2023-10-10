@@ -1,6 +1,8 @@
 import { Product } from "../models/Products.js";
+import dotenv from 'dotenv';
 import { uploadImageToCloudinary } from "../config/uploadImagenToCloudinary.js";
 import { v2 as cloudinary } from 'cloudinary';
+dotenv.config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,

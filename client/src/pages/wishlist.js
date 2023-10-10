@@ -11,7 +11,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 
 const Wishlist = () => {
     const { wishlist,
@@ -146,11 +145,10 @@ const Wishlist = () => {
                     ) : (
                         <div className='relative z-40'>
                             <div className='hidden xl:grid'>
-                                <Image src={'/icons/account-header.png'}
-                                    height={160}
-                                    width={160}
+                                <img
+                                    src={'/icons/account-header.png'}
                                     alt='Welcome!'
-                                    className='absolute top-[-34px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700'
+                                    className='bg-account-header absolute top-[-37px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700'
                                 />
                             </div>
                             {isLogin ? (

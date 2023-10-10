@@ -69,6 +69,22 @@
     top: calc(50% - 4px);
 }
 
+
+.bg-image{
+    width: 450px;
+    height: auto;
+}
+
+.bg-acount-header{
+    width: 160px;
+    height: auto;
+}
+
+.bg-empty-cart{
+    width: 315;
+    height: auto;
+}
+
 .menu-open {
     animation: slide-in 0.3s ease;
   }

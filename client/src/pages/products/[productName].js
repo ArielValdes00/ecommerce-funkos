@@ -9,9 +9,10 @@ import ModalWishlist from '@/components/miscellaneous/ModalWishlist';
 import SliderCards from '@/components/SliderCard';
 import 'animate.css';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { getMostSoldProducts } from '../../../utils/apiPurchase';
 
-const productName = ({ product }) => {
-    const { mostSoldProducts, toggleWishlist, isInWishlist, showModal,
+const productName = ({ product, mostSoldProducts }) => {
+    const { toggleWishlist, isInWishlist, showModal,
         isInCart, selectedProductModal, showModalWishlist, isLoading, toggleShowModal } = useContext(ProductContext)
     const [changeImage, setChangeImage] = useState(false);
     const [animate, setAnimate] = useState(null);
@@ -62,7 +63,7 @@ const productName = ({ product }) => {
                     <div className='border bg-gray-200 relative '>
                         <div
                             onClick={() => toggleWishlist(product.id)}
-                            className='absolute right-3 top-3 z-50 cursor-pointer'>
+                            className='absolute right-3 top-3 z-40 cursor-pointer'>
                             {isInWishlist(product.id)
                                 ? <AiFillHeart size={34} className='text-red-700' />
                                 : <AiOutlineHeart size={34} />
@@ -135,9 +136,11 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { productName } }) {
     const product = await getProduct(productName);
+    const mostSoldProducts = await getMostSoldProducts();
     return {
         props: {
-            product
+            product,
+            mostSoldProducts
         }
     };
 }
