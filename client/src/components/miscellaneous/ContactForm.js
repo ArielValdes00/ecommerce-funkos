@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser';
 import useBooleanState from '@/hooks/useBooleanState';
 import { isValidName, isValidTextArea, isValidEmail } from '../../../utils/validations';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Loader from '/public/icons/loader.gif';
 
 const ContactForm = ({ toast, title }) => {

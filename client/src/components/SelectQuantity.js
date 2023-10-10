@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/image";
 import ArrowQuantity from '/public/icons/arrow-quantity.svg';
 
 const SelectQuantity = ({ selectedQuantity, handleQuantityChange, className, isHovered, classNameContainer, arrowPosition,invert }) => {

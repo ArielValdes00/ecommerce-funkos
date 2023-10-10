@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import Icon from '../../public/icons/indicator-icon.svg'
 import React, { useState, useEffect } from 'react';
 

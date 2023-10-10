@@ -61,7 +61,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
         setSelectedQuantity(productId, newQuantity);
         toggleShowModal();
     };
-    
+
 
     useEffect(() => {
         if (status === 'authenticated' && session.user.id) {
@@ -84,7 +84,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
             setCheckoutProcess(true);
         }
     }
-    console.log(cartState)
 
     return (
         <>
@@ -206,7 +205,10 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                             <div className="py-3 pb-5">
                                 <Link href={"/products"} className="px-10 py-3 bg-black text-white rounded-full text-center font-bold text-xl hover:bg-white hover:text-black border-2 border-black"> CONTINUE SHOPPING</Link>
                             </div>
-                            <img src={'/icons/empty-cart.png'} alt="Wall-e" className='bg-empty-cart'/>
+                            <picture>
+                                <source media="(min-width: 768px)" srcSet="https://funko.com/on/demandware.static/-/Sites-FunkoUS-Library/default/dw7eb32f71/images/funko/content-asset/empty-cart-wall-e.png" />
+                                <img alt="empty cart character" className="w-full h-auto" fetchpriority="high" src="https://funko.com/on/demandware.static/-/Sites-FunkoUS-Library/default/dw7eb32f71/images/funko/content-asset/empty-cart-wall-e.png" title="" />
+                            </picture>
                         </div>
                         <div className="py-5 text-center bg-white mx-3">
                             <SliderCards title="check these out!" products={recentProducts} />

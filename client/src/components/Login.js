@@ -3,7 +3,7 @@ import GoogleButton from '@/components/GoogleButton';
 import { signIn } from 'next-auth/react';
 import { isValidEmail, isValidPassword } from '../../utils/validations';
 import Loader from '../../public/icons/loader.gif';
-import Image from 'next/image';
+import Image from "next/image";
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 

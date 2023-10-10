@@ -90,7 +90,7 @@ const navbar = () => {
                         } lg:flex flex-col lg:flex-row justify-center lg:justify-evenly xl:justify-between lg:w-full items-center font-extrabold text-2xl lg:text-lg`}>
                         <div className='flex flex-col gap-14 lg:gap-0 items-center lg:flex-row lg:w-full lg:justify-evenly px-3 py-2 lg:p-0'>
                             <Link href={"/"} onClick={handleMenuLinkClick}>HOME</Link>
-                            {session?.user.role === 'admin' || session?.user.role === 'superAdmindmin'
+                            {session?.user.role === 'admin' || session?.user.role === 'superAdmin'
                                 ? <Link href={"/dashboard"} className='lg:hidden'>
                                     DASHBOARD
                                 </Link>
@@ -108,7 +108,7 @@ const navbar = () => {
                                         </h3>
                                     </div>
                                     {isMenuOpen && (
-                                        <div className={`hidden ${session.user.role === 'admin' || session.user.role === 'superAdmindmin' ? 'w-36' : ''} lg:block absolute right-[-20px] w-28 mt-2 border text-[17px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40`}>
+                                        <div className={`hidden ${session.user.role === 'admin' || session.user.role === 'superAdmin' ? 'w-36' : ''} lg:block absolute right-[-20px] w-28 mt-2 border text-[17px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40`}>
                                             <Link
                                                 href={"/profile"}
                                                 className='px-3 py-1 border-b flex items-center justify-start gap-3 hover:bg-gray-100'
@@ -116,7 +116,8 @@ const navbar = () => {
                                                 <FaUserCircle />
                                                 <span className='col-span-2'>Profile</span>
                                             </Link>
-                                            {session.user.role === 'superAdmin' || session.user.role === 'admin' && (
+                                            {session?.user.role === 'admin' || session?.user.role === 'superAdmin' &&
+                                            (
                                                 <Link
                                                     href={"/dashboard"}
                                                     className='px-3 py-1 border-b flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100'>

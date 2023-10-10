@@ -50,10 +50,10 @@ const Users = ({ allUsers, session, toast }) => {
     };
 
     return (
-        <div className='md:h-screen'>
+        <div className='bg-gray-100'>
             <div className='grid md:grid-cols-2 lg:grid-cols-3'>
                 {users.map((user) => (
-                    <ol key={user.id} className='bg-white p-3 m-2 rounded-lg'>
+                    <ol key={user.id} className='bg-white p-3 m-2 rounded-lg border'>
                         <ul className='flex flex-col gap-2 font-semibold capitalize'>
                             <li className='flex justify-between'>
                                 <p>Name:</p>

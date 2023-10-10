@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import GoogleButton from '@/components/GoogleButton';
 import Input from '@/components/Inputs';
 import { isValidName, isValidEmail, isValidAreaCode, isValidPhone, isValidPassword } from '../../utils/validations';
-import Image from 'next/image';
+import Image from "next/image";
 import { ProductContext } from '@/context/ProductContext';
 import Loader from '../../public/icons/loader.gif';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';

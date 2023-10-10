@@ -115,7 +115,7 @@ const productName = ({ product, mostSoldProducts }) => {
                     </div>
                 </div>
             </section>
-            <div className="py-5 text-center bg-white">
+            <div className="py-5 px-3 text-center bg-white">
                 <SliderCards title="you might also like" products={mostSoldProducts} />
             </div>
         </div>

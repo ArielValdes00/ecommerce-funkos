@@ -145,11 +145,19 @@ const Wishlist = () => {
                     ) : (
                         <div className='relative z-40'>
                             <div className='hidden xl:grid'>
-                                <img
-                                    src={'/icons/account-header.png'}
-                                    alt='Welcome!'
-                                    className='bg-account-header absolute top-[-37px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700'
-                                />
+                                <picture>
+                                    <source
+                                        media="(min-width: 1200px)"
+                                        srcSet="https://funko.com/on/demandware.static/-/Sites-FunkoUS-Library/default/dw5c4d6f40/images/funko/content-asset/account-header-freddy.png"
+                                    />
+                                    <img
+                                        fetchpriority="high"
+                                        className='bg-account-header absolute top-[-37px] left-1/2 transform -translate-x-1/6 -translate-y-1/2 z-[-1] hover:-translate-y-[123px] transition duration-700'
+                                        alt="Welcome!"
+                                        title="Welcome!"
+                                        src="https://funko.com/on/demandware.static/-/Sites-FunkoUS-Library/default/dw3e940221/images/funko/content-asset/account-header-freddy-mobile.png"
+                                    />
+                                </picture>
                             </div>
                             {isLogin ? (
                                 <Login onClick={toggleIsLogin} />

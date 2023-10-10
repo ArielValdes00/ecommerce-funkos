@@ -10,6 +10,7 @@ import ModalWishlist from '@/components/miscellaneous/ModalWishlist';
 import Loader from '@/components/Loader';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { BsFilterLeft } from 'react-icons/bs';
+import Image from 'next/image';
 
 const Products = ({ initialProducts }) => {
     const [hoveredProductId, setHoveredProductId] = useState(null);
@@ -150,10 +151,12 @@ const Products = ({ initialProducts }) => {
                                         onMouseEnter={() => setHoveredProductId(product.id)}
                                         onMouseLeave={() => setHoveredProductId(null)}
                                     >
-                                        <img
+                                        <Image
+                                            width={200}
+                                            height={200}
                                             src={hoveredProductId === product.id ? product.boxImage : product.image}
                                             alt={product.name}
-                                            className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5'
+                                            className='mx-auto transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5'
                                         />
                                     </div>
                                 </Link>

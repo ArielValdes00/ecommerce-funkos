@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
+import Image from "next/image";
 import useBooleanState from '@/hooks/useBooleanState';
 import Loader from '/public/icons/loader.gif';
 import { resetPasswordRequest } from '../../utils/apiUsers';

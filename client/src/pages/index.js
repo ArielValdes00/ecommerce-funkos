@@ -5,6 +5,8 @@ import { ProductContext } from '@/context/ProductContext';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
 import { getProducts } from '../../utils/apiProducts';
 import { getMostSoldProducts } from '../../utils/apiPurchase';
+import Image from "next/image";
+import FondoFunko from "/public/fondo-funko.webp";
 
 export default function Home({ recentProducts, mostSoldProducts }) {
     const { showModal, selectedProductModal, toggleShowModal } = useContext(ProductContext);
@@ -33,7 +35,12 @@ export default function Home({ recentProducts, mostSoldProducts }) {
                         </Link>
                     </div>
                     <div className="mx-auto">
-                        <img src={'/fondo-funko.png'} alt="background-image" className='bg-image'/>
+                        <Image src={FondoFunko}
+                            width={500}
+                            height={500}
+                            alt="background-image"
+                            className='bg-image'
+                        />
                     </div>
                 </div>
             </section>

@@ -10,7 +10,7 @@
 }
 
 .fondo{
-    background-image: url('/fondo.jpg');
+    background-image: url('/fondo.webp');
     background-size: cover;
 }
 
@@ -69,19 +69,8 @@
     top: calc(50% - 4px);
 }
 
-
 .bg-image{
     width: 450px;
-    height: auto;
-}
-
-.bg-acount-header{
-    width: 160px;
-    height: auto;
-}
-
-.bg-empty-cart{
-    width: 315;
     height: auto;
 }
 
@@ -143,7 +132,7 @@
         width: 20px;
     }
     .fondo {
-        background-image: url('/fondo-mobile.jpg');
+        background-image: url('/fondo-mobile.webp');
         background-size: cover;
         object-fit: cover;
     }

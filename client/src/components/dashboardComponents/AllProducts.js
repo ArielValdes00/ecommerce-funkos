@@ -157,7 +157,7 @@ const AllProducts = ({ initialProducts, session, toast }) => {
     }
 
     return (
-        <div className='h-full'>
+        <div className='mb-4 bg-gray-100'>
             <div className="w-full max-w-md mx-auto text-center p-3">
                 {showModal && (
                     <ProductModal

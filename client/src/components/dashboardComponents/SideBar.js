@@ -1,9 +1,11 @@
 import React from 'react';
-import { RxSketchLogo, RxDashboard, RxPerson } from 'react-icons/rx';
+import { RxDashboard, RxPerson } from 'react-icons/rx';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import Link from 'next/link';
 import { BsBoxSeam } from 'react-icons/bs';
+import Image from 'next/image';
+import Icon from '/public/icons/indicator-icon-white.svg'
 
 const Sidebar = ({ setSelectedSection }) => {
 
@@ -11,10 +13,16 @@ const Sidebar = ({ setSelectedSection }) => {
         setSelectedSection(section);
     };
     return (
-        <aside className='fixed top-0 left-0 z-50 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between'>
+        <aside className='fixed top-0 left-0 h-full p-4 bg-white border-r-[1px] flex flex-col justify-between'>
             <div className='flex flex-col items-center'>
-                <div className='bg-purple-800 text-white p-3 rounded-lg inline-block'>
-                    <RxSketchLogo size={20} />
+                <div className='bg-purple-800 text-white p-[10px] py-[12px] rounded-lg inline-block'>
+                    <Image
+                        src={Icon}
+                        width={24}
+                        height={24}
+                        className='text-white'
+                        alt='Funko'
+                    />
                 </div>
                 <span className='border-b-[1px] border-gray-200 w-full p-2'></span>
                 <div className='bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block'

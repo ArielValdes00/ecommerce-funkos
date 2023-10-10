@@ -16,9 +16,9 @@ const Sales = ({ initialSalesData }) => {
 
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-3 m-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-3 m-2 bg-gray-100">
             {usersWithSales.map((user) => (
-                <div key={user.id} className="bg-white px-[10px] py-4 rounded-lg shadow">
+                <div key={user.id} className="bg-white px-[10px] py-4 rounded-lg border">
                     <h2 className="text-lg font-semibold capitalize">{user.name}</h2>
                     <div className='flex flex-col gap-1 text-gray-500 text-[15px]'>
                         <p>Email: {user.email}</p>

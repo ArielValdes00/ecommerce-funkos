@@ -109,7 +109,7 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
         switch (selectedSection) {
             case '':
                 return (
-                    <div className='flex flex-col m-2 flex-grow'>
+                    <div className='flex flex-col m-2 bg-gray-100'>
                         <TopCards
                             dailySales={dailySales}
                             weeklySales={weeklySales}
@@ -139,7 +139,7 @@ export default function IndexPage({ session, initialSalesData, allUsers, initial
     return (
         <main className='flex'>
             <SideBar selectedSection={selectedSection} setSelectedSection={setSelectedSection} />
-            <div className='w-full h-full lg:screen bg-gray-100 overflow-auto ml-[77px]'>
+            <div className='w-full md:h-screen bg-gray-100 ml-[77px]'>
                 <NavBar session={session} />
                 {renderSelectedSection()}
             </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 import Loader from '/public/icons/loader.gif';
