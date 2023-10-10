@@ -30,7 +30,7 @@ const Register = ({ onClick }) => {
             [name]: value
         };
         setForm(newFormState);
-    
+
         const isFilled =
             newFormState.name.length > 0 &&
             newFormState.email.length > 0 &&
@@ -38,10 +38,10 @@ const Register = ({ onClick }) => {
             newFormState.phoneNumber.length > 0 &&
             newFormState.password.length > 0 &&
             newFormState.confirmPassword.length > 0;
-    
+
         setIsFormValid(isFilled);
     };
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,7 +51,7 @@ const Register = ({ onClick }) => {
             isValidAreaCode(form.areaCode) &&
             isValidPhone(form.phoneNumber) &&
             isValidPassword(form.password) &&
-            form.confirmPassword === form.password 
+            form.confirmPassword === form.password
         ) {
             toggleIsLoading();
             try {
@@ -63,11 +63,9 @@ const Register = ({ onClick }) => {
                     }, 2000);
                 }
             } catch (error) {
-                if (error.message === "User already exists") {
-                    setEmailError("Invalid email. Please check your email address.");
-                    setTimeout(() => setEmailError(""), 4000);
-                    toggleIsLoading();
-                }
+                setEmailError(error.message);
+                setTimeout(() => setEmailError(""), 4000);
+                toggleIsLoading();
             }
         }
     };
