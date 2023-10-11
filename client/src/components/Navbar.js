@@ -108,7 +108,7 @@ const navbar = () => {
                                         </h3>
                                     </div>
                                     {isMenuOpen && (
-                                        <div className={`hidden ${session.user.role === 'admin' || session.user.role === 'superAdmin' ? 'w-36' : ''} lg:block absolute right-[-20px] w-28 mt-2 border text-[17px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40`}>
+                                        <div className={`${session.user.role === 'admin' || session.user.role === 'superAdmin' ? 'w-36' : ''} hidden lg:block absolute right-[-20px] w-28 mt-2 border text-[17px] font-semibold border-gray-100 bg-white font-normal text-black rounded-md shadow-md capitalize z-40`}>
                                             <Link
                                                 href={"/profile"}
                                                 className='px-3 py-1 border-b flex items-center justify-start gap-3 hover:bg-gray-100'
@@ -116,15 +116,15 @@ const navbar = () => {
                                                 <FaUserCircle />
                                                 <span className='col-span-2'>Profile</span>
                                             </Link>
-                                            {session?.user.role === 'admin' || session?.user.role === 'superAdmin' &&
-                                            (
-                                                <Link
-                                                    href={"/dashboard"}
-                                                    className='px-3 py-1 border-b flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100'>
-                                                    <RxDashboard />
-                                                    <span className='col-span-2 text-center'>Dashboard</span>
-                                                </Link>
-                                            )}
+                                            {session?.user.role === 'admin' || session?.user.role === 'superAdmin' ?
+                                                (
+                                                    <Link
+                                                        href={"/dashboard"}
+                                                        className='px-3 py-1 border-b flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100'>
+                                                        <RxDashboard />
+                                                        <span className='col-span-2 text-center'>Dashboard</span>
+                                                    </Link>
+                                                ) : ''}
                                             <div className='px-3 py-1 flex items-center justify-start gap-3 cursor-pointer hover:bg-gray-100' onClick={signOut}>
                                                 <MdLogout />
                                                 <span className='col-span-2 text-center'>Logout</span>

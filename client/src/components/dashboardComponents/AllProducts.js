@@ -5,10 +5,13 @@ import { BsFilterLeft } from 'react-icons/bs';
 import { ProductContext } from '@/context/ProductContext';
 import ProductModal from './ProductModal';
 import useBooleanState from '@/hooks/useBooleanState';
+import ModalConfirm from './ModalConfirm';
 
 const AllProducts = ({ initialProducts, session, toast }) => {
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false);
     const [hoveredProductId, setHoveredProductId] = useState(null);
+    const [showModalDeleteProduct, toggleShowModalDeleteProduct] = useBooleanState(false);
+    const [productId, setProductId] = useState(null);
     const {
         handleCategoryChange,
         handleSortChange,
@@ -74,15 +77,20 @@ const AllProducts = ({ initialProducts, session, toast }) => {
         try {
             if (currentProduct) {
                 if (userRole === 'superAdmin') {
-                    const response = await updateProduct(currentProduct.id, form);
-                    setFilteredProducts(
-                        filteredProducts.map((product) =>
-                            product.id === currentProduct.id ? { ...product, ...response } : product
-                        )
-                    );
-                    setCurrentProduct(null);
+                    const response = await updateProduct(currentProduct.id, form, userRole);
+                    if (response.success) {
+                        setFilteredProducts(
+                            filteredProducts.map((product) =>
+                                product.id === currentProduct.id ? { ...product, ...response.product } : product
+                            )
+                        );
+                        setCurrentProduct(null);
+                        toast.success(response.message);
+                    } else {
+                        toast.error(response.message);
+                    }
                 } else {
-                    toast.error('Forbidden: You do not have permission to perform this action.')
+                    toast.error('Forbidden: You do not have permission to perform this action');
                 }
             } else {
                 const formData = new FormData();
@@ -128,9 +136,10 @@ const AllProducts = ({ initialProducts, session, toast }) => {
     const handleDelete = async (id) => {
         if (userRole === 'superAdmin') {
             try {
-                await deleteProducts(id);
+                const deleteMessage = await deleteProducts(id);
                 const updatedProducts = filteredProducts.filter(product => product.id !== id);
                 setFilteredProducts(updatedProducts);
+                toast.success(deleteMessage); 
             } catch (error) {
                 console.log(error);
             }
@@ -156,9 +165,24 @@ const AllProducts = ({ initialProducts, session, toast }) => {
         toggleShowModal();
     }
 
+    const openModalDeleteProduct = (productId) => {
+        setProductId(productId);
+        toggleShowModalDeleteProduct();
+    }
+
     return (
         <div className='mb-4 bg-gray-100'>
             <div className="w-full max-w-md mx-auto text-center p-3">
+                {showModalDeleteProduct && (
+                    <ModalConfirm
+                        title={'Delete Product'}
+                        text={'Are you sure you want to delete this product?'}
+                        handleCloseModal={() => toggleShowModalDeleteProduct()}
+                        handleConfirm={() => handleDelete(productId, userRole)}
+                        action={'Delete'}
+                        color={'bg-red-500 hover:bg-red-600'}
+                    />
+                )}
                 {showModal && (
                     <ProductModal
                         title={isEditing ? 'Edit Product' : 'Create Product'}
@@ -254,7 +278,7 @@ const AllProducts = ({ initialProducts, session, toast }) => {
                         <h3 className='capitalize font-semibold text-sm whitespace-normal'>{product.name}</h3>
                         <p className='text-sm'>${product.price}</p>
                         <div className='flex flex-col gap-2 mt-1 items-center text-white mb-2'>
-                            <button onClick={() => handleDelete(product.id, userRole)} className="rounded-full py-1 w-2/3 text-sm bg-red-700 hover:bg-red-800">Remove</button>
+                            <button onClick={() => openModalDeleteProduct(product.id)} className="rounded-full py-1 w-2/3 text-sm bg-red-700 hover:bg-red-800">Remove</button>
                             <button onClick={() => handleEdit(product, userRole)} className="rounded-full py-1 w-2/3 text-sm bg-blue-600 hover:bg-blue-700">Edit</button>
                         </div>
                     </div>

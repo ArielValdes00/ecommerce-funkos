@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 import { assignAdminRole, deleteUsers } from '../../../utils/apiUsers';
+import ModalConfirm from './ModalConfirm';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const Users = ({ allUsers, session, toast }) => {
     const [users, setUsers] = useState(allUsers);
+    const [showModalDeleteUser, toggleShowModalDeleteUser] = useBooleanState(false);
+    const [assignAdminModalOpen, toggleAssignAdminModalOpen] = useBooleanState(false);
+    const [userId, setUserId] = useState(null);
     const userRole = session.user.role;
 
     const handleDelete = async (id) => {
@@ -10,7 +15,8 @@ const Users = ({ allUsers, session, toast }) => {
             try {
                 await deleteUsers(id)
                 const updateUsers = users.filter(user => user.id !== id)
-                setUsers(updateUsers)
+                setUsers(updateUsers);
+                toggleShowModalDeleteUser();
             } catch (error) {
                 console.error(error)
             }
@@ -30,8 +36,8 @@ const Users = ({ allUsers, session, toast }) => {
                     }
                     return user;
                 });
-
                 setUsers(updatedUsers);
+                toggleAssignAdminModalOpen();
             } catch (error) {
                 console.error(error);
             }
@@ -49,8 +55,38 @@ const Users = ({ allUsers, session, toast }) => {
         return date.toLocaleDateString('en-US', options);
     };
 
+    const openModalDeleteUser = (userId) => {
+        setUserId(userId);
+        toggleShowModalDeleteUser();
+    }
+
+    const openModalAssingAdminRole = (userId) => {
+        setUserId(userId);
+        toggleAssignAdminModalOpen();
+    }
+
     return (
         <div className='bg-gray-100'>
+            {showModalDeleteUser && (
+                <ModalConfirm
+                    title={'Delete User'}
+                    text={'Are you sure you want to delete this user?'}
+                    handleCloseModal={() => toggleShowModalDeleteUser()}
+                    handleConfirm={() => handleDelete(userId)}
+                    action={'Delete'}
+                    color={'bg-red-500 hover:bg-red-600'}
+                />
+            )}
+            {assignAdminModalOpen && (
+                <ModalConfirm
+                    title={'Assign Admin Role'}
+                    text={'Are you sure you want to assign the Admin role to this user?'}
+                    handleCloseModal={() => toggleAssignAdminModalOpen(false)}
+                    handleConfirm={() => handleAssignAdminRole(userId)}
+                    action={'Assign Admin'}
+                    color={'bg-blue-500 hover:bg-blue-600'}
+                />
+            )}
             <div className='grid md:grid-cols-2 lg:grid-cols-3'>
                 {users.map((user) => (
                     <ol key={user.id} className='bg-white p-3 m-2 rounded-lg border'>
@@ -81,12 +117,14 @@ const Users = ({ allUsers, session, toast }) => {
                             </li>
                             <li className='flex justify-between mt-2'>
                                 <button
-                                    onClick={() => handleDelete(user.id)}
-                                    className='rounded px-3 py-1 bg-red-600 text-white font-semibold hover:bg-red-700'>Delete
+                                    onClick={() => openModalDeleteUser(user.id)}
+                                    className='rounded-md px-3 py-1 bg-red-500 text-white font-normal hover:bg-red-00'>
+                                    Delete
                                 </button>
                                 <button
-                                    onClick={() => handleAssignAdminRole(user.id)}
-                                    className='rounded px-3 py-1 bg-blue-600 text-white font-semibold hover:bg-blue-700'>Assign Admin Role
+                                    onClick={() => openModalAssingAdminRole(user.id)}
+                                    className='rounded-md px-3 py-2 bg-blue-500 text-white font-normal hover:bg-blue-00'>
+                                    Assign Admin Role
                                 </button>
                             </li>
                         </ul>

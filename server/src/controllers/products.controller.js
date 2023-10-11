@@ -90,7 +90,7 @@ export const deleteProducts = async (req, res) => {
                 id,
             },
         });
-        res.status(204).json({ message: 'Product and image deleted successfully' });
+        res.status(204).json({ message: 'Product deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -29,7 +29,7 @@ export const createProducts = async (formData, userRole) => {
 export const deleteProducts = async (id, userRole) => {
     try {
         const response = await axios.delete(`${API_URL}/${id}`, userRole);
-        return response.data;
+        return response.data.message;
     } catch (error) {
         console.log(error);
     }
@@ -41,12 +41,17 @@ export const updateProduct = async (id, productData, userRole) => {
         const { image, ...data } = productData;
         const updatedProductData = { ...data };
         const response = await axios.put(`${API_URL}/${id}`, updatedProductData, userRole);
-        
-        return response.data.product;
+
+        if (response.status === 200) {
+            return { success: true, message: 'Product updated successfully', product: response.data.product };
+        } else {
+            return { success: false, message: 'Error updating the product' };
+        }
     } catch (error) {
-        console.log(error);
+        return { success: false, message: 'An error occurred while processing your request' };
     }
 };
+
 
 export const uploadImage = async (formData) => {
     try {
