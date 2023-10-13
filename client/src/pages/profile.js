@@ -53,10 +53,10 @@ const profile = ({ session, purchaseHistory }) => {
                                 <GiShoppingBag size={30} />
                                 <p className='font-extrabold text-2xl'>My Shopping</p>
                             </div>
-                            {purchaseHistory && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
+                            {purchaseHistory > 0 && <p className='font-bold'>Total Spent: ${purchaseHistory?.reduce((total, product) => total + product.productPrice * product.quantity, 0).toFixed(2)}</p>}
                         </div>
                         <div className='pb-8 flex justify-center'>
-                            {purchaseHistory ?
+                            {purchaseHistory > 0 ?
                                 <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 pb-4 uppercase font-semibold text-center'>
                                     {Object.values(groupedProducts).map((product) => (
                                         <Link href={`/products/${product.productName}`}
@@ -72,7 +72,7 @@ const profile = ({ session, purchaseHistory }) => {
                                     ))}
                                 </div>
                                 :
-                                <p className='py-14'>Empty</p>
+                                <p className='pt-6 lg:pt-40'>Empty</p>
                             }
                         </div>
                     </div>
@@ -93,7 +93,7 @@ const profile = ({ session, purchaseHistory }) => {
                                         className='border py-1 ps-2 w-full rounded-md border-black capitalize'
                                     />
                                 ) : (
-                                    <span>{updatedUser.name}</span>
+                                    <span className='capitalize'>{updatedUser.name}</span>
                                 )}
                             </div>
                             <div>

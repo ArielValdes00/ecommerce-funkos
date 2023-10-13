@@ -13,8 +13,9 @@ import { getProducts } from '../../utils/apiProducts';
 import { BsFillTrash3Fill } from 'react-icons/bs';
 import { BiSolidCheckShield } from 'react-icons/bi';
 import { ToastContainer, toast } from 'react-toastify';
-import PayPalCheckoutButton from '@/components/PayPalCheckoutButton';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalPayPal from '@/components/ModalPayPal';
+import useBooleanState from '@/hooks/useBooleanState';
 
 const Cart = ({ recentProducts, mostSoldProducts }) => {
     const { cartState, cartDispatch,
@@ -36,7 +37,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
     const [isHovered, setIsHovered] = useState(false);
     const totalItems = Object.values(selectedQuantities).reduce((acc, curr) => acc + curr, 0);
     const estimatedTotal = String(cartState.totalPrice + (cartState.totalPrice >= 50 ? '.00' : 6.95));
-    const [checkoutProcess, setCheckoutProcess] = useState(false);
+    const [checkoutProcess, toggleCheckoutProcess] = useBooleanState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -81,7 +82,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
         if (!userId) {
             router.push("/login");
         } else {
-            setCheckoutProcess(true);
+            toggleCheckoutProcess();
         }
     }
 
@@ -179,12 +180,12 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                         </button>
                                         <div>
                                             {checkoutProcess &&
-                                                <PayPalCheckoutButton
+                                                <ModalPayPal
                                                     cart={cart}
                                                     userId={userId}
                                                     estimatedTotal={estimatedTotal}
                                                     shippingCost={shippingCost}
-                                                    setCheckoutProcess={setCheckoutProcess}
+                                                    toggleCheckoutProcess={toggleCheckoutProcess}
                                                     removeAllItemsFromCart={removeAllItemsFromCart}
                                                     toast={toast}
                                                 />

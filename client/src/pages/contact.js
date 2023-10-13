@@ -14,7 +14,7 @@ const contact = () => {
                     </div>
                     <h1 className="text-5xl font-extrabold mb-7 py-4">CONTACT</h1>
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center mx-4 ">
                     <ContactForm toast={toast}/>
                 </div>
             </section>
@@ -26,7 +26,7 @@ const contact = () => {
                 closeOnClick
                 rtl={false}
                 theme="light"
-            />
+            /> 
         </>
     )
 }
