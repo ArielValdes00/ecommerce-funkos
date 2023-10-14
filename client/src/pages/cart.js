@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { ProductContext } from '@/context/ProductContext';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { getMostSoldProducts } from '../../utils/apiPurchase';
 import SelectQuantity from '@/components/SelectQuantity';
 import ModalPurchase from '@/components/miscellaneous/ModalPurchase';
@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ModalPayPal from '@/components/ModalPayPal';
 import useBooleanState from '@/hooks/useBooleanState';
 
-const Cart = ({ recentProducts, mostSoldProducts }) => {
+const Cart = ({ recentProducts, mostSoldProducts, session }) => {
     const { cartState, cartDispatch,
         removeAllItemsFromCart,
         removeItemFromCart,
@@ -30,8 +30,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
         selectedQuantities,
         showModal } = useContext(ProductContext);
     const cart = cartState.cart;
-    const [userId, setUserId] = useState(null);
-    const { data: session, status } = useSession();
+    const [userId, setUserId] = useState(session?.user.id);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [shippingCost, setShippingCost] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -63,13 +62,6 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
         toggleShowModal();
     };
 
-
-    useEffect(() => {
-        if (status === 'authenticated' && session.user.id) {
-            setUserId(session.user.id);
-        }
-    }, [session])
-
     const openDeleteModal = (id) => {
         const { cart } = cartState;
         const productToFind = cart.find(product => product.id === id);
@@ -80,7 +72,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
 
     const handlePurchase = async (e) => {
         if (!userId) {
-            router.push("/login");
+            router.push('/login');
         } else {
             toggleCheckoutProcess();
         }
@@ -188,6 +180,7 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
                                                     toggleCheckoutProcess={toggleCheckoutProcess}
                                                     removeAllItemsFromCart={removeAllItemsFromCart}
                                                     toast={toast}
+                                                    session={session}
                                                 />
                                             }
                                         </div>
@@ -232,16 +225,18 @@ const Cart = ({ recentProducts, mostSoldProducts }) => {
 };
 
 export async function getServerSideProps(context) {
+    
     try {
         const limit = 6;
         const recentProducts = await getProducts(limit);
-
+        const session = await getSession(context);
         const mostSoldProducts = await getMostSoldProducts();
 
         return {
             props: {
                 recentProducts,
                 mostSoldProducts,
+                session,
             },
         };
     } catch (error) {
@@ -251,6 +246,7 @@ export async function getServerSideProps(context) {
             props: {
                 recentProducts: [],
                 mostSoldProducts: [],
+                session,
             },
         };
     }

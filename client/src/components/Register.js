@@ -56,7 +56,7 @@ const Register = ({ onClick }) => {
             toggleIsLoading();
             try {
                 const res = await register(form);
-                if (res.status === 201) {
+                if (res) {
                     setTimeout(() => {
                         toggleIsLoading();
                         window.location.reload();
