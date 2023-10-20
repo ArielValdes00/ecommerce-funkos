@@ -78,7 +78,6 @@ const ModalPayPal = ({
         setUpdatedUser(updatedSession.user);
         setShowForm(false);
     };
-    console.log(updatedUser)
 
     return (
         <div className="fixed z-40 inset-0 flex items-center justify-center animate__animated animate__fadeIn">
