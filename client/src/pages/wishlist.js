@@ -11,6 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useBooleanState from '@/hooks/useBooleanState';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 const Wishlist = () => {
     const { wishlist,
@@ -102,7 +103,7 @@ const Wishlist = () => {
                                             }
                                         </div>
                                         <Link href={`/products/${product.name}`}>
-                                            <img src={product.image}
+                                            <Image src={product.image}
                                                 width={120} height={120}
                                                 alt={product.name} className='mt-3'
                                             />

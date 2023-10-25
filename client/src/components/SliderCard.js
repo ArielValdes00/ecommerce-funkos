@@ -12,6 +12,7 @@ import ButtonAdded from './ButtonProductAdded.js';
 import ModalWishlist from './miscellaneous/ModalWishlist.js';
 import Loader from './Loader.js';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import Image from 'next/image.js';
 
 const SliderCards = ({ title, products }) => {
     const { toggleWishlist, isInWishlist, isInCart, showModalWishlist, selectedProductModal, isLoading } = useContext(ProductContext);
@@ -88,8 +89,10 @@ const SliderCards = ({ title, products }) => {
                                     onMouseEnter={() => setHoveredProductId(product.id)}
                                     onMouseLeave={() => setHoveredProductId(null)}
                                 >
-                                    <img
+                                    <Image
                                         src={hoveredProductId === product.id ? product.boxImage : product.image}
+                                        width={230}
+                                        height={230}
                                         alt={product.name}
                                         className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5'
                                     />

@@ -10,6 +10,7 @@ import SliderCards from '@/components/SliderCard';
 import 'animate.css';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { getMostSoldProducts } from '../../../utils/apiPurchase';
+import Image from 'next/image';
 
 const productName = ({ product, mostSoldProducts }) => {
     const { toggleWishlist, isInWishlist, showModal,
@@ -71,14 +72,14 @@ const productName = ({ product, mostSoldProducts }) => {
                         </div>
                         <div className='flex'>
                             <div className='mt-10 ms-3'>
-                                <img src={product.image}
+                                <Image src={product.image}
                                     width={70}
                                     height={70}
                                     alt={product.name}
                                     onClick={() => changeImageAnimateOff()}
                                     className={`${!changeImage && 'bg-white'} cursor-pointer border border-white mb-3 rounded-md`}
                                 />
-                                <img src={product.boxImage}
+                                <Image src={product.boxImage}
                                     width={70}
                                     height={70}
                                     alt={product.name}
@@ -87,7 +88,7 @@ const productName = ({ product, mostSoldProducts }) => {
                                 />
                             </div>
                             <div className='overflow-hidden lg:mt-12 xl:mt-0 mx-auto'>
-                                <img src={changeImage ? product.boxImage : product.image}
+                                <Image src={changeImage ? product.boxImage : product.image}
                                     alt={product.name}
                                     height={500} width={500}
                                     className={`${animate === 'right'

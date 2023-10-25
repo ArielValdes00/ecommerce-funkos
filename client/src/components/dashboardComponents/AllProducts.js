@@ -6,6 +6,7 @@ import { ProductContext } from '@/context/ProductContext';
 import ProductModal from './ProductModal';
 import useBooleanState from '@/hooks/useBooleanState';
 import ModalConfirm from './ModalConfirm';
+import Image from 'next/image';
 
 const AllProducts = ({ initialProducts, session, toast }) => {
     const [isFilterMenuOpen, setIsFilterModalOpen] = useState(false);
@@ -266,7 +267,7 @@ const AllProducts = ({ initialProducts, session, toast }) => {
                             onMouseEnter={() => setHoveredProductId(product.id)}
                             onMouseLeave={() => setHoveredProductId(null)}
                         >
-                            <img
+                            <Image
                                 src={hoveredProductId === product.id ? product.boxImage : product.image}
                                 alt={product.name}
                                 width={115}

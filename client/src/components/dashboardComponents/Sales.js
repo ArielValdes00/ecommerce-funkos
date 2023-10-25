@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Image from 'next/image';
 
 const Sales = ({ initialSalesData }) => {
     const calculateTotalPrice = (cart) => {
@@ -29,7 +30,7 @@ const Sales = ({ initialSalesData }) => {
                         {user.Carts.length <= 2 ? (
                             user.Carts.map((cart) => (
                                 <li key={cart.id} className='flex flex-col gap-1 p-2 bg-white border rounded shadow text-center rounded-lg border-gray-200'>
-                                    <img
+                                    <Image
                                         src={cart.product.image}
                                         height={120}
                                         width={120}

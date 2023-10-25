@@ -52,7 +52,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     try {
         const limit = 6;
         const recentProducts = await getProducts(limit);

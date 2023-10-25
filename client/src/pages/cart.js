@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalPayPal from '@/components/ModalPayPal';
 import useBooleanState from '@/hooks/useBooleanState';
+import Image from 'next/image';
 
 const Cart = ({ recentProducts, mostSoldProducts, session }) => {
     const { cartState, cartDispatch,
@@ -114,7 +115,7 @@ const Cart = ({ recentProducts, mostSoldProducts, session }) => {
                                         <div key={item.id} className="grid md:grid-cols-2 items-center border-b-2 border-black mb-2">
                                             <div className="grid grid-cols-3 gap-7 items-center lg:gap-5 py-3 md:col-span-1">
                                                 <Link href={`/products/${item.name}`} className="col-span-1">
-                                                    <img src={item.image} height={130} width={130} alt={item.name} />
+                                                    <Image src={item.image} height={130} width={130} alt={item.name} />
                                                 </Link>
                                                 <div className="col-span-2">
                                                     <p className="uppercase font-semibold lg:text-lg">{item.category}</p>
