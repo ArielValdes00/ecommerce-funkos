@@ -60,7 +60,7 @@ const productName = ({ product, mostSoldProducts }) => {
                     <Link href={"/products"}>Products</Link> /
                     <span className='capitalize'>{product.category}</span>
                 </div>
-                <div className='grid lg:grid-cols-2 mt-5 lg:gap-5'>
+                <div className='grid lg:grid-cols-2 mt-5 lg:gap-5 2xl:gap-10'>
                     <div className='border bg-gray-200 relative '>
                         <div
                             onClick={() => toggleWishlist(product.id)}
@@ -112,7 +112,7 @@ const productName = ({ product, mostSoldProducts }) => {
                                 invert={'invert'}
                             />
                         </div>
-                        <p className='font-semibold mt-2 lg:max-w-md lg:text-sm break-words'>{product.description}</p>
+                        <p className='font-semibold mt-2 md:max-w-md 2xl:max-w-lg lg:text-sm break-words'>{product.description}</p>
                     </div>
                 </div>
             </section>

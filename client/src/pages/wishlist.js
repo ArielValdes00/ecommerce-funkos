@@ -115,7 +115,7 @@ const Wishlist = () => {
                                             <Link href={`/products/${product.name}`} className='font-extrabold uppercase text-start text-xl hover:underline'>{product.name}</Link>
                                             <p className='font-semibold'>${product.price}</p>
                                         </div>
-                                        <div className='sm:w-2/3 xl:w-full'>
+                                        <div className='sm:w-2/3 xl:w-full 2xl:w-[85%]'>
                                             {!isInCart(product.id) ? (
                                                 <AddToCartButton
                                                     product={product}

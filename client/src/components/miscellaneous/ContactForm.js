@@ -52,8 +52,8 @@ const ContactForm = ({ toast, title }) => {
     };
 
     return (
-        <div className="w-full max-w-md">
-            <form onSubmit={handleSubmit} ref={formRef} className="bg-white flex flex-col justify-center shadow-md rounded max-h-2xl mb-4 p-6">
+        <div className="w-full h-full max-w-md">
+            <form onSubmit={handleSubmit} ref={formRef} className="bg-white flex flex-col justify-center shadow-md rounded 2xl:gap-5 2xl:h-[500px] mb-4 p-6">
                 {title}
                 <div className="mb-4 w-full">
                     <label className="block text-sm font-bold mb-2" htmlFor="user_email">

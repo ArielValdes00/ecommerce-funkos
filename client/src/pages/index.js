@@ -26,7 +26,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
                 />
             )}
             <section className="fondo grid min-h-screen md:px-28" style={{ minHeight: 'calc(100vh - var(--navbar-height))' }}>
-                <div className="grid lg:grid-cols-2 lg:gap-7 items-center">
+                <div className="grid lg:grid-cols-2 lg:gap-7 2xl:gap-0 items-center">
                     <div className="text-white flex flex-col gap-3 md:gap-5 justify-center items-start px-5 mt-5 lg:m-0">
                         <h1 className="text-2xl md:text-4xl font-extrabold w-full text-center lg:text-start">DOUBLE TROUBLE</h1>
                         <p className="font-semibold text-sm md:text-xl max-w-xs md:max-w-md text-center lg:text-start mx-auto lg:m-0">Put Your Training to Good Use! Team Up with the 2-Pack Pop! Yuji Itadori & Aoi Todo and Complete Your Anime Set. </p>
@@ -54,7 +54,7 @@ export default function Home({ recentProducts, mostSoldProducts }) {
 
 export async function getServerSideProps() {
     try {
-        const limit = 6;
+        const limit = 8;
         const recentProducts = await getProducts(limit);
 
         const mostSoldProducts = await getMostSoldProducts();

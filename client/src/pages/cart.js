@@ -131,8 +131,8 @@ const Cart = ({ recentProducts, mostSoldProducts, session }) => {
                                                         selectedQuantity={selectedQuantities[item.id] || 1}
                                                         handleQuantityChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                                                         classNameContainer="select-container relative"
-                                                        className="bg-gray-100 rounded-full w-full h-full pl-10 md:pl-6 lg:pl-7 text-start sm:text-center xl:text-start font-semibold border border-black"
-                                                        arrowPosition={'left-5 sm:left-7 md:left-3 lg:left-4 xl:left-3 invert-1'}
+                                                        className="bg-gray-100 rounded-full w-full h-full pl-8 md:pl-6 lg:pl-7 2xl:pl-9 text-start sm:text-center xl:text-start font-semibold border border-black"
+                                                        arrowPosition={'left-4 sm:left-7 md:left-3 lg:left-4 xl:left-3 2xl:left-4 invert-1'}
                                                         invert={'invert-0'}
                                                     />
                                                 </div>

@@ -128,7 +128,7 @@ const Products = ({ initialProducts }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-5">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 py-5">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className={`rounded-lg ${isLoading && selectedProductModal === product.id ? 'bg-neutral-600' : 'bg-white'} text-center py-3 md:px-3 px-2 shadow relative`}>
                                 {isLoading && selectedProductModal === product.id && (
@@ -176,7 +176,7 @@ const Products = ({ initialProducts }) => {
                                         buttonText={'in cart'}
                                         disabled={true}
                                         product={product}
-                                        arrowPosition={'left-3'}
+                                        arrowPosition={'left-4'}
                                         invert={'invert'}
                                     />
                                 )}

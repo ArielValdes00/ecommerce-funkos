@@ -49,6 +49,9 @@ const SliderCards = ({ title, products }) => {
                     modules={[Navigation, Scrollbar, A11y, Pagination]}
                     spaceBetween={50}
                     breakpoints={{
+                        1440: {
+                            slidesPerView: 4
+                        },
                         992: {
                             slidesPerView: 3
                         },
@@ -94,7 +97,7 @@ const SliderCards = ({ title, products }) => {
                                         width={230}
                                         height={230}
                                         alt={product.name}
-                                        className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5'
+                                        className='transition-all duration-300 ease-in-out transform hover:scale-110 hover:-translate-y-2.5 p-2 pt-5 mx-auto'
                                     />
                                 </div>
                             </Link>

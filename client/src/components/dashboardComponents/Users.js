@@ -74,7 +74,7 @@ const Users = ({ allUsers, session, toast }) => {
                     handleCloseModal={() => toggleShowModalDeleteUser()}
                     handleConfirm={() => handleDelete(userId)}
                     action={'Delete'}
-                    color={'bg-red-500 hover:bg-red-600'}
+                    color={'bg-red-600 hover:bg-red-700'}
                 />
             )}
             {assignAdminModalOpen && (
@@ -84,7 +84,7 @@ const Users = ({ allUsers, session, toast }) => {
                     handleCloseModal={() => toggleAssignAdminModalOpen(false)}
                     handleConfirm={() => handleAssignAdminRole(userId)}
                     action={'Assign Admin'}
-                    color={'bg-blue-500 hover:bg-blue-600'}
+                    color={'bg-blue-600 hover:bg-blue-700'}
                 />
             )}
             <div className='grid md:grid-cols-2 lg:grid-cols-3'>
@@ -118,12 +118,12 @@ const Users = ({ allUsers, session, toast }) => {
                             <li className='flex justify-between mt-2'>
                                 <button
                                     onClick={() => openModalDeleteUser(user.id)}
-                                    className='rounded-md px-3 py-1 bg-red-500 text-white font-normal hover:bg-red-00'>
+                                    className='rounded-md px-3 py-1 text-white font-normal bg-red-700 hover:bg-red-800'>
                                     Delete
                                 </button>
                                 <button
                                     onClick={() => openModalAssingAdminRole(user.id)}
-                                    className='rounded-md px-3 py-2 bg-blue-500 text-white font-normal hover:bg-blue-00'>
+                                    className='rounded-md px-3 py-2 bg-blue-500 text-white font-normal bg-blue-600 hover:bg-blue-700'>
                                     Assign Admin Role
                                 </button>
                             </li>
