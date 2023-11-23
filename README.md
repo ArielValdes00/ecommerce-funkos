@@ -62,4 +62,7 @@ EMAIL_USER=your_value
 EMAIL_PASSWORD=your_value
 APP_URL=your_value
 ```
+### Project Link
+[![portfolio](https://img.shields.io/badge/FunkoStore-000?style=for-the-badge)](https://ecommerce-funkos-client.vercel.app/)
+
 
